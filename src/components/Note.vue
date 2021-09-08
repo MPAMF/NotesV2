@@ -1,6 +1,6 @@
 <template>
   <div class="column">
-    <h1 style="user-select: none; color: #7957d5; font-size: 24px">{{note.name}} <b style="font-size: 20px">({{note.coeff}}%)</b></h1>
+    <h1 :style="{'color':color}" style="user-select: none; font-size: 24px">{{note.name}} <b style="font-size: 20px">({{note.coeff}}%)</b></h1>
     <vue-numeric class="input" v-bind:precision="2"
                  v-model="test"
                  v-bind:min="0"
@@ -19,7 +19,8 @@ export default {
   },
   props: {
     note: {},
-    userNote: {}
+    userNote: {},
+    color: String
   },
   data() {
     return {
