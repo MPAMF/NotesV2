@@ -2,7 +2,7 @@
   <div id="app">
     <b-loading :is-full-page="true" :active="isFetching" :can-cancel="false"></b-loading>
 
-      <h1 class="title">Notes de L3</h1>
+      <h1 class="title" style="margin-top: 20px">Notes de L3</h1>
     <router-view/>
   </div>
 </template>
@@ -19,24 +19,13 @@ export default {
 
 
 <style>
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Karla, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+  box-sizing: border-box;
 }
 </style>

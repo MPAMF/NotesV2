@@ -2,10 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import VueNumeric from 'vue-numeric'
 
 Vue.use(Buefy)
+Vue.use(VueNumeric)
 
 Vue.config.productionTip = false
 
