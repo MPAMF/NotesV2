@@ -9,16 +9,21 @@
       </p>
 
       <div class="content">
+        <div class="columns is-multiline">
+          <note v-for="(note, index) in course.notes" :note="note" :key="index"></note>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Note from "./Note";
 export default {
   name: 'Course',
+  components: {Note},
   props: {
-    course: []
+    course: {}
   }
 }
 </script>
