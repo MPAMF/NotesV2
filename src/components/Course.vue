@@ -5,17 +5,17 @@
       <section class="hero" style="">
         <div class="hero-body">
           <div class="columns">
-            <div class="column is-9" style="user-select: none;">
-              <p class="title" style="color: white;">
+            <div class="column is-9" style="user-select: none">
+              <p class="title" style="color: white">
                 {{ course.name }}
               </p>
-              <p class="subtitle" style="color: white;">
+              <p class="subtitle" style="color: white">
                 {{ course.ects }} ECTS
               </p>
             </div>
             <div class="column is-3">
               <div class="box">
-                <h1 class="title is-unselectable" :style="{ 'color' : getAvgColor()}">{{ calculateAvg.toFixed(2) }} /
+                <h1 class="title is-unselectable" :style="{ 'color' : avgColor}">{{ avgNote.toFixed(2) }} /
                   20</h1>
               </div>
             </div>
@@ -25,23 +25,14 @@
           <button class="button is-white collapse-button" @click="open = !open">
             <b-icon :icon="!open ? 'chevron-down-circle-outline' : 'chevron-up-circle-outline'"
                     size="is-medium"></b-icon>
-
-            <!-- <i class="fa-solid fa-circle-caret-down"></i> -->
-            <!-- <i class="fa-solid fa-circle-caret-up"></i> -->
           </button>
         </div>
       </section>
-
-      <!-- <b-button @click="row.toggleDetails" >
-        <b-icon :icon="row.detailsShowing ? 'chevron-up-circle' : 'chevron-down-circle'"></b-icon> 
-        Details
-      </b-button> -->
-
       <b-collapse animation="slide" :open="open">
         <div class="content box">
           <div class="columns is-multiline">
-            <note v-for="(note, index) in course.notes" :note="note" :key="index"
-                  :user-note="{note: 17, id: 'qsdqsdqsd'}" :color="course.color"></note>
+            <note v-for="(note, index) in course.notes" :note="note" :key="index" :course="course"
+                  @update-avg="calculateAvg"></note>
           </div>
         </div>
       </b-collapse>
@@ -51,6 +42,7 @@
 
 <script>
 import Note from "./Note";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Course',
@@ -60,26 +52,42 @@ export default {
   },
   data() {
     return {
-      open: false
+      open: false,
+      avgColor: 'orange',
+      avgNote: 10.0
     }
+  },
+  mounted() {
+    this.calculateAvg()
   },
   computed: {
-    calculateAvg: {
-      get() {
-        let avg = 0.0;
-
-        for (const [key, value] of Object.entries(this.course.notes)) {
-          console.log(`${key}: ${value}`);
-        }
-
-        return avg;
-      }
-    }
+    ...mapGetters(['getNote']),
   },
   methods: {
-    getAvgColor() {
-      return 'darkolivegreen';
-    }
+    calculateAvg() {
+      let avg = 0.0
+
+      this.course.notes.forEach(value => {
+        if (value.length > 0) {
+          let multipleAvg = 0.0
+          value.notes.forEach(val => multipleAvg += (this.getNote(this.course.id, val.id) * 20.0) / val.denominator)
+          avg += multipleAvg * value.coeff
+        } else {
+          avg += this.getNote(this.course.id, value.id) * value.coeff
+        }
+      })
+      this.avgNote = avg
+
+      // set average color
+      this.avgColor = this.avgNote < 10 ? 'red' : (this.avgNote < 14) ? 'orange' : 'green';
+
+      // emit main avg update event
+      this.$emit('update-main-avg', {
+        courseId: this.course.id,
+        avg: avg,
+        coeff: this.course.ects
+      })
+    },
   }
 }
 </script>
