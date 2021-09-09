@@ -1,21 +1,22 @@
 <template>
   <div class="card">
-    <div class="card-content"
-         style="background-color: #7957d5; padding: 0; border: 4px solid #7957d5; border-radius: 10px">
-      <section class="hero is-primary" style="">
+    <div class="card-content" :style="{'background-color':course.color,'border':course.color+' 4px solid'}"
+         style="padding: 0; border-radius: 10px">
+      <section class="hero" style="">
         <div class="hero-body">
           <div class="columns">
             <div class="column is-9" style="user-select: none;">
-              <p class="title">
+              <p class="title" style="color: white;">
                 {{ course.name }}
               </p>
-              <p class="subtitle">
+              <p class="subtitle" style="color: white;">
                 {{ course.ects }} ECTS
               </p>
             </div>
             <div class="column is-3">
               <div class="box">
-                <h1 class="title is-unselectable" :style="{ 'color' : getAvgColor()}">{{ calculateAvg.toFixed(2) }} / 20</h1>
+                <h1 class="title is-unselectable" :style="{ 'color' : getAvgColor()}">{{ calculateAvg.toFixed(2) }} /
+                  20</h1>
               </div>
             </div>
           </div>
@@ -40,7 +41,7 @@
         <div class="content box">
           <div class="columns is-multiline">
             <note v-for="(note, index) in course.notes" :note="note" :key="index"
-                  :user-note="{note: 17, id: 'qsdqsdqsd'}"></note>
+                  :user-note="{note: 17, id: 'qsdqsdqsd'}" :color="course.color"></note>
           </div>
         </div>
       </b-collapse>
