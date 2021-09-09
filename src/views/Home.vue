@@ -5,8 +5,8 @@
       <course v-for="(course, index) in getCourses" :key="index" :course="course" style="margin-bottom: 5vh"></course>
     </div>
 
-    <div class="container box" style="position: sticky; bottom:0">
-      <h1 class="title">Moyenne générale: 20/20</h1>
+    <div class="container box sticky">
+      <h1 class="title">Moyenne générale: 20.00 / 20</h1>
     </div>
 
   </div>
@@ -28,3 +28,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.sticky {
+  position: sticky;
+  bottom: 5px;
+  background-color: bisque;
+}
+</style>

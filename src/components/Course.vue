@@ -1,8 +1,9 @@
 <template>
   <div class="card">
-    <div class="card-content" style="background-color: #7957d5; padding: 0; border: 4px solid #7957d5; border-radius: 10px">
+    <div class="card-content"
+         style="background-color: #7957d5; padding: 0; border: 4px solid #7957d5; border-radius: 10px">
       <section class="hero is-primary" style="">
-        <div class="hero-body" >
+        <div class="hero-body">
           <div class="columns">
             <div class="column is-9" style="user-select: none;">
               <p class="title">
@@ -14,14 +15,16 @@
             </div>
             <div class="column is-3">
               <div class="box">
-                <h1 class="title" style="user-select: none; color: darkolivegreen">{{ '19.69 / 20' }}</h1>
+                <h1 class="title is-unselectable" :style="{ 'color' : getAvgColor()}">{{ calculateAvg.toFixed(2) }} / 20</h1>
               </div>
             </div>
           </div>
         </div>
         <div class="has-text-centered" style="height:0">
-          <button class="button is-white" style="top:-18px; border-radius:50%; border:solid 1px black;" @click="open = !open" v-if="!open">
-            <b-icon icon="arrow-drop-down-circle" size="is-small"></b-icon>
+          <button class="button is-white collapse-button" @click="open = !open">
+            <b-icon :icon="!open ? 'chevron-down-circle-outline' : 'chevron-up-circle-outline'"
+                    size="is-medium"></b-icon>
+
             <!-- <i class="fa-solid fa-circle-caret-down"></i> -->
             <!-- <i class="fa-solid fa-circle-caret-up"></i> -->
           </button>
@@ -33,12 +36,14 @@
         Details
       </b-button> -->
 
-        <b-collapse  animation="slide" class="content box">
+      <b-collapse animation="slide" :open="open">
+        <div class="content box">
           <div class="columns is-multiline">
             <note v-for="(note, index) in course.notes" :note="note" :key="index"
                   :user-note="{note: 17, id: 'qsdqsdqsd'}"></note>
           </div>
-        </b-collapse>
+        </div>
+      </b-collapse>
     </div>
   </div>
 </template>
@@ -52,9 +57,27 @@ export default {
   props: {
     course: {}
   },
-  data(){
+  data() {
     return {
-      open: false,
+      open: false
+    }
+  },
+  computed: {
+    calculateAvg: {
+      get() {
+        let avg = 0.0;
+
+        for (const [key, value] of Object.entries(this.course.notes)) {
+          console.log(`${key}: ${value}`);
+        }
+
+        return avg;
+      }
+    }
+  },
+  methods: {
+    getAvgColor() {
+      return 'darkolivegreen';
     }
   }
 }
@@ -62,10 +85,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+.collapse-button {
+  top: -18px;
+  border-radius: 50%;
 }
 </style>
