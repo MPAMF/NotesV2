@@ -25,39 +25,36 @@ export default {
   components: {
     Course
   },
+
   computed: {
     ...mapGetters(['getCourses'])
   },
+
   data() {
     return {
       avg: 0.0,
       notes: {}
     }
   },
+
   methods: {
     updateAvg({courseId, coeff, avg}) {
       this.notes[courseId] = {coeff: coeff, avg: avg}
       this.calculateAvg()
-      console.log("note[" + courseId + "] = " + avg)
     },
+
     calculateAvg() {
       let average = 0.0
       let coeff = 0.0
+
       Object.keys(this.notes).forEach(key => {
         let note = this.notes[key]
         average += note.coeff * note.avg
         coeff += note.coeff
       })
+
       this.avg = average / coeff
     }
   }
 }
 </script>
-
-<style>
-.sticky {
-  position: sticky;
-  bottom: 5px;
-  background-color: bisque;
-}
-</style>

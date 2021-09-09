@@ -47,9 +47,11 @@ import {mapGetters} from "vuex";
 export default {
   name: 'Course',
   components: {Note},
+
   props: {
     course: {}
   },
+
   data() {
     return {
       open: false,
@@ -57,12 +59,15 @@ export default {
       avgNote: 10.0
     }
   },
+
   mounted() {
     this.calculateAvg()
   },
+
   computed: {
     ...mapGetters(['getNote']),
   },
+
   methods: {
     calculateAvg() {
       let avg = 0.0
@@ -76,6 +81,7 @@ export default {
           avg += this.getNote(this.course.id, value.id) * value.coeff
         }
       })
+
       this.avgNote = avg
 
       // set average color

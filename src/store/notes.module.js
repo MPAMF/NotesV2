@@ -5,7 +5,6 @@ const state = {
 
 const mutations = {
     setNote(state, {courseId, note}) {
-        console.log("Setting " + note.id + " to " + note.value)
         if (!(courseId in state.notes)) state.notes[courseId] = []
         state.notes[courseId][note.id] = note.value
     }

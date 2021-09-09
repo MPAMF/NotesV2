@@ -22,10 +22,18 @@ export default {
   components: {
     VueNumeric
   },
+
   props: {
     course: {},
     note: {},
   },
+
+  data() {
+    return {
+      localNote: -1
+    }
+  },
+
   computed: {
     ...mapGetters(['getNote']),
     userNote: {
@@ -45,14 +53,10 @@ export default {
       }
     }
   },
+
   beforeMount() {
     this.localNote = this.getNote(this.course.id, this.note.id)
   },
-  data() {
-    return {
-      localNote: -1
-    }
-  }
 }
 </script>
 
