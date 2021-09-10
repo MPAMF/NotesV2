@@ -17,6 +17,7 @@ const state = {
                         }
                     ],
                     coeff: 1/5,
+                    multiple: true,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-f288c3cc5fcc',
@@ -28,6 +29,7 @@ const state = {
                         }
                     ],
                     coeff: 1/5,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c1ec5fcc',
@@ -39,6 +41,7 @@ const state = {
                         }
                     ],
                     coeff: 0.3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3fb5fcc',
@@ -50,6 +53,7 @@ const state = {
                         }
                     ],
                     coeff: 0.3,
+                    multiple: false,
                 }
             ],
             ects: 6,
@@ -70,6 +74,7 @@ const state = {
                         }
                     ],
                     coeff: 1/5,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -81,6 +86,7 @@ const state = {
                         }
                     ],
                     coeff: 2/5,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -92,6 +98,7 @@ const state = {
                         }
                     ],
                     coeff: 2/5,
+                    multiple: false,
                 }
             ],
             ects: 3,
@@ -112,6 +119,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -123,6 +131,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -134,6 +143,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 }
             ],
             ects: 3,
@@ -154,6 +164,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -165,6 +176,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -176,6 +188,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 }
             ],
             ects: 3,
@@ -196,6 +209,7 @@ const state = {
                         }
                     ],
                     coeff: 1/5,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -207,6 +221,7 @@ const state = {
                         }
                     ],
                     coeff: 0.3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -218,6 +233,7 @@ const state = {
                         }
                     ],
                     coeff: 1/2,
+                    multiple: false,
                 }
             ],
             ects: 3,
@@ -238,6 +254,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -249,6 +266,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -260,6 +278,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 }
             ],
             ects: 3,
@@ -280,6 +299,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -291,6 +311,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -302,6 +323,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 }
             ],
             ects: 3,
@@ -322,6 +344,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -333,6 +356,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -344,6 +368,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 }
             ],
             ects: 3,
@@ -364,6 +389,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -375,6 +401,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 },
                 {
                     id: 'a2298958-dc43-44d5-9343-ee88c3cc5fcc',
@@ -386,6 +413,7 @@ const state = {
                         }
                     ],
                     coeff: 1/3,
+                    multiple: false,
                 }
             ],
             ects: 3,

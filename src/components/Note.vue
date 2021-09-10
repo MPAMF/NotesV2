@@ -5,7 +5,10 @@
         (note.coeff * 100).toFixed(0)
       }}%)</b>
     </h1>
-    <vue-numeric class="input" v-bind:precision="2"
+    <button v-if="note.multiple" class="input custom-button" @click="openDialog">
+      <p class="custom-button">{{localNote.toFixed(2)}}</p>
+    </button>
+    <vue-numeric v-else class="input" v-bind:precision="2"
                  v-model.lazy="userNote"
                  v-bind:min="0"
                  v-bind:max="20"
@@ -16,6 +19,7 @@
 <script>
 import VueNumeric from 'vue-numeric'
 import {mapGetters} from "vuex";
+import MultipleNote from "./MultipleNote";
 
 export default {
   name: "Note",
@@ -51,6 +55,20 @@ export default {
         })
         this.$emit("update-avg")
       }
+    },
+  },
+
+  methods: {
+    openDialog() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: MultipleNote,
+        hasModalCard: true,
+        trapFocus: true,
+        props: {
+          note: this.note
+        }
+      })
     }
   },
 
@@ -65,5 +83,14 @@ input[type="tel"] {
   font-size: 20px;
   text-align: center;
   font-family: Karla, sans-serif;
+}
+
+.custom-button {
+  font-size: 20px;
+  text-align: center;
+  font-family: Karla, sans-serif;
+  vertical-align:middle;
+  margin: auto;
+  cursor: pointer;
 }
 </style>
