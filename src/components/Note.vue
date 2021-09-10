@@ -6,7 +6,7 @@
       }}%)</b>
     </h1>
     <button v-if="note.multiple" class="input custom-button" @click="openDialog">
-      <p class="custom-button">{{localNote.toFixed(2)}}</p>
+      <p class="custom-button">{{ localNote.toFixed(2) }}</p>
     </button>
     <vue-numeric v-else class="input" v-bind:precision="2"
                  v-model.lazy="userNote"
@@ -19,7 +19,7 @@
 <script>
 import VueNumeric from 'vue-numeric'
 import {mapGetters} from "vuex";
-import MultipleNote from "./MultipleNote";
+import MultipleNote from "./MultipleNoteModal";
 
 export default {
   name: "Note",
@@ -65,15 +65,34 @@ export default {
         component: MultipleNote,
         hasModalCard: true,
         trapFocus: true,
+        canCancel: false,
         props: {
-          note: this.note
+          note: this.note,
+          course: this.course
+        },
+        events: {
+          close: () => this.updateLocalNote()
         }
       })
+    },
+
+    updateLocalNote() {
+      if (this.note.multiple) {
+        let avg = 0.0
+        this.note.notes.forEach(val => {
+          let foundNote = this.getNote(this.course.id, val.id)
+          avg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
+        })
+        this.userNote = avg / this.note.notes.length
+        return
+      }
+      let note = this.getNote(this.course.id, this.note.id)
+      this.userNote = note < 0 ? 10 : note
     }
   },
 
   beforeMount() {
-    this.localNote = this.getNote(this.course.id, this.note.id)
+    this.updateLocalNote()
   },
 }
 </script>
@@ -89,7 +108,7 @@ input[type="tel"] {
   font-size: 20px;
   text-align: center;
   font-family: Karla, sans-serif;
-  vertical-align:middle;
+  vertical-align: middle;
   margin: auto;
   cursor: pointer;
 }

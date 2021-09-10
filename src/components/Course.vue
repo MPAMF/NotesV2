@@ -6,16 +6,18 @@
         <div class="hero-body">
           <div class="columns">
             <div class="column is-9" style="user-select: none">
-              <p class="title" style="color: white">
+              <p class="title is-size-5-mobile" style="color: white">
                 {{ course.name }}
               </p>
-              <p class="subtitle" style="color: white">
+              <p class="subtitle is-size-6-mobile" style="color: white">
                 {{ course.ects }} ECTS
               </p>
             </div>
             <div class="column is-3">
               <div class="box">
-                <h1 class="title is-unselectable" :style="{ 'color' : avgColor}">{{ avgNote.toFixed(2) }} /
+                <h1 class="title is-unselectable is-size-5-mobile" :style="{ 'color' : avgColor}">{{
+                    avgNote.toFixed(2)
+                  }} /
                   20</h1>
               </div>
             </div>
@@ -73,12 +75,16 @@ export default {
       let avg = 0.0
 
       this.course.notes.forEach(value => {
-        if (value.length > 0) {
+        if (value.multiple) {
           let multipleAvg = 0.0
-          value.notes.forEach(val => multipleAvg += (this.getNote(this.course.id, val.id) * 20.0) / val.denominator)
-          avg += multipleAvg * value.coeff
+          value.notes.forEach(val => {
+            let foundNote = this.getNote(this.course.id, val.id)
+            multipleAvg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
+          })
+          avg += (multipleAvg / value.notes.length) * value.coeff
         } else {
-          avg += this.getNote(this.course.id, value.id) * value.coeff
+          let note = this.getNote(this.course.id, value.id)
+          avg += (note < 0 ? 10 : note) * value.coeff
         }
       })
 

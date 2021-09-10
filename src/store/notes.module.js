@@ -1,6 +1,5 @@
 const state = {
     notes: [],
-    defaultNote: 10.0
 }
 
 const mutations = {
@@ -20,7 +19,7 @@ const actions = {
 }
 
 const getters = {
-    getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : state.defaultNote) : state.defaultNote,
+    getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : []
 }
 

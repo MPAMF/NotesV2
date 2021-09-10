@@ -10,11 +10,60 @@ const state = {
                     notes: [
                         // Si plusieurs notes
                         {
-                            // sur 4
-                            id: 'a2218958-dce3-44d5-9343-ff98c3cd5fdc',
-                            denominator: 4,
+                            id: 'b2218958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 12,
                             name: 'QCM 1'
-                        }
+                        },
+                        {
+                            id: 'a3218958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 4,
+                            name: 'QCM 2'
+                        },
+                        {
+                            id: 'a4218958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 8,
+                            name: 'QCM 3'
+                        },
+                        {
+                            id: 'a2518958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 9,
+                            name: 'QCM 4'
+                        },
+                        {
+                            id: 'a1212958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 10,
+                            name: 'QCM 5'
+                        },
+                        {
+                            id: 'a1452958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 4,
+                            name: 'QCM 6'
+                        },
+                        {
+                            id: 'a1172958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 4,
+                            name: 'QCM 7'
+                        },
+                        {
+                            id: 'a1872958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 4,
+                            name: 'QCM 8'
+                        },
+                        {
+                            id: 'a1242958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 4,
+                            name: 'QCM 9'
+                        },
+                        {
+                            id: 'a1265958-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 4,
+                            name: 'QCM 10'
+                        },
+                        {
+                            id: 'a2312558-dce3-44d5-9343-ff98c3cd5fdc',
+                            denominator: 4,
+                            name: 'QCM 11'
+                        },
                     ],
                     coeff: 1/5,
                     multiple: true,

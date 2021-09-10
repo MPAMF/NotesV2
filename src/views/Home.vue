@@ -8,7 +8,7 @@
 
     <div class="box"
          style="background: #232B32; position: sticky; bottom:0; border-radius: 8px 8px 0 0; border: solid 3px black; border-bottom: none; width: 100%;">
-      <h1 class="title" style="color: white">Moyenne générale : {{ avg.toFixed(2) }} / 20</h1>
+      <h1 class="title is-size-5-mobile" style="color: white">Moyenne générale : {{ avg.toFixed(2) }} / 20</h1>
     </div>
 
   </div>
