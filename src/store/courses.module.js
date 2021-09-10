@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const state = {
     courses: [
         {
@@ -473,9 +475,32 @@ const state = {
     fetching: false
 }
 
-const mutations = {}
+const mutations = {
+    startFetching(state) {
+        state.fetching = true
+    },
+    stopFetching(state) {
+        state.fetching = false
+    },
+    fetchSuccess(state, data) {
+        console.log(data)
+        //state.courses = data
+    }
+}
 
-const actions = {}
+const actions = {
+    // eslint-disable-next-line no-unused-vars
+    fetchData({commit}, value) {
+        console.log("data")
+        return new Promise(((resolve, reject) => axios.get('package.json').then(({data}) => {
+            commit('fetchSuccess', data)
+            resolve()
+        }).catch(error => {
+            reject(error)
+            throw new Error(error)
+        })))
+    }
+}
 
 const getters = {
     getCourses: state => state.courses,

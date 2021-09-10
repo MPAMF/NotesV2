@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <b-loading :is-full-page="true" :active="isFetching" :can-cancel="false"></b-loading>
-
-      <h1 class="title" style="margin-top: 20px">Notes de L3</h1>
     <router-view/>
   </div>
 </template>
@@ -17,9 +15,7 @@ export default {
 }
 </script>
 
-
 <style>
-
 #app {
   font-family: Karla, sans-serif;
   -webkit-font-smoothing: antialiased;

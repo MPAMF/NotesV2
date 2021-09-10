@@ -6,14 +6,21 @@ import store from './store'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import VueNumeric from 'vue-numeric'
+import VueAxios from "vue-axios";
+import axios from 'axios'
 
-Vue.use(Buefy)
-Vue.use(VueNumeric)
-
+// params
+axios.defaults.baseURL = process.env.VUE_APP_API_URL || ""
+axios.defaults.headers.get['Content-Type'] = 'application/json; charset=utf-8'
 Vue.config.productionTip = false
 
+// Use libs
+Vue.use(Buefy)
+Vue.use(VueNumeric)
+Vue.use(VueAxios, axios)
+
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app')
