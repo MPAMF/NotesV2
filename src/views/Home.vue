@@ -90,14 +90,17 @@ export default {
   created() {
 
     let sessionId = localStorage.getItem('session_id')
-    if (sessionId === null) {
-      this.displayDialog()
-      return
-    }
 
     this.$store.commit('startFetching')
 
     this.$store.dispatch('fetchData').then(() => {
+
+      if (sessionId === null) {
+        this.$store.commit('stopFetching')
+        this.displayDialog()
+        return
+      }
+
       this.$store.dispatch('fetchUserData', sessionId).then(() => {
         this.$store.commit('stopFetching')
       }).catch(() => {

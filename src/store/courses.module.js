@@ -1,4 +1,5 @@
-import axios from "axios";
+//import axios from "axios";
+const json = require("../assets/courses.json")
 
 const state = {
     courses: [
@@ -490,15 +491,22 @@ const mutations = {
 
 const actions = {
     // eslint-disable-next-line no-unused-vars
-    fetchData({commit}, value) {
-        console.log("data")
-        return new Promise(((resolve, reject) => axios.get('package.json').then(({data}) => {
+    fetchData({state, commit}, value) {
+        return new Promise(((resolve, reject) => {
+            if(!value) reject()
+            console.log("sssssssss&&éé")
+            console.log(json)
+            state.courses = json
+            console.log("sss")
+            resolve()
+        }))
+        /*axios.get('assets/test.json').then(({data}) => {
             commit('fetchSuccess', data)
             resolve()
         }).catch(error => {
             reject(error)
             throw new Error(error)
-        })))
+        }))) */
     }
 }
 
