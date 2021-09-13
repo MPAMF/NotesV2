@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const state = {
     notes: [],
     sessionId: 'a2312e58ef'
@@ -17,8 +19,19 @@ const actions = {
         commit('setNote', value)
     },
 
-    fetchUserData({commit}, value) {
+    fetchSessionData({commit}, value) {
         commit('setNote', value)
+    },
+
+    createSession({commit}) {
+        commit('startFetching')
+        return new Promise(((resolve, reject) => axios.post('session/create').then(({data}) => {
+            commit('fetchSuccess', data)
+            resolve()
+        }).catch(error => {
+            reject(error)
+            throw new Error(error)
+        }).finally(() => commit('stopFetching'))))
     }
 
 }

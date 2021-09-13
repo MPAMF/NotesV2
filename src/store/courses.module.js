@@ -2,7 +2,8 @@
 const json = require("../assets/courses.json")
 
 const state = {
-    courses: [
+    courses: [],
+  /*  courses: [
         {
             id: '52e294ac-3175-4a76-abf1-8873dbadb757',
             name: 'Architecture des Systèmes d\'Exploitation',
@@ -472,7 +473,7 @@ const state = {
             prof: 'Schreck Pascal',
             color: '#57D5B8'
         },
-    ],
+    ], */
     fetching: false
 }
 
@@ -494,12 +495,9 @@ const actions = {
     fetchData({state, commit}, value) {
         return new Promise(((resolve, reject) => {
             if(!value) reject()
-            console.log("sssssssss&&éé")
-            console.log(json)
             state.courses = json
-            console.log("sss")
             resolve()
-        }))
+        })).catch(e => console.log(e))
         /*axios.get('assets/test.json').then(({data}) => {
             commit('fetchSuccess', data)
             resolve()
