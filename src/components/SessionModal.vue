@@ -7,14 +7,20 @@
         <div class="columns is-centered">
           <div class="column text-center"><p class="subtitle">Entrez votre clé de session</p>
 
-            <b-input v-model="sessionId" maxlength="8" placeholder="Entrez votre clé de session"></b-input>
+
+            <b-field type="is-success" message="Copiez votre clé de session crée ci-dessus" v-if="created">
+              <b-input v-model="sessionId" maxlength="8" placeholder="Entrez votre clé de session"
+                       :disabled="created"></b-input>
+            </b-field>
+
+            <b-input v-model="sessionId" maxlength="8" placeholder="Entrez votre clé de session" v-else></b-input>
 
             <b-checkbox style="margin-top: 10px" v-model="rememberSession">Se souvenir de cette session</b-checkbox>
           </div>
           <div class="column text-center"><p class="subtitle">Pas encore de clé ?</p>
             <b-button
                 label="Créer une nouvelle session"
-                type="is-info is-light" :disabled="sessionId.length > 5"
+                type="is-info is-light" :disabled="created || sessionId.length > 5"
                 @click="createSession"/>
           </div>
         </div>
@@ -27,7 +33,7 @@
                       @click="$emit('close')"/>
           </div>
           <div class="column">
-            <b-button label="Continuer" :disabled="!canContinue && sessionId.length <= 5"
+            <b-button label="Continuer" :disabled="!created && sessionId.length <= 5"
                       type="is-info is-light"
                       @click="continueSession" expanded/>
           </div>
@@ -38,13 +44,15 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "SessionModal",
   data() {
     return {
       sessionId: '',
-      canContinue: false,
-      rememberSession: false
+      rememberSession: false,
+      created: false
     }
   },
   props: {
@@ -53,18 +61,51 @@ export default {
       type: Boolean
     }
   },
+  computed: {
+    ...mapGetters(['getSessionId'])
+  },
   methods: {
     createSession() {
-
-      this.$store.dispatch('createUser').then(() => {
-
-      }).catch(() => {
-
+      this.$store.dispatch('createSession').then(() => {
+        this.created = true
+        this.sessionId = this.getSessionId
+      }).catch(e => {
+        this.openToast(`Une erreur est survenue: <b>${e}</b>`)
       })
-
     },
     continueSession() {
 
+      if (!this.getSessionId || this.getSessionId.length !== 8) {
+        this.openToast('Veuillez entrer une clé de session')
+        return
+      }
+
+      this.$store.dispatch('checkSession').then(() => {
+
+        if (this.created) {
+          this.$store.commit('saveSessionId')
+          this.$emit('close')
+          return
+        }
+
+        this.$store.dispatch('loadSession').then(() => {
+          this.$store.commit('saveSessionId')
+          this.$emit('close')
+        }).catch(e => {
+          this.openToast(`Une erreur est survenue: <b>${e}</b>`)
+        })
+
+      }).catch(e => {
+        this.openToast(`Une erreur est survenue: <b>${e}</b>`)
+      })
+
+    },
+    openToast(message) {
+      this.$buefy.toast.open({
+        duration: 5000,
+        message: message,
+        type: 'is-danger'
+      })
     }
   }
 }

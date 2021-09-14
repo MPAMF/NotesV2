@@ -2,13 +2,27 @@ import axios from "axios";
 
 const state = {
     notes: [],
-    sessionId: 'a2312e58ef'
+    sessionId: ''
 }
 
 const mutations = {
     setNote(state, {courseId, note}) {
         if (!(courseId in state.notes)) state.notes[courseId] = []
         state.notes[courseId][note.id] = note.value
+    },
+
+    setUserNotes(state, notes) {
+        for (let note in notes) {
+            console.log(note)
+        }
+    },
+
+    setSessionId(state, id) {
+        state.sessionId = id
+    },
+
+    saveSessionId(state) {
+        localStorage.setItem('session_id', state.sessionId)
     }
 }
 
@@ -25,8 +39,19 @@ const actions = {
 
     createSession({commit}) {
         commit('startFetching')
-        return new Promise(((resolve, reject) => axios.post('session/create').then(({data}) => {
-            commit('fetchSuccess', data)
+        return new Promise(((resolve, reject) => axios.post('sessions/').then(({data}) => {
+            commit('setSessionId', data['session_key'])
+            resolve()
+        }).catch(error => {
+            reject(error)
+            throw new Error(error)
+        }).finally(() => commit('stopFetching'))))
+    },
+
+    loadSession({state, commit}) {
+        commit('startFetching')
+        return new Promise(((resolve, reject) => axios.post('sessions/' + state.sessionId).then(({data}) => {
+            commit('setUserNotes', data.notes)
             resolve()
         }).catch(error => {
             reject(error)
