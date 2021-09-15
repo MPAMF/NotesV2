@@ -33,10 +33,6 @@ const actions = {
         commit('setNote', value)
     },
 
-    fetchSessionData({commit}, value) {
-        commit('setNote', value)
-    },
-
     createSession({commit}) {
         commit('startFetching')
         return new Promise(((resolve, reject) => axios.post('sessions/').then(({data}) => {
@@ -50,7 +46,8 @@ const actions = {
 
     loadSession({state, commit}) {
         commit('startFetching')
-        return new Promise(((resolve, reject) => axios.post('sessions/' + state.sessionId).then(({data}) => {
+        return new Promise(((resolve, reject) => axios.get('sessions/' + state.sessionId + '/').then(({data}) => {
+            console.log(data)
             commit('setUserNotes', data.notes)
             resolve()
         }).catch(error => {

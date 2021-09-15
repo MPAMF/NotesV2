@@ -80,21 +80,9 @@ export default {
         return
       }
 
-      this.$store.dispatch('checkSession').then(() => {
-
-        if (this.created) {
-          this.$store.commit('saveSessionId')
-          this.$emit('close')
-          return
-        }
-
-        this.$store.dispatch('loadSession').then(() => {
-          this.$store.commit('saveSessionId')
-          this.$emit('close')
-        }).catch(e => {
-          this.openToast(`Une erreur est survenue: <b>${e}</b>`)
-        })
-
+      this.$store.dispatch('loadSession').then(() => {
+        if(this.rememberSession) this.$store.commit('saveSessionId')
+        this.$emit('close')
       }).catch(e => {
         this.openToast(`Une erreur est survenue: <b>${e}</b>`)
       })
