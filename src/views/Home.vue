@@ -90,6 +90,7 @@ export default {
   created() {
 
     let sessionId = localStorage.getItem('session_id')
+    this.$store.commit('setSessionId', sessionId)
 
     this.$store.commit('startFetching')
 
@@ -101,10 +102,18 @@ export default {
         return
       }
 
-      this.$store.dispatch('fetchUserData', sessionId).then(() => {
-        this.$store.commit('stopFetching')
-      }).catch(() => {
-        console.log("user not existing")
+      this.$store.dispatch('loadSession').then(() => {
+        this.$buefy.toast.open({
+          duration: 2000,
+          message: `Votre session ${sessionId} a bien été chargée.`,
+          type: 'is-success'
+        })
+      }).catch(e => {
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: `Une erreur est survenue: <b>${e}</b>`,
+          type: 'is-danger'
+        })
       })
     })
 
