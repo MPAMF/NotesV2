@@ -30,7 +30,6 @@ const actions = {
             resolve()
         }).catch(error => {
             reject(error)
-            throw new Error(error)
         }).finally(() => commit('stopFetching'))))
     }
 }

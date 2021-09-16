@@ -108,12 +108,13 @@ export default {
           message: `Votre session ${sessionId} a bien été chargée.`,
           type: 'is-success'
         })
-      }).catch(e => {
+      }).catch(() => {
         this.$buefy.toast.open({
           duration: 5000,
-          message: `Une erreur est survenue: <b>${e}</b>`,
+          message: `La session enregistrée localement n'existe pas.`,
           type: 'is-danger'
         })
+        localStorage.removeItem('session_id')
       })
     })
 

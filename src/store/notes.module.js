@@ -2,7 +2,12 @@ import axios from "axios";
 
 const state = {
     notes: [],
-    sessionId: ''
+    sessionId: '',
+
+    // saving
+    modifiedNotes: [],
+    runnable: -1,
+    canEdit: true
 }
 
 const mutations = {
@@ -40,7 +45,6 @@ const actions = {
             resolve()
         }).catch(error => {
             reject(error)
-            throw new Error(error)
         }).finally(() => commit('stopFetching'))))
     },
 
@@ -52,8 +56,28 @@ const actions = {
             resolve()
         }).catch(error => {
             reject(error)
-            throw new Error(error)
         }).finally(() => commit('stopFetching'))))
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    editNote({state, commit}, {id, value}) {
+
+        if (state.runnable >= 0) clearTimeout(state.runnable)
+        state.modifiedNotes[id] = value
+
+        state.runnable = setTimeout(() => {
+            commit('setCanEdit', false)
+
+            // save here
+           axios.post('sessions/' + state.sessionId + '/', {
+               notes: state.modifiedNotes
+           }).finally(() => {
+               state.modifiedNotes = []
+               commit('setCanEdit', true)
+           })
+
+        }, 3000)
+
     }
 
 }
@@ -61,7 +85,8 @@ const actions = {
 const getters = {
     getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
-    getSessionId: state => state.sessionId
+    getSessionId: state => state.sessionId,
+    getCanEdit: state => state.canEdit
 }
 
 export default {

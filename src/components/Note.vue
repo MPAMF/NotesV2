@@ -12,6 +12,7 @@
                  v-model.lazy="userNote"
                  v-bind:min="0"
                  v-bind:max="20"
+                 :disabled="!getCanEdit"
     ></vue-numeric>
   </div>
 </template>
@@ -39,7 +40,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getNote']),
+    ...mapGetters(['getNote', 'getCanEdit']),
     userNote: {
       get() {
         return this.localNote

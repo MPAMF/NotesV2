@@ -6,6 +6,7 @@
                      v-bind:min="0"
                      v-bind:max="note.denominator"
                      v-model.lazy="userNote"
+                     :disabled="!getCanEdit"
         ></vue-numeric>
         <span class="icon is-small is-right" style="color: #714dd2">
                 <b class="is-primary">{{ ' / ' + note.denominator }}</b>
