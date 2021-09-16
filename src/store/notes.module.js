@@ -86,7 +86,8 @@ const getters = {
     getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
     getSessionId: state => state.sessionId,
-    getCanEdit: state => state.canEdit
+    getCanEdit: state => state.canEdit,
+    getRunnable: state => state.runnable
 }
 
 export default {

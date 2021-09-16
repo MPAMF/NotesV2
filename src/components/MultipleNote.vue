@@ -38,7 +38,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getNote']),
+    ...mapGetters(['getNote', 'getCanEdit']),
     userNote: {
       get() {
         return this.localNote
