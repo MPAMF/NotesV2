@@ -7,6 +7,7 @@
                      v-bind:max="note.denominator"
                      v-model.lazy="userNote"
                      :disabled="!getCanEdit"
+                     @change="updateNote"
         ></vue-numeric>
         <span class="icon is-small is-right" style="color: #714dd2">
                 <b class="is-primary">{{ ' / ' + note.denominator }}</b>
@@ -45,7 +46,7 @@ export default {
       },
       set(value) {
         this.localNote = value
-        this.$store.dispatch('setNote', {
+        this.$store.commit('setNote', {
           note: {
             id: this.note.id,
             value: value
@@ -55,6 +56,18 @@ export default {
         this.$emit('update-avg')
       }
     },
+  },
+
+  methods: {
+    updateNote() {
+      this.$store.dispatch('editNote', {
+        note: {
+          id: this.note.id,
+          value: this.localNote,
+        },
+        courseId: this.course.id
+      })
+    }
   },
 
   beforeMount() {

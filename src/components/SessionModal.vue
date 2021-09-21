@@ -75,10 +75,12 @@ export default {
     },
     continueSession() {
 
-      if (!this.getSessionId || this.getSessionId.length !== 8) {
+      if (!this.sessionId || this.sessionId.length !== 8) {
         this.openToast('Veuillez entrer une clé de session')
         return
       }
+
+      this.$store.commit('setSessionId', this.sessionId)
 
       this.$store.dispatch('loadSession').then(() => {
         if(this.rememberSession) this.$store.commit('saveSessionId')

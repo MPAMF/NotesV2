@@ -3,9 +3,10 @@ import axios from "axios";
 const state = {
     notes: [],
     sessionId: '',
+    notesLoaded: false,
 
     // saving
-    modifiedNotes: [],
+    modifiedNotes: {},
     runnable: -1,
     canEdit: true
 }
@@ -28,7 +29,15 @@ const mutations = {
 
     saveSessionId(state) {
         localStorage.setItem('session_id', state.sessionId)
-    }
+    },
+
+    setCanEdit(state, value) {
+        state.canEdit = value
+    },
+
+    setNotesLoaded(state, value) {
+        state.notesLoaded = value
+    },
 }
 
 const actions = {
@@ -42,6 +51,12 @@ const actions = {
         commit('startFetching')
         return new Promise(((resolve, reject) => axios.post('sessions/').then(({data}) => {
             commit('setSessionId', data['session_key'])
+
+            for (let note in data.notes)
+                commit('setNote', note)
+
+            commit('setNotesLoaded', true)
+
             resolve()
         }).catch(error => {
             reject(error)
@@ -60,21 +75,30 @@ const actions = {
     },
 
     // eslint-disable-next-line no-unused-vars
-    editNote({state, commit}, {id, value}) {
-
+    editNote({state, commit}, {note}) {
         if (state.runnable >= 0) clearTimeout(state.runnable)
-        state.modifiedNotes[id] = value
+        state.modifiedNotes[note.id] = note.value
+
+        let arr = []
+        for (const [key, value] of Object.entries(state.modifiedNotes)) {
+            arr.push({
+                note: key,
+                value: value,
+                activated: true //TODO:
+            })
+        }
 
         state.runnable = setTimeout(() => {
             commit('setCanEdit', false)
 
             // save here
-           axios.post('sessions/' + state.sessionId + '/', {
-               notes: state.modifiedNotes
-           }).finally(() => {
-               state.modifiedNotes = []
-               commit('setCanEdit', true)
-           })
+            axios.put('sessions/' + state.sessionId + '/', {
+                notes: arr
+            }).finally(() => {
+                state.modifiedNotes = {}
+                commit('setCanEdit', true)
+                state.runnable = -1
+            })
 
         }, 3000)
 

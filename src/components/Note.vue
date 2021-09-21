@@ -13,6 +13,7 @@
                  v-bind:min="0"
                  v-bind:max="20"
                  :disabled="!getCanEdit"
+                 @change="updateNote"
     ></vue-numeric>
   </div>
 </template>
@@ -47,7 +48,7 @@ export default {
       },
       set(value) {
         this.localNote = value
-        this.$store.dispatch('setNote', {
+        this.$store.commit('setNote', {
           note: {
             id: this.note.id,
             value: value
@@ -89,6 +90,20 @@ export default {
       }
       let note = this.getNote(this.course.id, this.note.id)
       this.userNote = note < 0 ? 10 : note
+    },
+
+    updateNote() {
+      if(this.note.multiple) return
+
+      console.log('Note: ' + this.note.id + ': ' + this.localNote)
+
+      this.$store.dispatch('editNote', {
+        note: {
+          id: this.note.id,
+          value: this.localNote
+        },
+        courseId: this.course.id
+      })
     }
   },
 
