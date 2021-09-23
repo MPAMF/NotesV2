@@ -57,6 +57,7 @@ import Course from "../components/Course";
 import {mapGetters} from "vuex";
 import Parameters from "../components/Parameters";
 import SessionModal from "../components/SessionModal";
+import emitter from 'tiny-emitter/instance'
 
 export default {
   name: 'Home',
@@ -123,6 +124,7 @@ export default {
       }
 
       this.$store.dispatch('loadSession').then(() => {
+        emitter.emit('notes-loaded')
         this.$buefy.toast.open({
           duration: 2000,
           message: `Votre session ${sessionId} a bien été chargée.`,

@@ -19,7 +19,8 @@
 
 <script>
 import VueNumeric from 'vue-numeric'
-import {mapGetters} from "vuex";
+import {mapGetters} from "vuex"
+import emitter from 'tiny-emitter/instance'
 
 export default {
   name: "MultipleNote",
@@ -67,13 +68,21 @@ export default {
         },
         courseId: this.course.id
       })
+    },
+
+    updateLocalNote() {
+      let foundNote = this.getNote(this.course.id, this.note.id)
+      this.localNote = foundNote < 0 ? this.note.denominator / 2 : foundNote
     }
   },
 
   beforeMount() {
-    let foundNote = this.getNote(this.course.id, this.note.id)
-    this.localNote = foundNote < 0 ? this.note.denominator / 2 : foundNote
+    this.updateLocalNote()
   },
+
+  mounted() {
+    emitter.on('notes-loaded', () => this.updateLocalNote())
+  }
 }
 </script>
 

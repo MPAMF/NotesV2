@@ -20,8 +20,9 @@
 
 <script>
 import VueNumeric from 'vue-numeric'
-import {mapGetters} from "vuex";
-import MultipleNote from "./MultipleNoteModal";
+import {mapGetters} from "vuex"
+import MultipleNote from "./MultipleNoteModal"
+import emitter from 'tiny-emitter/instance'
 
 export default {
   name: "Note",
@@ -95,8 +96,6 @@ export default {
     updateNote() {
       if(this.note.multiple) return
 
-      console.log('Note: ' + this.note.id + ': ' + this.localNote)
-
       this.$store.dispatch('editNote', {
         note: {
           id: this.note.id,
@@ -110,6 +109,11 @@ export default {
   beforeMount() {
     this.updateLocalNote()
   },
+
+  mounted() {
+    emitter.on('notes-loaded', () => this.updateLocalNote())
+  }
+
 }
 </script>
 

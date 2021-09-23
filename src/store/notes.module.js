@@ -17,12 +17,6 @@ const mutations = {
         state.notes[courseId][note.id] = note.value
     },
 
-    setUserNotes(state, notes) {
-        for (let note in notes) {
-            console.log(note)
-        }
-    },
-
     setSessionId(state, id) {
         state.sessionId = id
     },
@@ -51,23 +45,26 @@ const actions = {
         commit('startFetching')
         return new Promise(((resolve, reject) => axios.post('sessions/').then(({data}) => {
             commit('setSessionId', data['session_key'])
-
-            for (let note in data.notes)
-                commit('setNote', note)
-
             commit('setNotesLoaded', true)
-
             resolve()
         }).catch(error => {
             reject(error)
         }).finally(() => commit('stopFetching'))))
     },
 
-    loadSession({state, commit}) {
+    loadSession({state, commit, rootGetters}) {
         commit('startFetching')
         return new Promise(((resolve, reject) => axios.get('sessions/' + state.sessionId + '/').then(({data}) => {
-            console.log(data)
-            commit('setUserNotes', data.notes)
+            for (const note of data.notes) {
+                let course = rootGetters['getCourseByNote'](note.note)
+                commit('setNote', {
+                    courseId: course.id,
+                    note: {
+                        id: note.note,
+                        value: note.value
+                    }
+                })
+            }
             resolve()
         }).catch(error => {
             reject(error)
@@ -109,6 +106,30 @@ const actions = {
 const getters = {
     getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
+    getCourseByNote: (state, rootGetters) => noteId => {
+        let courses = rootGetters.getCourses
+
+        for (let i = 0; i < courses.length; i++) {
+            let course = courses[i]
+
+            for (let j = 0; j < course.notes.length; j++) {
+                let note = course.notes[j]
+
+                if (note.id === noteId)
+                    return course
+
+                if (!course.multiple) continue
+
+                for (let k = 0; k < note.notes; k++) {
+                    let subNote = note.notes[k]
+                    if (subNote.id === noteId)
+                        return course
+                }
+
+            }
+
+        }
+    },
     getSessionId: state => state.sessionId,
     getCanEdit: state => state.canEdit,
     getRunnable: state => state.runnable
