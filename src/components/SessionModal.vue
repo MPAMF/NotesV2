@@ -44,7 +44,8 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters} from "vuex"
+import emitter from 'tiny-emitter/instance'
 
 export default {
   name: "SessionModal",
@@ -84,6 +85,7 @@ export default {
 
       this.$store.dispatch('loadSession').then(() => {
         if(this.rememberSession) this.$store.commit('saveSessionId')
+        emitter.emit('notes-loaded')
         this.$emit('close')
       }).catch(e => {
         this.openToast(`Une erreur est survenue: <b>${e}</b>`)

@@ -71,7 +71,6 @@ const actions = {
         }).finally(() => commit('stopFetching'))))
     },
 
-    // eslint-disable-next-line no-unused-vars
     editNote({state, commit}, {note}) {
         if (state.runnable >= 0) clearTimeout(state.runnable)
         state.modifiedNotes[note.id] = note.value
@@ -118,9 +117,9 @@ const getters = {
                 if (note.id === noteId)
                     return course
 
-                if (!course.multiple) continue
+                if (!note.multiple) continue
 
-                for (let k = 0; k < note.notes; k++) {
+                for (let k = 0; k < note.notes.length; k++) {
                     let subNote = note.notes[k]
                     if (subNote.id === noteId)
                         return course
