@@ -25,7 +25,7 @@ const actions = {
     // eslint-disable-next-line no-unused-vars
     fetchData({commit}) {
         commit('startFetching')
-        return new Promise(((resolve, reject) => axios.get('courses').then(({data}) => {
+        return new Promise(((resolve, reject) => axios.get('courses/').then(({data}) => {
             commit('fetchSuccess', data)
             resolve()
         }).catch(error => {
