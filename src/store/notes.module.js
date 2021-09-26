@@ -43,7 +43,7 @@ const actions = {
 
     createSession({commit}) {
         commit('startFetching')
-        return new Promise(((resolve, reject) => axios.post('sessions/').then(({data}) => {
+        return new Promise(((resolve, reject) => axios.post('sessions/', {notes: []}).then(({data}) => {
             commit('setSessionId', data['session_key'])
             commit('setNotesLoaded', true)
             resolve()
