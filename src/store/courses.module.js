@@ -14,9 +14,14 @@ const mutations = {
         state.fetching = false
     },
     fetchSuccess(state, data) {
-        for(let course of data)
-            for(let note of course.notes)
+        for (let course of data) {
+            for (let note of course.notes) {
                 note.multiple = note.notes.length > 0
+                if (!note.multiple) continue
+                note.notes = note.notes.sort((a, b) => b.weight - a.weight)
+            }
+            course.notes = course.notes.sort((a, b) => b.weight - a.weight)
+        }
         state.courses = data
     }
 }

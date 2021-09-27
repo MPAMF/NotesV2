@@ -91,7 +91,7 @@ export default {
       this.avgNote = avg
 
       // set average color
-      this.avgColor = this.avgNote < 10 ? 'red' : (this.avgNote < 14) ? 'orange' : 'green';
+      this.avgColor = Math.round(this.avgNote) < 10 ? 'red' : (Math.round(this.avgNote) < 14) ? 'orange' : 'green';
 
       // emit main avg update event
       this.$emit('update-main-avg', {
