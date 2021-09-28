@@ -1,7 +1,12 @@
 <template>
   <div class="column is-one-quarter">
     <b-field :label="note.name">
-      <p class="control has-icons-right">
+      <p class="control has-icons-left has-icons-right">
+        <span class="icon is-left">
+          <button style="border:none; background:inherit;height:100%;">
+            <i class="mdi mdi-cancel mdi-24px" style="color: black"></i>
+          </button>
+        </span>
         <vue-numeric class="input" v-bind:precision="2"
                      v-bind:min="0"
                      v-bind:max="note.denominator"
