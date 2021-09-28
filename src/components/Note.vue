@@ -8,13 +8,25 @@
     <button v-if="note.multiple" class="input custom-button" @click="openDialog">
       <p class="custom-button">{{ localNote.toFixed(2) }}</p>
     </button>
-    <vue-numeric v-else class="input" v-bind:precision="2"
-                 v-model.lazy="userNote"
-                 v-bind:min="0"
-                 v-bind:max="20"
-                 :disabled="!getCanEdit"
-                 @change="updateNote"
-    ></vue-numeric>
+
+    <p v-else class="control has-icons-left">
+                <span class="icon is-left is-clickable" @click="activated = !activated" style="height: 100%">
+                        <b-tooltip :label="(activated ? 'Désactiver' : 'Activer') + ' la note'"
+                                   type="is-dark"
+                                   position="is-bottom">
+            <i :class="activated ? 'mdi-close' : 'mdi-check'" class="mdi mdi-24px"
+               style="color: #714dd2"></i>
+      </b-tooltip>
+        </span>
+
+      <vue-numeric v-model.lazy="userNote" :disabled="!getCanEdit || !activated"
+                   class="input"
+                   v-bind:max="20"
+                   v-bind:min="0"
+                   v-bind:precision="2"
+                   @change="updateNote"
+      ></vue-numeric>
+    </p>
   </div>
 </template>
 
@@ -37,12 +49,32 @@ export default {
 
   data() {
     return {
-      localNote: -1
+      localNote: -1,
+      localActivated: true
     }
   },
 
   computed: {
-    ...mapGetters(['getNote', 'getCanEdit']),
+    ...mapGetters(['getNote', 'getCanEdit', 'getNoteStatus']),
+    activated: {
+      get() {
+        return this.localActivated
+      },
+      set(value) {
+        this.localActivated = value
+
+        this.$store.commit('setNoteStatus', {
+          note: {
+            id: this.note.id,
+            activated: value
+          },
+          courseId: this.course.id
+        })
+
+        this.updateNote()
+        this.$emit('update-avg')
+      }
+    },
     userNote: {
       get() {
         return this.localNote
@@ -82,11 +114,14 @@ export default {
     updateLocalNote() {
       if (this.note.multiple) {
         let avg = 0.0
+        let count = 0
         this.note.notes.forEach(val => {
           let foundNote = this.getNote(this.course.id, val.id)
+          if (!this.getNoteStatus(this.course.id, val.id)) return
           avg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
+          count++
         })
-        this.userNote = avg / this.note.notes.length
+        this.userNote = avg / count
         return
       }
       let note = this.getNote(this.course.id, this.note.id)
@@ -94,24 +129,33 @@ export default {
     },
 
     updateNote() {
-      if(this.note.multiple) return
+      if (this.note.multiple) return
 
       this.$store.dispatch('editNote', {
         note: {
           id: this.note.id,
-          value: this.localNote
+          value: this.localNote,
+          activated: this.activated
         },
         courseId: this.course.id
       })
+    },
+
+    updateNoteStatus() {
+      this.localActivated = this.getNoteStatus(this.course.id, this.note.id)
     }
   },
 
   beforeMount() {
+    this.updateNoteStatus()
     this.updateLocalNote()
   },
 
   mounted() {
-    emitter.on('notes-loaded', () => this.updateLocalNote())
+    emitter.on('notes-loaded', () => {
+      this.updateNoteStatus()
+      this.updateLocalNote()
+    })
   }
 
 }

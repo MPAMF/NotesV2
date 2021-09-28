@@ -2,6 +2,7 @@ import axios from "axios";
 
 const state = {
     notes: [],
+    noteStatus: [],
     sessionId: '',
     notesLoaded: false,
 
@@ -17,12 +18,17 @@ const mutations = {
         state.notes[courseId][note.id] = note.value
     },
 
+    setNoteStatus(state, {courseId, note}) {
+        if (!(courseId in state.noteStatus)) state.noteStatus[courseId] = []
+        state.noteStatus[courseId][note.id] = note.activated
+    },
+
     setSessionId(state, id) {
         state.sessionId = id
     },
 
     clearNotes(state) {
-      state.notes = []
+        state.notes = []
     },
 
     saveSessionId(state) {
@@ -61,13 +67,17 @@ const actions = {
         return new Promise(((resolve, reject) => axios.get('sessions/' + state.sessionId + '/').then(({data}) => {
             for (const note of data.notes) {
                 let course = rootGetters['getCourseByNote'](note.note)
-                commit('setNote', {
+                let obj = {
                     courseId: course.id,
                     note: {
                         id: note.note,
-                        value: note.value
+                        value: note.value,
+                        activated: note.activated
                     }
-                })
+                }
+                commit('setNote', obj)
+                commit('setNoteStatus', obj)
+
             }
             resolve()
         }).catch(error => {
@@ -84,7 +94,7 @@ const actions = {
             arr.push({
                 note: key,
                 value: value,
-                activated: true //TODO:
+                activated: note.activated
             })
         }
 
@@ -108,6 +118,7 @@ const actions = {
 
 const getters = {
     getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
+    getNoteStatus: state => (courseId, uuid) => courseId in state.noteStatus ? (uuid in state.noteStatus[courseId] ? state.noteStatus[courseId][uuid] : true) : true,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
     getCourseByNote: (state, rootGetters) => noteId => {
         let courses = rootGetters.getCourses
