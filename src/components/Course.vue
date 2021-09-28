@@ -85,7 +85,7 @@ export default {
             multipleAvg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
             count++
           })
-          avg += (multipleAvg / count) * value.coeff
+          avg += count === 0 ? 0 : ((multipleAvg / count) * value.coeff)
           coeffTotal += value.coeff
         } else {
           if (!this.getNoteStatus(this.course.id, value.id)) return

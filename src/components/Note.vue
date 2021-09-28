@@ -121,7 +121,7 @@ export default {
           avg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
           count++
         })
-        this.userNote = avg / count
+        this.userNote = count === 0 ? 0 : avg / count
         return
       }
       let note = this.getNote(this.course.id, this.note.id)
