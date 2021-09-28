@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-content" :style="{'background-color':course.color,'border':course.color+' 4px solid'}"
+    <div :style="{'background-color':course.color,'border':course.color+' 4px solid'}" class="card-content"
          style="padding: 0; border-radius: 10px">
       <section class="hero" style="">
         <div class="hero-body">
@@ -15,7 +15,7 @@
             </div>
             <div class="column is-3">
               <div class="box">
-                <h1 class="title is-unselectable is-size-5-mobile" :style="{ 'color' : avgColor}">{{
+                <h1 :style="{ 'color' : avgColor}" class="title is-unselectable is-size-5-mobile">{{
                     avgNote.toFixed(2)
                   }} /
                   20</h1>
@@ -30,10 +30,10 @@
           </button>
         </div>
       </section>
-      <b-collapse animation="slide" :open="open">
+      <b-collapse :open="open" animation="slide">
         <div class="content box">
           <div class="columns is-multiline">
-            <note v-for="(note, index) in course.notes" :note="note" :key="index" :course="course"
+            <note v-for="(note, index) in course.notes" :key="index" :course="course" :note="note"
                   @update-avg="calculateAvg"></note>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default {
           let multipleAvg = 0.0
           let count = 0
           value.notes.forEach(val => {
-            if(!this.getNoteStatus(this.course.id, val.id)) return
+            if (!this.getNoteStatus(this.course.id, val.id)) return
             let foundNote = this.getNote(this.course.id, val.id)
             multipleAvg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
             count++
@@ -88,13 +88,13 @@ export default {
           avg += (multipleAvg / count) * value.coeff
           coeffTotal += value.coeff
         } else {
-          if(!this.getNoteStatus(this.course.id, value.id)) return
+          if (!this.getNoteStatus(this.course.id, value.id)) return
           let note = this.getNote(this.course.id, value.id)
           avg += (note < 0 ? 10 : note) * value.coeff
           coeffTotal += value.coeff
         }
       })
-      console.log("avg: " + avg + "/" + coeffTotal)
+
       this.avgNote = avg / coeffTotal
 
       // set average color
