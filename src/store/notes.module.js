@@ -21,6 +21,10 @@ const mutations = {
         state.sessionId = id
     },
 
+    clearNotes(state) {
+      state.notes = []
+    },
+
     saveSessionId(state) {
         localStorage.setItem('session_id', state.sessionId)
     },

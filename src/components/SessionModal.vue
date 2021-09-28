@@ -27,7 +27,7 @@
       </div>
       <div class="box">
         <div class="columns is-centered" style="width: 100%">
-          <div class="column is-one-quarter" v-if="canCancel">
+          <div class="column is-one-quarter" v-if="!created && canCancel">
             <b-button type="is-danger is-light"
                       label="Fermer"
                       @click="$emit('close')"/>
@@ -82,9 +82,10 @@ export default {
       }
 
       this.$store.commit('setSessionId', this.sessionId)
+      this.$store.commit('clearNotes')
 
       this.$store.dispatch('loadSession').then(() => {
-        if(this.rememberSession) this.$store.commit('saveSessionId')
+        if (this.rememberSession) this.$store.commit('saveSessionId')
         emitter.emit('notes-loaded')
         this.$emit('close')
       }).catch(e => {
