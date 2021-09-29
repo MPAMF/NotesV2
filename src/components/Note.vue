@@ -12,7 +12,7 @@
     <p v-else class="control has-icons-left">
                 <span class="icon is-left is-clickable" @click="activated = !activated" style="height: 100%">
                         <b-tooltip :label="(activated ? 'Désactiver' : 'Activer') + ' la note'"
-                                   type="is-dark"
+                                  type="is-dark"
                                    position="is-bottom">
             <i :class="activated ? 'mdi-close' : 'mdi-check'" class="mdi mdi-24px"
                style="color: #714dd2"></i>

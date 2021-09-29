@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card">
+  <div class="modal-card dark-mode">
     <header class="modal-card-head">
       <p class="modal-card-title"><b>Examen à notes multiples: {{ avg.toFixed(2) + '/20' }}</b></p>
       <button

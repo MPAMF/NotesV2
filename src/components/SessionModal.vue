@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card">
+  <div class="modal-card dark-mode">
     <section class="modal-card-body">
 
       <div class="box">

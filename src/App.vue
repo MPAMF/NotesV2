@@ -16,6 +16,9 @@ export default {
 </script>
 
 <style>
+
+/* global */
+
 #app {
   font-family: Karla, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -32,9 +35,11 @@ html, body {
   color: white;
 }
 
-.dark-mode .title, .dark-mode span {
+.dark-mode .title, .dark-mode .subtitle, .dark-mode span {
   color: white !important;
 }
+
+/* tabs */
 
 .dark-mode .tabs.is-boxed li.is-active a, .dark-mode .b-tabs .tabs.is-boxed li a:focus {
   background: linear-gradient(#232b32, #141d26);
@@ -53,12 +58,80 @@ html, body {
   border-bottom-color: white !important;
 }
 
-/* .dark-mode .tabs.is-boxed a {
-  border-bottom: none;
-} */
+/* parameters */
 
-/* .dark-mode .b-tabs .tabs.is-boxed li:hover a span {
-  color: black !important;
-}  */
+.dark-mode .box {
+  background-color: #232b32;
+}
+
+.dark-mode button span {
+  color: #7957d5 !important;
+}
+
+.dark-mode .box button {
+  border: solid 1px #7957d5;
+}
+
+.dark-mode label span {
+  color: white !important;
+}
+
+/* popup parameters */
+
+.dark-mode .modal-card-body {
+  background-color: #232b32 !important;
+}
+
+.dark-mode .modal-card-body .box {
+  box-shadow: none;
+}
+
+.dark-mode .modal-card-body input::placeholder {
+  color: #232b32 !important;
+}
+
+/* notes */
+
+.dark-mode .card {
+  background-color: #141d26;
+}
+
+.dark-mode .card button, .dark-mode .card button:hover {
+  background-color: #232b32;
+}
+
+.dark-mode .card span {
+  color: white !important;
+}
+
+.dark-mode .card h1 {
+  color: white !important;
+}
+
+.dark-mode .card .collapse-content button {
+  background-color: white;
+}
+
+/* notes multiple*/
+
+.dark-mode .modal-card-head, .dark-mode .modal-card-foot{
+  background-color: #232b32 !important;
+}
+
+.dark-mode .modal-card-title, .dark-mode .modal-card-body label,
+  .dark-mode .modal-card-foot button span {
+  color: white !important;
+}
+
+.dark-mode .modal-card-foot {
+  border-top: none;
+}
+
+
+
+.dark-mode .modal-card-head .delete:hover {
+  background-color: #7957d5 !important;
+}
+
 
 </style>

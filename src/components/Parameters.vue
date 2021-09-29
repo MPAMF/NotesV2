@@ -19,8 +19,7 @@
         <b-field>
           <b-switch
               v-model="darkMode"
-              passive-type='is-dark'
-              type='is-light'>
+              passive-type='is-dark'>
               Thème sombre
           </b-switch>
         </b-field>
