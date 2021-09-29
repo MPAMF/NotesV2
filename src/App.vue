@@ -17,6 +17,7 @@ export default {
 
 <style>
 #app {
+  font-family: Karla, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -27,7 +28,6 @@ export default {
 html, body {
   margin: 0;
   height: 100%;
-  /* test */
   background-color: #141d26;
   color: white;
 }
@@ -37,23 +37,20 @@ html, body {
 }
 
 .dark-mode .tabs.is-boxed li.is-active a, .dark-mode .b-tabs .tabs.is-boxed li a:focus {
-  /* background: #2c3e50;
-  background: #232b32; */
-  /* background: #141d26; */
   background: linear-gradient(#232b32, #141d26);
-  /* border-bottom-color: transparent !important; */
 }
 
-/* selectionner quand pas active */
 .tabs.is-boxed a:hover {
-  background-color: #2D353d !important;
-  border-bottom: solid 1px #dbdbdb;
-  border-bottom-right-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
+  border-top-color: #232b32;
+  background-color: #232b32 !important;
 }
 
 .tabs.is-boxed a {
   border-bottom: none !important;
+}
+
+.tabs a:hover {
+  border-bottom-color: white !important;
 }
 
 /* .dark-mode .tabs.is-boxed a {
