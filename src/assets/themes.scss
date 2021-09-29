@@ -1,0 +1,11 @@
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+$background-color-component-darkmode: #141d26;
+$background-color-button-darkmode: #141d26;
+$background-color-darkmode: black;
+$color-darkmode: white;
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";

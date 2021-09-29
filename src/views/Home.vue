@@ -3,7 +3,7 @@
 
     <div class="container">
 
-      <h1 class="title is-size-5-mobile" style="margin-top: 20px">Gestion Notes - L3 Informatique</h1>
+      <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - L3 Informatique</h1>
 
       <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" size="is-medium">
         <b-tab-item icon="numeric-5-box-multiple-outline" label="Semestre 5">
@@ -145,6 +145,9 @@ export default {
 </script>
 
 <style>
+
+
+
 .sk-circle {
   width: 40px;
   height: 40px;
