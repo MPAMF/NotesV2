@@ -3,8 +3,27 @@
 
     <div class="box">
       <h1 class="subtitle">Votre session actuelle est : <b>{{getSessionId}}</b></h1>
-      <b-button size="is-medium" icon-left="reload" @click="loadSession">Charger une autre session</b-button>
-      <b-button size="is-medium" icon-left="download" disabled>Télécharger vos données</b-button>
+      
+      
+      <div class="columns">
+        <div class="column is-second-quarter">
+          <b-button size="is-medium" icon-left="reload" @click="loadSession">Charger une autre session</b-button>
+        </div>
+        <div class="column is-third-quarter">
+          <b-button size="is-medium" icon-left="download" disabled>Télécharger vos données</b-button>
+        </div>
+      </div>
+
+      <h1 class="subtitle">Paramètres d'affichage :</h1>
+      <section>
+        <b-field>
+          <b-switch
+              v-model="darkMode"
+              passive-type='is-dark'>
+              Thème sombre
+          </b-switch>
+        </b-field>
+      </section>
     </div>
   </div>
 </template>
@@ -18,6 +37,11 @@ export default {
   name: "Parameters",
   computed: {
     ...mapGetters(['getSessionId'])
+  },
+  data() {
+    return {
+      darkMode: true
+    }
   },
   methods: {
     loadSession() {
@@ -34,5 +58,10 @@ export default {
 </script>
 
 <style scoped>
-
+  b-button:first-of-type {
+    margin-right: 1rem;
+  }
+  b-button:last-of-type {
+    margin-left: 1rem;
+  }
 </style>
