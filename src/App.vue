@@ -37,7 +37,7 @@ html, body {
   height: 100%;
 }
 
-.dark-mode .title, .dark-mode .subtitle, .dark-mode span {
+.dark-mode .title, .dark-mode .subtitle{
   color: white !important;
 }
 
@@ -53,6 +53,10 @@ html, body {
 
 .dark-mode .tabs.is-boxed a {
   border-bottom: none !important;
+}
+
+.dark-mode .tabs li.is-active a {
+  color: white;
 }
 
 
@@ -89,7 +93,7 @@ html, body {
 }
 
 .dark-mode .modal-card-body input::placeholder {
-  color: #232b32 !important;
+  color: #54585B !important;
 }
 
 /* notes */

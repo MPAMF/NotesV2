@@ -5,7 +5,7 @@
       <div class="box">
 
         <div class="columns is-centered">
-          <div class="column text-center"><p class="subtitle">Entrez votre clé de session</p>
+          <div class="column text-center"><p class="subtitle">Déjà une session ?</p>
 
 
             <b-field type="is-success" message="Copiez votre clé de session crée ci-dessus" v-if="created">
@@ -13,7 +13,7 @@
                        :disabled="created"></b-input>
             </b-field>
 
-            <b-input v-model="sessionId" maxlength="8" placeholder="Entrez votre clé de session" v-else></b-input>
+            <b-input v-model="sessionId" maxlength="8" placeholder="Saisissez votre clé ici" v-else></b-input>
 
             <b-checkbox style="margin-top: 10px" v-model="rememberSession">Se souvenir de cette session</b-checkbox>
           </div>
