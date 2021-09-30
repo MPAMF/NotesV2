@@ -22,8 +22,8 @@ const mutations = {
             }
             course.notes = course.notes.sort((a, b) => b.weight - a.weight)
         }
-        state.courses = data
-    }
+        state.courses = data.sort((a, b) => b.weight - a.weight)
+    },
 }
 
 const actions = {
