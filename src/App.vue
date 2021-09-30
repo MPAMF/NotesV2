@@ -26,13 +26,15 @@ export default {
   text-align: center;
   color: #2c3e50;
   box-sizing: border-box;
+  /* height: 100% !important; */
+  background-color: #141d26;
 }
 
 html, body {
-  margin: 0;
-  height: 100%;
   background-color: #141d26;
   color: white;
+  min-height: 100;
+  height: 100%;
 }
 
 .dark-mode .title, .dark-mode .subtitle, .dark-mode span {
@@ -45,23 +47,23 @@ html, body {
   background: linear-gradient(#232b32, #141d26);
 }
 
-.tabs.is-boxed a:hover {
-  border-top-color: #232b32;
-  background-color: #232b32 !important;
+.dark-mode .tabs.is-boxed a:hover {
+  background-color: #232b32;
 }
 
-.tabs.is-boxed a {
+.dark-mode .tabs.is-boxed a {
   border-bottom: none !important;
 }
 
-.tabs a:hover {
-  border-bottom-color: white !important;
-}
 
 /* parameters */
 
 .dark-mode .box {
   background-color: #232b32;
+}
+
+.dark-mode .column .box {
+  border: solid 1px white;
 }
 
 .dark-mode button span {
