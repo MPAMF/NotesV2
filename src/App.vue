@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="dark-mode">
-    <b-loading :is-full-page="true" :active="isFetching" :can-cancel="false"></b-loading>
+  <div id="app" :class="{'dark-mode':isDarkMode}">
+    <b-loading :active="isFetching" :can-cancel="false" :is-full-page="true"></b-loading>
     <router-view/>
   </div>
 </template>
@@ -10,8 +10,21 @@ import {mapGetters} from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(['isFetching']),
-  }
+    ...mapGetters(['isFetching', 'isDarkMode']),
+  },
+
+  beforeCreate() {
+    this.$store.dispatch('loadDarkMode').then(() => {
+      const el = document.documentElement
+
+      if (this.isDarkMode) {
+        el.classList.add('dark-mode-background')
+      } else {
+        el.classList.remove('dark-mode-background')
+      }
+    })
+  },
+
 }
 </script>
 
@@ -26,14 +39,16 @@ export default {
   text-align: center;
   color: #2c3e50;
   box-sizing: border-box;
-  /* height: 100% !important; */
+}
+
+.dark-mode #app {
   background-color: #141d26;
 }
 
-html, body {
+.dark-mode-background {
   background-color: #141d26;
   color: white;
-  min-height: 100;
+  min-height: 100%;
   height: 100%;
 }
 
@@ -116,19 +131,18 @@ html, body {
 
 /* notes multiple*/
 
-.dark-mode .modal-card-head, .dark-mode .modal-card-foot{
+.dark-mode .modal-card-head, .dark-mode .modal-card-foot {
   background-color: #232b32 !important;
 }
 
 .dark-mode .modal-card-title, .dark-mode .modal-card-body label,
-  .dark-mode .modal-card-foot button span {
+.dark-mode .modal-card-foot button span {
   color: white !important;
 }
 
 .dark-mode .modal-card-foot {
   border-top: none;
 }
-
 
 
 .dark-mode .modal-card-head .delete:hover {

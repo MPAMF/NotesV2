@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card dark-mode">
+  <div class="modal-card" :class="{'dark-mode':isDarkMode}">
     <header class="modal-card-head">
       <p class="modal-card-title"><b>Examen à notes multiples: {{ avg.toFixed(2) + '/20' }}</b></p>
       <button
@@ -42,7 +42,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getNote', 'getNoteStatus'])
+    ...mapGetters(['getNote', 'getNoteStatus', 'isDarkMode'])
   },
 
   methods: {

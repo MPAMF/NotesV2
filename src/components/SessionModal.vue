@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card dark-mode">
+  <div class="modal-card" :class="{'dark-mode':isDarkMode}">
     <section class="modal-card-body">
 
       <div class="box">
@@ -63,7 +63,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSessionId'])
+    ...mapGetters(['getSessionId', 'isDarkMode'])
   },
   methods: {
     createSession() {

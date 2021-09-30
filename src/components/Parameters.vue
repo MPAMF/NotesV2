@@ -2,15 +2,14 @@
   <div class="container">
 
     <div class="box">
-      <h1 class="subtitle">Votre session actuelle est : <b>{{getSessionId}}</b></h1>
-      
-      
+      <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
+
       <div class="columns">
         <div class="column is-second-quarter">
-          <b-button size="is-medium" icon-left="reload" @click="loadSession">Charger une autre session</b-button>
+          <b-button icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
         </div>
         <div class="column is-third-quarter">
-          <b-button size="is-medium" icon-left="download" disabled>Télécharger vos données</b-button>
+          <b-button disabled icon-left="download" size="is-medium">Télécharger vos données</b-button>
         </div>
       </div>
 
@@ -20,7 +19,7 @@
           <b-switch
               v-model="darkMode"
               passive-type='is-dark'>
-              Thème sombre
+            Thème sombre
           </b-switch>
         </b-field>
       </section>
@@ -36,11 +35,23 @@ import SessionModal from "./SessionModal";
 export default {
   name: "Parameters",
   computed: {
-    ...mapGetters(['getSessionId'])
-  },
-  data() {
-    return {
-      darkMode: true
+    ...mapGetters(['getSessionId', 'isDarkMode']),
+    darkMode: {
+      get() {
+        return this.isDarkMode
+      },
+      // eslint-disable-next-line no-unused-vars
+      set(value) {
+          this.$store.commit('setDarkMode', value)
+          localStorage.setItem('dark_mode', value.toString())
+          const el = document.documentElement
+
+          if (value) {
+            el.classList.add('dark-mode-background')
+          } else {
+            el.classList.remove('dark-mode-background')
+          }
+      }
     }
   },
   methods: {
@@ -52,16 +63,20 @@ export default {
         trapFocus: true,
         canCancel: true,
       })
+    },
+    switchDarkMode() {
+
     }
   }
 }
 </script>
 
 <style scoped>
-  b-button:first-of-type {
-    margin-right: 1rem;
-  }
-  b-button:last-of-type {
-    margin-left: 1rem;
-  }
+b-button:first-of-type {
+  margin-right: 1rem;
+}
+
+b-button:last-of-type {
+  margin-left: 1rem;
+}
 </style>
