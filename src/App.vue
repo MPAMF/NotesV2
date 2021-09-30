@@ -52,7 +52,7 @@ export default {
   height: 100%;
 }
 
-.dark-mode .title, .dark-mode .subtitle, .dark-mode span {
+.dark-mode .title, .dark-mode .subtitle{
   color: white !important;
 }
 
@@ -68,8 +68,12 @@ export default {
 
 .dark-mode .tabs.is-boxed a {
   border-bottom: none !important;
+  color: white;
 }
 
+.dark-mode .tabs li.is-active a {
+  color: white;
+}
 
 /* parameters */
 
@@ -104,7 +108,7 @@ export default {
 }
 
 .dark-mode .modal-card-body input::placeholder {
-  color: #232b32 !important;
+  color: #54585B !important;
 }
 
 /* notes */
@@ -129,6 +133,28 @@ export default {
   background-color: white;
 }
 
+
+/* notes */
+
+.dark-mode .card {
+  background-color: #141d26;
+}
+
+.dark-mode .card button, .dark-mode .card button:hover {
+  background-color: #232b32;
+}
+
+.dark-mode .card span {
+  color: white !important;
+}
+
+.dark-mode .card h1 {
+  color: white !important;
+}
+
+.dark-mode .card .collapse-content button {
+  background-color: white;
+}
 /* notes multiple*/
 
 .dark-mode .modal-card-head, .dark-mode .modal-card-foot {
