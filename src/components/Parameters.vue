@@ -13,6 +13,25 @@
         </div>
       </div>
 
+      <h1 class="subtitle">Choisir ses options</h1>
+
+      <div class="columns">
+        <div class="column is-one-fifth">
+          <multiselect v-model="selectedSemester" :allow-empty="false" :close-on-select="true"
+                       :deselectLabel="''" :options="semesters" :searchable="false" :selectLabel="''" label="name"
+                       track-by="name">
+          </multiselect>
+        </div>
+        <div class="column">
+          <multiselect v-model="value" :deselectLabel="''" :multiple="true" :options="courseOptions"
+                       :selectLabel="''" label="name" placeholder="Choisissez un ou plusieurs cours"
+                       track-by="name" @remove="removeOption" @select="selectOption"><span
+              slot="noResult">Aucune option trouvé avec cette recherche.</span>
+          </multiselect>
+        </div>
+
+      </div>
+
       <h1 class="subtitle">Paramètres d'affichage :</h1>
       <section>
         <b-field>
@@ -28,29 +47,87 @@
 </template>
 
 <script>
-
 import {mapGetters} from "vuex";
 import SessionModal from "./SessionModal";
+import Multiselect from 'vue-multiselect'
 
 export default {
   name: "Parameters",
+  components: {Multiselect},
+  data() {
+    return {
+      semesters: [
+        {
+          name: 'Semestre 5',
+          nb: 5
+        },
+        {
+          name: 'Semestre 6',
+          nb: 6
+        }
+      ],
+      selectedSemester: {
+        name: 'Semestre 5',
+        nb: 5
+      },
+      /*options: {
+        'Semester 5': [
+          {
+            name: 'Option bla s5',
+            uuid: 'odokqdopkkpdqsdopkqdopkqs'
+          },
+          {
+            name: 'Option bla blo bli 22 s5',
+            uuid: 'ssdlqldqsdmp'
+          }
+        ],
+        'Semester 6': [
+          {
+            name: 'Option dfposfsd s6',
+            uuid: 'odokqdopkkpdqsdopkqdopkqs'
+          },
+          {
+            name: 'Option 3333 S66666 bli 22',
+            uuid: 'ssdlqldqsdmp'
+          }
+        ]
+      },*/
+      value: []
+    }
+  },
   computed: {
-    ...mapGetters(['getSessionId', 'isDarkMode']),
+    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses']),
     darkMode: {
       get() {
         return this.isDarkMode
       },
       // eslint-disable-next-line no-unused-vars
       set(value) {
-          this.$store.commit('setDarkMode', value)
-          localStorage.setItem('dark_mode', value.toString())
-          const el = document.documentElement
+        this.$store.commit('setDarkMode', value)
+        localStorage.setItem('dark_mode', value.toString())
+        const el = document.documentElement
 
-          if (value) {
-            el.classList.add('dark-mode-background')
-          } else {
-            el.classList.remove('dark-mode-background')
-          }
+        if (value) {
+          el.classList.add('dark-mode-background')
+        } else {
+          el.classList.remove('dark-mode-background')
+        }
+      }
+    },
+    courseOptions: {
+      get() {
+        return this.getOptionalCourses(this.selectedSemester.nb)
+      },
+    },
+    courseValues: {
+      get() {
+        return this.getSelectedCourses(this.selectedSemester.nb)
+      },
+      set(value) {
+        this.$store.commit('setSelectedCourses', {
+          semester: this.selectedSemester,
+          courses: value
+        })
       }
     }
   },
@@ -64,12 +141,24 @@ export default {
         canCancel: true,
       })
     },
-    switchDarkMode() {
 
+    selectOption(selectedOption) {
+      this.$store.dispatch('editCourseOption', {
+        course: selectedOption,
+        select: true
+      })
+    },
+
+    removeOption(removedOption) {
+      this.$store.dispatch('editCourseOption', {
+        course: removedOption,
+        select: false
+      })
     }
   }
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style scoped>
 b-button:first-of-type {

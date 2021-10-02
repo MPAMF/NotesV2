@@ -24,6 +24,10 @@ const mutations = {
         }
         state.courses = data.sort((a, b) => b.weight - a.weight)
     },
+    // eslint-disable-next-line no-unused-vars
+    setSelectedCourses(state, courses) {
+
+    }
 }
 
 const actions = {
@@ -36,12 +40,22 @@ const actions = {
         }).catch(error => {
             reject(error)
         }).finally(() => commit('stopFetching'))))
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    editCourseOption({commit}, {course, select}) {
+
     }
+
 }
 
 const getters = {
     getCourses: state => state.courses,
     isFetching: state => state.fetching,
+    // eslint-disable-next-line no-unused-vars
+    getOptionalCourses: state => semester => state.courses,
+    // eslint-disable-next-line no-unused-vars
+    getSelectedCourses: state => semester => state.courses
 }
 
 export default {
