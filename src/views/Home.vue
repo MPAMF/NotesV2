@@ -6,8 +6,9 @@
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - L3 Informatique</h1>
 
       <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" size="is-medium">
-        <b-tab-item icon="numeric-5-box-multiple-outline" label="Semestre 5">
-          <course v-for="(course, index) in getCourses" :key="index" :course="course" style="margin-bottom: 5vh"
+
+        <b-tab-item v-for="(semester, index) in getSemesters" :key="index" :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number">
+          <course v-for="(course, index) in semester.courses" :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></course>
         </b-tab-item>
 
@@ -67,7 +68,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getCourses', 'getRunnable'])
+    ...mapGetters(['getCourses', 'getRunnable', 'getSemester', 'getSemesters'])
   },
 
   data() {

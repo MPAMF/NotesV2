@@ -75,6 +75,8 @@ export default {
       let avg = 0.0
       let coeffTotal = 0.0
 
+      if(Object.keys(this.course).length === 0) return
+
       this.course.notes.forEach(value => {
         if (value.multiple) {
           let multipleAvg = 0.0

@@ -14,9 +14,9 @@ const mutations = {
         state.fetching = false
     },
     fetchSuccess(state, data) {
-
-        for (let semester of data) {
-            for (let course of data.courses) {
+        for (let i = 0; i < data.length; i++) {
+            let semester = data[i]
+            for (let course of semester.courses) {
                 for (let note of course.notes) {
                     note.multiple = note.notes.length > 0
                     if (!note.multiple) continue
@@ -24,9 +24,9 @@ const mutations = {
                 }
                 course.notes = course.notes.sort((a, b) => b.weight - a.weight)
             }
+            semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
+            state.semesters[i] = semester
 
-            semester.courses = data.sort((a, b) => b.weight - a.weight)
-            state.semesters.push(semester)
         }
 
     },
@@ -56,12 +56,20 @@ const actions = {
 }
 
 const getters = {
-    getCourses: state => state.courses,
+    getCourses: (state, getters) => semester =>{
+        let found = getters.getSemester(semester).courses
+        return found === undefined ? [] : found
+    },
+    getSemester: state => nb => {
+        let found = state.semesters.find(e => e.number === nb)
+        return found === undefined ? {} : found
+    },
+    getSemesters: state => state.semesters,
     isFetching: state => state.fetching,
     // eslint-disable-next-line no-unused-vars
-    getOptionalCourses: state => semester => state.courses,
+    getOptionalCourses: state => semester => state.courses || [],
     // eslint-disable-next-line no-unused-vars
-    getSelectedCourses: state => semester => state.courses
+    getSelectedCourses: state => semester => state.courses || []
 }
 
 export default {
