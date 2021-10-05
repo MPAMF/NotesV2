@@ -2,46 +2,54 @@
   <div class="container">
 
     <div class="box">
-      <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
+      <div class="container" style="width: 80%">
+        <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
 
-      <div class="columns">
-        <div class="column is-second-quarter">
-          <b-button icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
+        <hr class="rounded">
+
+        <div class="columns">
+          <div class="column is-second-quarter">
+            <b-button icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
+          </div>
+          <div class="column is-third-quarter">
+            <b-button disabled icon-left="download" size="is-medium">Télécharger vos données</b-button>
+          </div>
         </div>
-        <div class="column is-third-quarter">
-          <b-button disabled icon-left="download" size="is-medium">Télécharger vos données</b-button>
+
+        <hr class="rounded">
+
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <h1 class="subtitle">Choisir son groupe de TP</h1>
+
+            <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
+                         :deselectLabel="''" :options="tpGroups" :searchable="false" :selectLabel="''" label="name"
+                         track-by="name"></multiselect>
+          </div>
+          <div class="column">
+            <h1 class="subtitle">Choisir ses options</h1>
+
+            <multiselect v-model="value" :deselectLabel="''" :disabled="selectedTp === null" :multiple="true"
+                         :options="courseOptions" :selectLabel="''" label="name"
+                         placeholder="Choisissez un ou plusieurs cours" track-by="name" @remove="removeOption"
+                         @select="selectOption"><span
+                slot="noResult">Aucune option trouvé avec cette recherche.</span>
+            </multiselect>
+          </div>
         </div>
+
+        <h1 class="subtitle">Paramètres d'affichage :</h1>
+
+        <section>
+          <b-field>
+            <b-switch
+                v-model="darkMode"
+                passive-type='is-dark'>
+              Thème sombre
+            </b-switch>
+          </b-field>
+        </section>
       </div>
-
-      <h1 class="subtitle">Choisir ses options</h1>
-
-      <div class="columns">
-        <div class="column is-one-fifth">
-          <multiselect v-model="selectedSemester" :allow-empty="false" :close-on-select="true"
-                       :deselectLabel="''" :options="semesters" :searchable="false" :selectLabel="''" label="name"
-                       track-by="name">
-          </multiselect>
-        </div>
-        <div class="column">
-          <multiselect v-model="value" :deselectLabel="''" :multiple="true" :options="courseOptions"
-                       :selectLabel="''" label="name" placeholder="Choisissez un ou plusieurs cours"
-                       track-by="name" @remove="removeOption" @select="selectOption"><span
-              slot="noResult">Aucune option trouvé avec cette recherche.</span>
-          </multiselect>
-        </div>
-
-      </div>
-
-      <h1 class="subtitle">Paramètres d'affichage :</h1>
-      <section>
-        <b-field>
-          <b-switch
-              v-model="darkMode"
-              passive-type='is-dark'>
-            Thème sombre
-          </b-switch>
-        </b-field>
-      </section>
     </div>
   </div>
 </template>
@@ -56,6 +64,21 @@ export default {
   components: {Multiselect},
   data() {
     return {
+      selectedTp: null,
+      tpGroups: [
+        {
+          name: 'S5 TD1 TP1',
+        },
+        {
+          name: 'S5 TD1 TP2',
+        },
+        {
+          name: 'S5 TD1 TP3',
+        },
+        {
+          name: 'S5 TD1 TP4',
+        }
+      ],
       semesters: [
         {
           name: 'Semestre 5',
@@ -167,5 +190,12 @@ b-button:first-of-type {
 
 b-button:last-of-type {
   margin-left: 1rem;
+}
+
+/* Rounded border */
+hr.rounded {
+  margin-top: 2.5rem;
+  border-top: 2px solid #bbb;
+  margin-bottom: 2.5rem;
 }
 </style>

@@ -2,8 +2,8 @@
 import axios from "axios";
 
 const state = {
-    courses: [],
-    fetching: false
+    semesters: [],
+    fetching: false,
 }
 
 const mutations = {
@@ -14,15 +14,21 @@ const mutations = {
         state.fetching = false
     },
     fetchSuccess(state, data) {
-        for (let course of data) {
-            for (let note of course.notes) {
-                note.multiple = note.notes.length > 0
-                if (!note.multiple) continue
-                note.notes = note.notes.sort((a, b) => b.weight - a.weight)
+
+        for (let semester of data) {
+            for (let course of data.courses) {
+                for (let note of course.notes) {
+                    note.multiple = note.notes.length > 0
+                    if (!note.multiple) continue
+                    note.notes = note.notes.sort((a, b) => b.weight - a.weight)
+                }
+                course.notes = course.notes.sort((a, b) => b.weight - a.weight)
             }
-            course.notes = course.notes.sort((a, b) => b.weight - a.weight)
+
+            semester.courses = data.sort((a, b) => b.weight - a.weight)
+            state.semesters.push(semester)
         }
-        state.courses = data.sort((a, b) => b.weight - a.weight)
+
     },
     // eslint-disable-next-line no-unused-vars
     setSelectedCourses(state, courses) {
