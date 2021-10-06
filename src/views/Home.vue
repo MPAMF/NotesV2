@@ -5,15 +5,11 @@
 
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - L3 Informatique</h1>
 
-      <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" size="is-medium">
+      <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" size="is-medium" v-if="getSemesters.length > 0">
 
-        <b-tab-item v-for="(semester, index) in getSemesters" :key="index" :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number">
-          <course v-for="(course, index) in semester.courses" :key="index" :course="course" style="margin-bottom: 5vh"
+        <b-tab-item v-for="(semester, index) in getSemesters" :key="index" :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number" :disabled="!semester.activated">
+          <course v-for="(course, index) in semester.activated ? semester.courses : []" :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></course>
-        </b-tab-item>
-
-        <b-tab-item icon="numeric-6-box-multiple-outline" label="Semestre 6" disabled>
-          Pouet pouet
         </b-tab-item>
 
         <b-tab-item icon="cog-outline" label="Paramètres">
@@ -68,7 +64,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getCourses', 'getRunnable', 'getSemester', 'getSemesters'])
+    ...mapGetters(['getRunnable', 'getSemesters'])
   },
 
   data() {

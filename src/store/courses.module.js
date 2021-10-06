@@ -25,10 +25,11 @@ const mutations = {
                 course.notes = course.notes.sort((a, b) => b.weight - a.weight)
             }
             semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
-            state.semesters[i] = semester
+            state.semesters.push(semester)
 
         }
-
+        // sort semesters by number
+        state.semesters = state.semesters.sort((a, b) => a.number - b.number)
     },
     // eslint-disable-next-line no-unused-vars
     setSelectedCourses(state, courses) {
@@ -57,19 +58,25 @@ const actions = {
 
 const getters = {
     getCourses: (state, getters) => semester =>{
-        let found = getters.getSemester(semester).courses
-        return found === undefined ? [] : found
+        return  getters.getSemester(semester).courses
     },
     getSemester: state => nb => {
-        let found = state.semesters.find(e => e.number === nb)
-        return found === undefined ? {} : found
+        return state.semesters.find(e => e.number === nb)
     },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching,
     // eslint-disable-next-line no-unused-vars
     getOptionalCourses: state => semester => state.courses || [],
     // eslint-disable-next-line no-unused-vars
-    getSelectedCourses: state => semester => state.courses || []
+    getSelectedCourses: state => semester => state.courses || [],
+    // eslint-disable-next-line no-unused-vars
+    getSelectedAndRequiredCourses: state => semester => [],
+    getAllCourses: state => {
+        let courses = []
+        for (let semester of state.semesters)
+            courses.push(courses, semester.courses)
+        return courses
+    }
 }
 
 export default {

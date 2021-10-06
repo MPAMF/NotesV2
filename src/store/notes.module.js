@@ -82,6 +82,7 @@ const actions = {
             resolve()
         }).catch(error => {
             reject(error)
+            console.log(error)
         }).finally(() => commit('stopFetching'))))
     },
 
@@ -121,7 +122,7 @@ const getters = {
     getNoteStatus: state => (courseId, uuid) => courseId in state.noteStatus ? (uuid in state.noteStatus[courseId] ? state.noteStatus[courseId][uuid] : true) : true,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
     getCourseByNote: (state, rootGetters) => noteId => {
-        let courses = rootGetters.getCourses
+        let courses = rootGetters.getAllCourses
 
         for (let i = 0; i < courses.length; i++) {
             let course = courses[i]
