@@ -123,7 +123,7 @@ const getters = {
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
     getCourseByNote: (state, rootGetters) => noteId => {
         let courses = rootGetters.getAllCourses
-
+        console.log(courses)
         for (let i = 0; i < courses.length; i++) {
             let course = courses[i]
 

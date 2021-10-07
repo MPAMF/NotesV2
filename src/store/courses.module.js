@@ -4,6 +4,8 @@ import axios from "axios";
 const state = {
     semesters: [],
     fetching: false,
+    //
+    selectedNotes: [],
 }
 
 const mutations = {
@@ -68,13 +70,15 @@ const getters = {
     // eslint-disable-next-line no-unused-vars
     getOptionalCourses: state => semester => state.courses || [],
     // eslint-disable-next-line no-unused-vars
-    getSelectedCourses: state => semester => state.courses || [],
+    getSelectedCourses: state => semester => {
+        return [] //state.selectedNotes.filter(obj => obj.)
+    },
     // eslint-disable-next-line no-unused-vars
     getSelectedAndRequiredCourses: state => semester => [],
     getAllCourses: state => {
         let courses = []
         for (let semester of state.semesters)
-            courses.push(courses, semester.courses)
+            Array.prototype.push.apply(courses, semester.courses)
         return courses
     }
 }
