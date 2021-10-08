@@ -9,7 +9,10 @@ const state = {
     // saving
     modifiedNotes: {},
     runnable: -1,
-    canEdit: true
+    canEdit: true,
+
+    // courses
+    selectedCourses: []
 }
 
 const mutations = {
@@ -42,6 +45,14 @@ const mutations = {
     setNotesLoaded(state, value) {
         state.notesLoaded = value
     },
+
+    // eslint-disable-next-line no-unused-vars
+    setSelectedCourse(state, {course, semester}) {
+        state.selectedCourses.push({
+            course: course.course,
+            semester: semester.number
+        })
+    }
 }
 
 const actions = {
@@ -77,8 +88,18 @@ const actions = {
                 }
                 commit('setNote', obj)
                 commit('setNoteStatus', obj)
-
             }
+
+
+            for (const selectedCourse of data.selected_courses) {
+                if(!selectedCourse.activated)
+                    continue
+                commit('setSelectedCourse', {
+                    course: selectedCourse,
+                    semester: rootGetters['getSemesterByCourse'](selectedCourse.course)
+                })
+            }
+
             resolve()
         }).catch(error => {
             reject(error)
@@ -123,7 +144,6 @@ const getters = {
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
     getCourseByNote: (state, rootGetters) => noteId => {
         let courses = rootGetters.getAllCourses
-        console.log(courses)
         for (let i = 0; i < courses.length; i++) {
             let course = courses[i]
 

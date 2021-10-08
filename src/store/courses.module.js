@@ -5,7 +5,6 @@ const state = {
     semesters: [],
     fetching: false,
     //
-    selectedNotes: [],
 }
 
 const mutations = {
@@ -36,6 +35,13 @@ const mutations = {
     // eslint-disable-next-line no-unused-vars
     setSelectedCourses(state, courses) {
 
+    },
+
+    removeCourseOption(state, course) {
+        let found = state.selectedCourses.findIndex(obj => obj.course === course.id)
+        if (found <= -1)
+            return
+        state.selectedCourses.splice(found, 1)
     }
 }
 
@@ -53,7 +59,7 @@ const actions = {
 
     // eslint-disable-next-line no-unused-vars
     editCourseOption({commit}, {course, select}) {
-
+        commit(select ? 'addCourseOption' : 'removeCourseOption', course)
     }
 
 }
@@ -64,6 +70,13 @@ const getters = {
     },
     getSemester: state => nb => {
         return state.semesters.find(e => e.number === nb)
+    },
+    getSemesterByCourse: state => course => {
+        for (const semester of state.semesters)
+            for (const courseElement of semester.courses)
+                if(courseElement.id === course)
+                    return semester
+        return null
     },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching,
