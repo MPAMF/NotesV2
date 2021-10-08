@@ -1,11 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container"> 
 
     <div class="box">
       <div class="container" style="width: 80%">
         <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
-
-        <hr class="rounded">
 
         <div class="columns">
           <div class="column is-second-quarter">
@@ -20,7 +18,17 @@
 
         <div class="columns">
           <div class="column is-one-quarter">
-            <h1 class="subtitle">Choisir son groupe de TP</h1>
+            <h1 class="subtitle">Choisir son groupe de TP 
+              <b-tooltip label="Maybe you like a little animation"
+            position="is-bottom"
+            :animated="false">
+            <b-icon
+                icon="view-dashboard"
+                size="is-small"
+                type="is-primary">
+            </b-icon>
+        </b-tooltip>
+            </h1>
 
             <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
                          :deselectLabel="''" :options="tpGroups" :searchable="false" :selectLabel="''" label="name"
@@ -37,6 +45,8 @@
             </multiselect>
           </div>
         </div>
+
+        <hr class="rounded">
 
         <h1 class="subtitle">Paramètres d'affichage :</h1>
 

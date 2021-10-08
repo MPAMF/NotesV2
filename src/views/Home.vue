@@ -12,6 +12,10 @@
                   @update-main-avg="updateAvg"></course>
         </b-tab-item>
 
+        <b-tab-item icon="calendar-month" label="Planning">
+          <exam-calendar></exam-calendar>
+        </b-tab-item>
+
         <b-tab-item icon="cog-outline" label="Paramètres">
           <parameters></parameters>
         </b-tab-item>
@@ -55,12 +59,14 @@ import {mapGetters} from "vuex";
 import Parameters from "../components/Parameters";
 import SessionModal from "../components/SessionModal";
 import emitter from 'tiny-emitter/instance'
+import ExamCalendar from '../components/ExamCalendar.vue';
 
 export default {
   name: 'Home',
   components: {
     Parameters,
-    Course
+    Course,
+    ExamCalendar
   },
 
   computed: {
