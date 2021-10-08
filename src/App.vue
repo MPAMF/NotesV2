@@ -125,6 +125,11 @@ export default {
   color: white !important;
 }
 
+.dark-mode .card h1 span i {
+  color: #714dd2 !important;
+  margin-left: 0.5rem;
+}
+
 .dark-mode .card h1 {
   color: white !important;
 }

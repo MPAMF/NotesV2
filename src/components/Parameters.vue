@@ -18,17 +18,7 @@
 
         <div class="columns">
           <div class="column is-one-quarter">
-            <h1 class="subtitle">Choisir son groupe de TP 
-              <b-tooltip label="Maybe you like a little animation"
-            position="is-bottom"
-            :animated="false">
-            <b-icon
-                icon="view-dashboard"
-                size="is-small"
-                type="is-primary">
-            </b-icon>
-        </b-tooltip>
-            </h1>
+            <h1 class="subtitle">Choisir son groupe de TP</h1>
 
             <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
                          :deselectLabel="''" :options="tpGroups" :searchable="false" :selectLabel="''" label="name"

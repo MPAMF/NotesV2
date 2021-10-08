@@ -1,18 +1,21 @@
 <template>
   <div class="column">
-    <h1 :style="{'color':course.color}" style="user-select: none; font-size: 24px">{{ note.name }} <b
+    <h1 :style="{'color':course.color}" style="user-select: none; font-size: 24px">
+        {{ note.name }} <b
         style="font-size: 20px">({{
         (note.coeff * 100).toFixed(0)
       }}%)</b>
-      <b-tooltip label="14/11/2021, 8h00 à GAM, 0h45"
-      type="is-succcess">
-      
+      <b-tooltip label="14/11/2021, 8h00 à GAM, 0h45">
             <b-icon
-              icon="information"
-              size="is-small"
-              custom-size="mdi-48px">
+                icon="information-outline"
+                custom-size="mdi-18px"
+                type="is-primary">
             </b-icon>
         </b-tooltip>
+      <!-- <b-tooltip label="14/11/2021, 8h00 à GAM, 0h45"
+      type="is-primary">
+        <i class="mdi-information mdi-6px" style="color: #714dd2"></i>
+        </b-tooltip> -->
     </h1>
     <button v-if="note.multiple" class="input custom-button" @click="openDialog">
       <p class="custom-button">{{ localNote.toFixed(2) }}</p>
@@ -184,13 +187,5 @@ input[type="tel"] {
   vertical-align: middle;
   margin: auto;
   cursor: pointer;
-}
-
-h1 {
-  align-items: center;
-}
-i {
-  margin-left: 1rem;
-  background-color: #7957d5 !important;
 }
 </style>
