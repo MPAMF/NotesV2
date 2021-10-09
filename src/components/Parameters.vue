@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <hr class="rounded">
+        <hr class="style">
 
         <div class="columns">
           <div class="column is-one-quarter">
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <hr class="rounded">
+        <hr class="style">
 
         <h1 class="subtitle">Paramètres d'affichage :</h1>
 
@@ -183,7 +183,7 @@ export default {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
-<style scoped>
+<style scoped type="text/scss">
 b-button:first-of-type {
   margin-right: 1rem;
 }
@@ -192,10 +192,20 @@ b-button:last-of-type {
   margin-left: 1rem;
 }
 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800);
+
 /* Rounded border */
 hr.rounded {
   margin-top: 2.5rem;
-  border-top: 2px solid #bbb;
+  border-top: 3px double #7957d5;
   margin-bottom: 2.5rem;
 }
+
+hr.style {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to left, #333, #ccc, #333);
+}
+
 </style>
