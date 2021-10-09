@@ -175,10 +175,75 @@ export default {
   border-top: none;
 }
 
-
 .dark-mode .modal-card-head .delete:hover {
   background-color: #7957d5 !important;
 }
 
+/* calendar */
+
+.dark-mode .fc-toolbar-title, .dark-mode .fc-col-header-cell-cushion {
+  color: white;
+  text-transform: capitalize;
+}
+
+.dark-mode .fc-col-header-cell-cushion {
+  color: #BCE8F1;
+  text-transform: capitalize;
+}
+
+.dark-mode .fc-daygrid-day-number, .dark-mode .fc-button-group button span, .dark-mode .fc-list-empty {
+  color: white !important;
+}
+
+.dark-mode table, .dark-mode td, .dark-mode th{
+  border-color: #232b32 !important;
+}
+
+.dark-mode .fc-day-today, .dark-mode .fc-day-disabled{
+  background-color: #2C3E50 !important;
+}
+
+.dark-mode .fc-day-disabled{
+  background-color: #141d26 !important;
+}
+
+.dark-mode .fc-list-empty, .dark-mode .fc-popover-header {
+  background-color: #232b32 !important;
+  color: white !important;
+}
+
+.dark-mode .fc-daygrid-week-number {
+  background-color: inherit !important;
+  color: #7957d5 !important;
+}
+
+.dark-mode a.fc-daygrid-more-link {
+  color: white !important;
+}
+.dark-mode a.fc-daygrid-more-link:hover {
+  text-decoration: underline;
+}
+
+.dark-mode .fc-list-table .fc-list-day-cushion {
+  background-color: #141d26 !important;
+  border-bottom: solid 1px white;
+}
+.dark-mode .fc-list-table .fc-list-day-cushion a{
+  color: white;
+}
+.dark-mode .fc-list-table .fc-list-day-cushion a:first-of-type{
+  text-transform: capitalize;
+}
+
+.dark-mode .fc-list .fc-scroller {
+  background-color: #232b32 !important;
+}
+
+.dark-mode .fc-list-event .fc-list-event-time, .dark-mode .fc-list-event a{
+  color: white !important;
+}
+.dark-mode .fc-list-event:hover .fc-list-event-time, .dark-mode .fc-list-event:hover .fc-list-event-title, .dark-mode .fc-list-event:hover .fc-list-event-graphic{
+  background-color: #2C3E50 !important;
+}
 
 </style>
