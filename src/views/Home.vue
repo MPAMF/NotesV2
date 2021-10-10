@@ -150,7 +150,7 @@ export default {
 
 <style>
 
-.box {
+.average.box {
   border-radius: 8px 8px 0 0 !important;
 }
 

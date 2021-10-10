@@ -114,6 +114,10 @@ hr {
   border: solid 1px white;
 }
 
+.dark-mode .switch span.control-label {
+  color: white;
+}
+
 /* popup parameters */
 
 .box input:not(:placeholder-shown) {

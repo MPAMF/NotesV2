@@ -1,6 +1,6 @@
 <template>
   <div class="column">
-    <h1 :style="{'color':course.color}" style="user-select: none; font-size: 24px">
+    <h1 :style="{'color':course.color}">
         {{ note.name }} <b
         style="font-size: 20px">({{
         (note.coeff * 100).toFixed(0)
@@ -187,5 +187,29 @@ input[type="tel"] {
   vertical-align: middle;
   margin: auto;
   cursor: pointer;
+}
+
+.content .columns h1 {
+  user-select: none;
+  font-size: 24px;
+}
+
+.control.has-icons-left input {
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .content h1 {
+    margin-bottom: 0.25em !important;
+  }
+  .content .columns .column {
+    padding-bottom: 0;
+  }
+  .content .columns h1 {
+    font-size: 20px;
+  }
+  .custom-button, input[type="tel"] {
+    font-size: 16px;
+  }
 }
 </style>

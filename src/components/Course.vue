@@ -132,5 +132,9 @@ export default {
   .hero-body .box {
     padding: 0.75rem;
   }
+
+  .content h1 {
+    margin-bottom: 0.25em !important;
+  }
 }
 </style>
