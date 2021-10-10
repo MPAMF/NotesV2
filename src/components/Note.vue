@@ -112,7 +112,8 @@ export default {
         component: MultipleNote,
         hasModalCard: true,
         trapFocus: true,
-        canCancel: false,
+        canCancel: true,
+        onCancel: () => this.updateLocalNote(),
         props: {
           note: this.note,
           course: this.course

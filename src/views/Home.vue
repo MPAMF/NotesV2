@@ -82,23 +82,27 @@ export default {
     }
   },
 
+  beforeMount() {
+    this.onResize();
+  },
+
   mounted() {
-        this.$nextTick(() => {
-            window.addEventListener('resize', this.onResize);
-        })
+      this.$nextTick(() => {
+        window.addEventListener('resize', this.onResize);
+      })
     },
 
     beforeDestroy() { 
-        window.removeEventListener('resize', this.onResize); 
+      window.removeEventListener('resize', this.onResize); 
     },
 
   methods: {
 
     onResize() {
-            this.windowWidth = window.innerWidth
-            if(this.windowWidth <= 768) this.size='null'
-            else this.size='is-medium'
-        },
+      this.windowWidth = window.innerWidth
+      if(this.windowWidth <= 768) this.size='null'
+      else this.size='is-medium'
+    },
 
     updateAvg({courseId, coeff, avg}) {
       this.notes[courseId] = {coeff: coeff, avg: avg}
