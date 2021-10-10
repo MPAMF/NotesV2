@@ -7,36 +7,36 @@
 
         <div class="columns">
           <div class="column is-second-quarter">
-            <b-button icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
+            <b-button class="main-button" icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
           </div>
           <div class="column is-third-quarter">
             <b-button disabled icon-left="download" size="is-medium">Télécharger vos données</b-button>
           </div>
         </div>
 
-        <hr class="style">
+        <hr>
 
         <div class="columns">
           <div class="column is-one-quarter">
-            <h1 class="subtitle">Choisir son groupe de TP</h1>
+            <h1 class="subtitle">Groupe de TP</h1>
 
             <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
                          :deselectLabel="''" :options="tpGroups" :searchable="false" :selectLabel="''" label="name"
                          track-by="name"></multiselect>
           </div>
           <div class="column">
-            <h1 class="subtitle">Choisir ses options</h1>
+            <h1 class="subtitle">Sélection des options</h1>
 
             <multiselect v-model="value" :deselectLabel="''" :disabled="selectedTp === null" :multiple="true"
                          :options="courseOptions" :selectLabel="''" label="name"
-                         placeholder="Choisissez un ou plusieurs cours" track-by="name" @remove="removeOption"
+                         placeholder="Sélectionnez un ou plusieurs cours" track-by="name" @remove="removeOption"
                          @select="selectOption"><span
-                slot="noResult">Aucune option trouvé avec cette recherche.</span>
+                slot="noResult">Aucune option trouvée lors de cette recherche.</span>
             </multiselect>
           </div>
         </div>
 
-        <hr class="style">
+        <hr>
 
         <h1 class="subtitle">Paramètres d'affichage :</h1>
 
@@ -192,20 +192,19 @@ b-button:last-of-type {
   margin-left: 1rem;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800);
-
-/* Rounded border */
-hr.rounded {
-  margin-top: 2.5rem;
-  border-top: 3px double #7957d5;
-  margin-bottom: 2.5rem;
+hr {
+  height: 1px;
+  background-image: linear-gradient(to left, #ccc, #232b32, #ccc);
 }
 
-hr.style {
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to left, #333, #ccc, #333);
+.dark-mode hr {
+  background-image: linear-gradient(to left, #232b32, #ccc, #232b32);
 }
 
+</style>
+
+<style>
+  .multiselect__option--highlight {
+    background: #7957d5 !important;
+  }
 </style>

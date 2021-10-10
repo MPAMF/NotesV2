@@ -19,8 +19,7 @@
           </div>
           <div class="column text-center"><p class="subtitle">Pas encore de clé ?</p>
             <b-button
-                label="Créer une nouvelle session"
-                type="is-info is-light" :disabled="created || sessionId.length > 5"
+                class="scd-button" label="Créer une nouvelle session" :disabled="created || sessionId.length > 5"
                 @click="createSession"/>
           </div>
         </div>
@@ -33,8 +32,7 @@
                       @click="$emit('close')"/>
           </div>
           <div class="column">
-            <b-button label="Continuer" :disabled="!created && sessionId.length <= 5"
-                      type="is-info is-light"
+            <b-button class="main-button" label="Continuer" :disabled="!created && sessionId.length <= 5"
                       @click="continueSession" expanded/>
           </div>
         </div>

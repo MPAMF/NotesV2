@@ -62,6 +62,10 @@ export default {
   background: linear-gradient(#232b32, #141d26);
 }
 
+.dark-mode .tabs.is-boxed li.is-active span {
+  color:#CCBDF6;
+}
+
 .dark-mode .tabs.is-boxed a:hover {
   background-color: #232b32;
 }
@@ -88,11 +92,48 @@ export default {
 .dark-mode button span {
   color: #7957d5 !important;
 }
-
 .dark-mode .box button {
   border: solid 1px #7957d5;
 }
 
+.dark-mode .box button.main-button span {
+  color: white !important;
+}
+.dark-mode .box button.main-button {
+  border-color: #7957d5 !important;
+  background: #7957d5;
+}
+
+/* main button disabled */
+.dark-mode .box button:disabled.main-button span {
+  color: #7957d5 !important;
+}
+.dark-mode .box button:disabled.main-button {
+  border: solid 1px #7957d5;
+  background: white;
+}
+
+.dark-mode .box button.scd-button span {
+  color: white !important;
+}
+.dark-mode .box button.scd-button {
+  border-color: #7957d5 !important;
+  background: #7957d5;
+}
+
+/* scd button disabled */
+.dark-mode .box button:disabled.scd-button span {
+  color: #7957d5 !important;
+}
+.dark-mode .box button:disabled.scd-button {
+  border: solid 1px #7957d5;
+  background: white;
+}
+
+.dark-mode .box input:not(:placeholder-shown) {
+  text-transform: uppercase;
+  color: #7957d5;
+}
 .dark-mode label span {
   color: white !important;
 }
@@ -126,7 +167,7 @@ export default {
 }
 
 .dark-mode .card h1 span i {
-  color: #714dd2 !important;
+  color: #CCBDF6 !important;
   margin-left: 0.5rem;
 }
 
@@ -179,7 +220,7 @@ export default {
   background-color: #7957d5 !important;
 }
 
-/* LIGHTMODE calendar */
+/* calendar */
 
 .fc-toolbar-title, .fc-col-header-cell-cushion {
   color: #2C3E50;
@@ -196,7 +237,6 @@ export default {
 .fc-day-today, .fc-day-disabled{
   background-color: #D8EAFD !important;
 }
-/* BCE8F1 2C3E50*/
 
 .fc-daygrid-week-number {
   background-color: inherit !important;
@@ -236,6 +276,11 @@ a.fc-daygrid-more-link:hover {
 
 .dark-mode .fc-day-today {
   background-color: #2C3E50 !important;
+}
+
+.dark-mode .fc-daygrid-week-number {
+  background-color: inherit !important;
+  color: #CCBDF6 !important;
 }
 
 .dark-mode .fc-list-empty, .dark-mode .fc-popover-header {
