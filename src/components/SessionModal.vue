@@ -24,12 +24,16 @@
 
             <b-checkbox style="margin-top: -10px" v-model="rememberSession">Se souvenir de cette session</b-checkbox>
           </div>
+
+          <hr>
+
           <div class="column text-center"><p class="subtitle">Pas encore de clé ?</p>
             <b-button class="main-button"
                 label="Créer une nouvelle session"
                 :disabled="created || sessionId.length > 5"
                 @click="createSession"/>
           </div>
+
         </div>
       </div>
       <div class="box">

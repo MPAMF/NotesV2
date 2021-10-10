@@ -6,10 +6,10 @@
         <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
 
         <div class="columns">
-          <div class="column is-second-quarter">
+          <div class="column">
             <b-button class="main-button" icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
           </div>
-          <div class="column is-third-quarter">
+          <div class="column">
             <b-button disabled icon-left="download" size="is-medium">Télécharger vos données</b-button>
           </div>
         </div>
@@ -192,13 +192,26 @@ b-button:last-of-type {
   margin-left: 1rem;
 }
 
-hr {
-  height: 1px;
-  background-image: linear-gradient(to left, #ccc, #232b32, #ccc);
+.columns button {
+  white-space: normal;
 }
 
-.dark-mode hr {
-  background-image: linear-gradient(to left, #232b32, #ccc, #232b32);
+@media screen and (max-width: 850px) {
+  .columns button {
+    padding: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .columns button {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .columns button {
+    padding: 2rem;
+  }
 }
 </style>
 

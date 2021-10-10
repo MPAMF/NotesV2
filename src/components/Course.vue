@@ -119,4 +119,18 @@ export default {
   top: -18px;
   border-radius: 50%;
 }
+
+@media screen and (max-width: 768px) {
+  .hero-body {
+    padding: 1.5rem;
+  }
+
+  .hero-body .columns .is-9 {
+    padding-bottom: 0;
+  }
+
+  .hero-body .box {
+    padding: 0.75rem;
+  }
+}
 </style>

@@ -72,6 +72,15 @@ export default {
   color: white !important;
 }
 
+hr {
+  height: 1px;
+  background-image: linear-gradient(to left, #ccc, #232b32, #ccc);
+}
+
+.dark-mode hr {
+  background-image: linear-gradient(to left, #232b32, #ccc, #232b32);
+}
+
 /* tabs */
 
 .dark-mode .tabs.is-boxed li.is-active a, .dark-mode .b-tabs .tabs.is-boxed li a:focus {
@@ -121,6 +130,12 @@ export default {
 
 .dark-mode .modal-card-body input::placeholder {
   color: #54585B !important;
+}
+
+/* course */
+
+.dark-mode .hero-body .box {
+  border-color: #141d26;
 }
 
 /* notes */

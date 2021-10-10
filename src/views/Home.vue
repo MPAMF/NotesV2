@@ -23,8 +23,7 @@
 
     </div>
 
-    <div v-if="activeTab === 0" class="box"
-         style="background: #232B32; position: sticky; bottom:0; border-radius: 8px 8px 0 0; border: solid 3px black; border-bottom: none; width: 100%;">
+    <div v-if="activeTab === 0" class="average box">
       <h1 class="title is-size-5-mobile" style="color: white;display:inline-block;">Moyenne générale : {{
           avg.toFixed(2)
         }} / 20</h1>
@@ -147,9 +146,20 @@ export default {
 }
 </script>
 
+
+
 <style>
 
-
+.average {
+  background: #232B32 !important;
+  position: sticky;
+  bottom:0;
+  border-radius: 8px 8px 0 0;
+  border-top: solid 3px #141d26;
+  width: 100%;
+  padding-bottom: 0 !important;
+  z-index: 5;
+}
 
 .sk-circle {
   width: 40px;
@@ -157,6 +167,8 @@ export default {
   color: white;
   float: right;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .sk-circle .sk-child {
@@ -324,8 +336,8 @@ export default {
 
 @media screen and (max-width: 768px) {
   .sk-circle {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

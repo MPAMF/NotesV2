@@ -159,4 +159,19 @@ export default {
 
 <style>
 
+@media screen and (max-width: 768px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+  }
+
+  .fc .fc-toolbar-title {
+    padding: 0.5rem;
+  }
+
+  .fc .fc-daygrid-week-number {
+    top: unset;
+    bottom: 0;
+  }
+}
+
 </style>
