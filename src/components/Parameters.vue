@@ -200,7 +200,6 @@ hr {
 .dark-mode hr {
   background-image: linear-gradient(to left, #232b32, #ccc, #232b32);
 }
-
 </style>
 
 <style>

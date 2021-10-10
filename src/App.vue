@@ -41,6 +41,22 @@ export default {
   box-sizing: border-box;
 }
 
+.box button.main-button span {
+  color: white !important;
+}
+.box button.main-button {
+  border-color: #7957d5 !important;
+  background: #7957d5;
+}
+
+.box button.scd-button span {
+  color: white !important;
+}
+.box button.scd-button {
+  border: solid 1px #7957d5;
+  background-color: #DBD0FB;
+}
+
 .dark-mode #app {
   background-color: #141d26;
 }
@@ -89,63 +105,18 @@ export default {
   border: solid 1px white;
 }
 
-.dark-mode button span {
-  color: #7957d5 !important;
-}
-.dark-mode .box button {
-  border: solid 1px #7957d5;
-}
+/* popup parameters */
 
-.dark-mode .box button.main-button span {
-  color: white !important;
-}
-.dark-mode .box button.main-button {
-  border-color: #7957d5 !important;
-  background: #7957d5;
-}
-
-/* main button disabled */
-.dark-mode .box button:disabled.main-button span {
-  color: #7957d5 !important;
-}
-.dark-mode .box button:disabled.main-button {
-  border: solid 1px #7957d5;
-  background: white;
-}
-
-.dark-mode .box button.scd-button span {
-  color: white !important;
-}
-.dark-mode .box button.scd-button {
-  border-color: #7957d5 !important;
-  background: #7957d5;
-}
-
-/* scd button disabled */
-.dark-mode .box button:disabled.scd-button span {
-  color: #7957d5 !important;
-}
-.dark-mode .box button:disabled.scd-button {
-  border: solid 1px #7957d5;
-  background: white;
-}
-
-.dark-mode .box input:not(:placeholder-shown) {
-  text-transform: uppercase;
+.box input:not(:placeholder-shown) {
+  text-transform: uppercase !important;
   color: #7957d5;
 }
-.dark-mode label span {
-  color: white !important;
+.dark-mode .box small.counter {
+  color: white;
 }
-
-/* popup parameters */
 
 .dark-mode .modal-card-body {
   background-color: #232b32 !important;
-}
-
-.dark-mode .modal-card-body .box {
-  box-shadow: none;
 }
 
 .dark-mode .modal-card-body input::placeholder {
