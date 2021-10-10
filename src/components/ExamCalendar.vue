@@ -38,13 +38,14 @@ export default {
           day: 'Jour',
           list: 'Liste'
         },
-        contentHeight: 700,
+        contentHeight: 800,
         fixedWeekCount: false,
         nowIndicator: true,
         slotMinTime: "08:00:00",
         slotMaxTime: "21:30:00",
         allDaySlot: false,
         navLinks: true,
+        // weekends: false,
         weekNumbers: true,
         weekText: 'S.',
         weekNumberFormat: {

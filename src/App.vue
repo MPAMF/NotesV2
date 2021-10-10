@@ -179,16 +179,51 @@ export default {
   background-color: #7957d5 !important;
 }
 
-/* calendar */
+/* LIGHTMODE calendar */
 
-.dark-mode .fc-toolbar-title, .dark-mode .fc-col-header-cell-cushion {
-  color: white;
+.fc-toolbar-title, .fc-col-header-cell-cushion {
+  color: #2C3E50;
+  text-transform: capitalize;
+}
+.fc-col-header-cell-cushion:hover {
+  text-decoration: underline;
+}
+
+.fc-daygrid-day-number {
+  color: black !important;
+}
+
+.fc-day-today, .fc-day-disabled{
+  background-color: #D8EAFD !important;
+}
+/* BCE8F1 2C3E50*/
+
+.fc-daygrid-week-number {
+  background-color: inherit !important;
+  color: #7957d5 !important;
+}
+
+a.fc-daygrid-more-link:hover {
+  text-decoration: underline;
+}
+
+.fc-list-table .fc-list-day-cushion {
+  background-color: #EBEBEB !important;
+}
+.fc-list-table .fc-list-day-cushion a{
+  color: #2C3E50;
+}
+.fc-list-table .fc-list-day-cushion a:first-of-type{
   text-transform: capitalize;
 }
 
+/* DARKMODE calendar */
+
+.dark-mode .fc-toolbar-title, .dark-mode .fc-col-header-cell-cushion {
+  color: white;
+}
 .dark-mode .fc-col-header-cell-cushion {
   color: #BCE8F1;
-  text-transform: capitalize;
 }
 
 .dark-mode .fc-daygrid-day-number, .dark-mode .fc-button-group button span, .dark-mode .fc-list-empty {
@@ -199,40 +234,28 @@ export default {
   border-color: #232b32 !important;
 }
 
-.dark-mode .fc-day-today, .dark-mode .fc-day-disabled{
+.dark-mode .fc-day-today {
   background-color: #2C3E50 !important;
-}
-
-.dark-mode .fc-day-disabled{
-  background-color: #141d26 !important;
 }
 
 .dark-mode .fc-list-empty, .dark-mode .fc-popover-header {
   background-color: #232b32 !important;
   color: white !important;
 }
-
-.dark-mode .fc-daygrid-week-number {
-  background-color: inherit !important;
-  color: #7957d5 !important;
+.dark-mode .fc-popover-body {
+  background-color: #2C3E50 !important;
 }
 
 .dark-mode a.fc-daygrid-more-link {
   color: white !important;
 }
-.dark-mode a.fc-daygrid-more-link:hover {
-  text-decoration: underline;
-}
 
 .dark-mode .fc-list-table .fc-list-day-cushion {
   background-color: #141d26 !important;
-  border-bottom: solid 1px white;
+  border-bottom: solid 1px #141d26;
 }
 .dark-mode .fc-list-table .fc-list-day-cushion a{
   color: white;
-}
-.dark-mode .fc-list-table .fc-list-day-cushion a:first-of-type{
-  text-transform: capitalize;
 }
 
 .dark-mode .fc-list .fc-scroller {
