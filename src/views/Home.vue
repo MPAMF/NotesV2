@@ -5,7 +5,7 @@
 
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - L3 Informatique</h1>
 
-      <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" size="is-medium" v-if="getSemesters.length > 0">
+      <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" :size="size" v-if="getSemesters.length > 0">
 
         <b-tab-item v-for="(semester, index) in getSemesters" :key="index" :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number" :disabled="!semester.activated">
           <course v-for="(course, index) in semester.activated ? semester.courses : []" :key="index" :course="course" style="margin-bottom: 5vh"
@@ -43,7 +43,7 @@
         </div>
 
         <div class="sk-circle" v-else>
-          <b-icon key="2" icon="cloud-check" size="is-medium"></b-icon>
+          <b-icon key="2" icon="cloud-check" :size="size"></b-icon>
         </div>
     </div>
 
@@ -77,10 +77,29 @@ export default {
       avg: 0.0,
       notes: {},
       activeTab: 0,
+      size: 'is-medium',
+      windowWidth: window.innerWidth,
     }
   },
 
+  mounted() {
+        this.$nextTick(() => {
+            window.addEventListener('resize', this.onResize);
+        })
+    },
+
+    beforeDestroy() { 
+        window.removeEventListener('resize', this.onResize); 
+    },
+
   methods: {
+
+    onResize() {
+            this.windowWidth = window.innerWidth
+            if(this.windowWidth <= 768) this.size='null'
+            else this.size='is-medium'
+        },
+
     updateAvg({courseId, coeff, avg}) {
       this.notes[courseId] = {coeff: coeff, avg: avg}
       this.calculateAvg()
@@ -141,7 +160,6 @@ export default {
         localStorage.removeItem('session_id')
       })
     })
-
   }
 }
 </script>
@@ -344,4 +362,16 @@ export default {
     height: 20px;
   }
 }
+
+/* @media screen and (max-width: 768px) {
+  .tabs.is-medium a{
+    font-size: 1rem !important;
+  }
+  .tabs .icon.is-medium {
+  }
+  .mdi-36px {
+    font-size: 12px;
+  }
+  .mdi.mdi-36px { font-size: 48px;color: red !important; }
+} */
 </style>
