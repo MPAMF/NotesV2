@@ -150,6 +150,10 @@ export default {
 
 <style>
 
+.box {
+  border-radius: 8px 8px 0 0 !important;
+}
+
 .average {
   background: #232B32 !important;
   position: sticky;

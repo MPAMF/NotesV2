@@ -29,7 +29,7 @@
 
             <multiselect v-model="value" :deselectLabel="''" :disabled="selectedTp === null" :multiple="true"
                          :options="courseOptions" :selectLabel="''" label="name"
-                         placeholder="Sélectionnez un ou plusieurs cours" track-by="name" @remove="removeOption"
+                         placeholder="Sélectionnez vos cours" track-by="name" @remove="removeOption"
                          @select="selectOption"><span
                 slot="noResult">Aucune option trouvée lors de cette recherche.</span>
             </multiselect>
