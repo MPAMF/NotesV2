@@ -133,7 +133,6 @@ export default {
           message: `La session enregistrée localement n'existe pas.`,
           type: 'is-danger'
         })
-        localStorage.removeItem('session_id')
       })
     })
 

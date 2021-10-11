@@ -10,10 +10,10 @@
     </button>
 
     <p v-else class="control has-icons-left">
-                <span class="icon is-left is-clickable" @click="activated = !activated" style="height: 100%">
+                <span class="icon is-left is-clickable" style="height: 100%" @click="activated = !activated">
                         <b-tooltip :label="(activated ? 'Désactiver' : 'Activer') + ' la note'"
-                                  type="is-dark"
-                                   position="is-bottom">
+                                   position="is-bottom"
+                                   type="is-dark">
             <i :class="activated ? 'mdi-close' : 'mdi-check'" class="mdi mdi-24px"
                style="color: #714dd2"></i>
       </b-tooltip>
@@ -131,13 +131,18 @@ export default {
     updateNote() {
       if (this.note.multiple) return
 
-      this.$store.dispatch('editNote', {
-        note: {
-          id: this.note.id,
-          value: this.localNote,
-          activated: this.activated
+      this.$store.dispatch('editSession', {
+        obj: {
+          note: {
+            id: this.note.id,
+            value: this.localNote,
+            activated: this.activated
+          },
+          courseId: this.course.id
         },
-        courseId: this.course.id
+
+        type: 0
+
       })
     },
 

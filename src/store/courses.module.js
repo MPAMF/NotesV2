@@ -26,6 +26,22 @@ const mutations = {
                 course.notes = course.notes.sort((a, b) => b.weight - a.weight)
             }
             semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
+            // semester.groups =
+            let groups = []
+            for (let tdGroup of semester.td_groups) {
+                for (let tpGroup of tdGroup.tp_groups) {
+                    groups.push({
+                        name: 'L' + semester.number + ' TD' + tdGroup.number + ' TP' + tpGroup.number,
+                        td: tdGroup.number,
+                        tp: tpGroup.number,
+                        semester: {number: semester.number, id: semester.id},
+                        id: tpGroup.id
+                    })
+                }
+            }
+
+            semester.groups = groups
+
             state.semesters.push(semester)
 
         }
@@ -65,8 +81,8 @@ const actions = {
 }
 
 const getters = {
-    getCourses: (state, getters) => semester =>{
-        return  getters.getSemester(semester).courses
+    getCourses: (state, getters) => semester => {
+        return getters.getSemester(semester).courses
     },
     getSemester: state => nb => {
         return state.semesters.find(e => e.number === nb)
@@ -74,7 +90,7 @@ const getters = {
     getSemesterByCourse: state => course => {
         for (const semester of state.semesters)
             for (const courseElement of semester.courses)
-                if(courseElement.id === course)
+                if (courseElement.id === course)
                     return semester
         return null
     },
@@ -84,7 +100,7 @@ const getters = {
     getOptionalCourses: state => semester => state.courses || [],
     // eslint-disable-next-line no-unused-vars
     getSelectedCourses: state => semester => {
-        return [] //state.selectedNotes.filter(obj => obj.)
+        return state.selectedCourses.filter(obj => obj.semester === semester)
     },
     // eslint-disable-next-line no-unused-vars
     getSelectedAndRequiredCourses: state => semester => [],
@@ -93,6 +109,12 @@ const getters = {
         for (let semester of state.semesters)
             Array.prototype.push.apply(courses, semester.courses)
         return courses
+    },
+    getAllGroups: state => {
+        let groups = []
+        for (let semester of state.semesters)
+            Array.prototype.push.apply(groups, semester.groups)
+        return groups
     }
 }
 

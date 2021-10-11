@@ -87,13 +87,16 @@ export default {
 
   methods: {
     updateNote() {
-      this.$store.dispatch('editNote', {
-        note: {
-          id: this.note.id,
-          value: this.localNote,
-          activated: this.activated
+      this.$store.dispatch('editSession', {
+        obj: {
+          note: {
+            id: this.note.id,
+            value: this.localNote,
+            activated: this.activated
+          },
+          courseId: this.course.id
         },
-        courseId: this.course.id
+        type: 0
       })
     },
 

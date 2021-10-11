@@ -8,11 +8,14 @@ const state = {
 
     // saving
     modifiedNotes: {},
+    modifiedSelectedCourses: {},
+    modifiedSelectedTp: {},
     runnable: -1,
     canEdit: true,
 
     // courses
-    selectedCourses: []
+    selectedCourses: [],
+    selectedTp: null
 }
 
 const mutations = {
@@ -52,7 +55,12 @@ const mutations = {
             course: course.course,
             semester: semester.number
         })
-    }
+    },
+
+    setSelectedTp(state, tp) {
+        state.selectedTp = tp
+    },
+
 }
 
 const actions = {
@@ -106,26 +114,53 @@ const actions = {
             console.log(error)
         }).finally(() => commit('stopFetching'))))
     },
-
-    editNote({state, commit}, {note}) {
+    /*
+        type = 0 : Notes
+        type = 1 : Set selected TP
+        type = 2 : Set selected courses
+     */
+    editSession({state, commit}, {type, obj}) {
         if (state.runnable >= 0) clearTimeout(state.runnable)
-        state.modifiedNotes[note.id] = note.value
 
-        let arr = []
+        switch(type) {
+            case 0:
+                state.modifiedNotes[obj.id] = {
+                    value: obj.value,
+                    activated: obj.activated
+                }
+                break
+            case 1:
+                state.modifiedSelectedTp = obj
+                break
+            case 2:
+                state.modifiedSelectedCourses[obj.id] = {
+                    value: obj.value
+                }
+                break
+            default:
+                return
+
+        }
+
+        let notesArr = []
         for (const [key, value] of Object.entries(state.modifiedNotes)) {
-            arr.push({
+            notesArr.push({
                 note: key,
-                value: value,
-                activated: note.activated
+                value: value.value,
+                activated: value.activated
             })
         }
+
+        let coursesArr = []
 
         state.runnable = setTimeout(() => {
             commit('setCanEdit', false)
 
             // save here
             axios.put('sessions/' + state.sessionId + '/', {
-                notes: arr
+                notes: notesArr,
+                selected_courses: coursesArr,
+                selected_tp: this.selected_tp
             }).finally(() => {
                 state.modifiedNotes = {}
                 commit('setCanEdit', true)
@@ -167,7 +202,8 @@ const getters = {
     },
     getSessionId: state => state.sessionId,
     getCanEdit: state => state.canEdit,
-    getRunnable: state => state.runnable
+    getRunnable: state => state.runnable,
+    getSelectedTp: state => state.selectedTp
 }
 
 export default {

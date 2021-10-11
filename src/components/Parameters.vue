@@ -23,13 +23,13 @@
             <h1 class="subtitle">Choisir son groupe de TP</h1>
 
             <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
-                         :deselectLabel="''" :options="tpGroups" :searchable="false" :selectLabel="''" label="name"
+                         :deselectLabel="''" :options="getAllGroups" :searchable="false" :selectLabel="''" label="name"
                          track-by="name"></multiselect>
           </div>
           <div class="column">
             <h1 class="subtitle">Choisir ses options</h1>
 
-            <multiselect v-model="value" :deselectLabel="''" :disabled="selectedTp === null" :multiple="true"
+            <multiselect v-model="value" :deselectLabel="''" :disabled="selectedTp == null" :multiple="true"
                          :options="courseOptions" :selectLabel="''" label="name"
                          placeholder="Choisissez un ou plusieurs cours" track-by="name" @remove="removeOption"
                          @select="selectOption"><span
@@ -64,35 +64,6 @@ export default {
   components: {Multiselect},
   data() {
     return {
-      selectedTp: null,
-      tpGroups: [
-        {
-          name: 'S5 TD1 TP1',
-        },
-        {
-          name: 'S5 TD1 TP2',
-        },
-        {
-          name: 'S5 TD1 TP3',
-        },
-        {
-          name: 'S5 TD1 TP4',
-        }
-      ],
-      semesters: [
-        {
-          name: 'Semestre 5',
-          nb: 5
-        },
-        {
-          name: 'Semestre 6',
-          nb: 6
-        }
-      ],
-      selectedSemester: {
-        name: 'Semestre 5',
-        nb: 5
-      },
       /*options: {
         'Semester 5': [
           {
@@ -119,7 +90,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses']),
+    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses', 'getAllGroups']),
     darkMode: {
       get() {
         return this.isDarkMode
@@ -139,18 +110,28 @@ export default {
     },
     courseOptions: {
       get() {
-        return this.getOptionalCourses(this.selectedSemester.nb)
+        return this.selectedTp == null ? [] : this.getOptionalCourses(this.selectedTp.semester.id)
       },
     },
     courseValues: {
       get() {
-        return this.getSelectedCourses(this.selectedSemester.nb)
+        return this.selectedTp == null ? [] : this.getSelectedCourses(this.selectedTp.semester.id)
       },
       set(value) {
+        if(this.selectedTp == null) return
         this.$store.commit('setSelectedCourses', {
-          semester: this.selectedSemester,
+          semester: this.selectedTp.semester.id,
           courses: value
         })
+      }
+    },
+    selectedTp: {
+      get() {
+        return this.getSelectedTp
+      },
+      // eslint-disable-next-line no-unused-vars
+      set(value) {
+        //this.$store.
       }
     }
   },
