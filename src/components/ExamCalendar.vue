@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FullCalendar :options="calendarOptions"/>
+    <FullCalendar ref="fullCalendar" :key="test" :options="calendarOptions"/>
   </div>
   
 </template>
@@ -10,9 +10,10 @@
 import '@fullcalendar/core/vdom' // solves problem with Vite
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
+import interactionPlugin from '@fullcalendar/interaction'
+import emitter from 'tiny-emitter/instance'
 
 
 export default {
@@ -22,6 +23,7 @@ export default {
   },
   data() {
     return {
+      test: 0,
       calendarOptions: {
         plugins: [ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ],
         locale: 'fr',
@@ -46,6 +48,7 @@ export default {
         allDaySlot: false,
         navLinks: true,
         // weekends: false,
+        firstDay: 1,
         weekNumbers: true,
         weekText: 'S.',
         weekNumberFormat: {
@@ -153,6 +156,11 @@ export default {
         ]
       }
     }
+  },
+  mounted() {
+    emitter.on('update-calendar', () => {
+      this.test = this.test ? 0 : 1
+    })
   }
 }
 </script>

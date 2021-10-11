@@ -82,6 +82,13 @@ export default {
     }
   },
 
+  watch: {
+    activeTab: (newActiveTab) => {
+      if(newActiveTab != 2) return
+      emitter.emit('update-calendar')
+    }
+  },
+
   beforeMount() {
     this.onResize();
   },
@@ -130,6 +137,10 @@ export default {
         trapFocus: true,
         canCancel: false
       })
+    },
+
+    displayTabs() {
+      console.log("bite");
     }
   },
 
