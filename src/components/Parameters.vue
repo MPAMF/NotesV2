@@ -3,9 +3,31 @@
 
     <div class="box">
       <div class="container" style="width: 80%">
-        <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
 
-        <hr class="rounded">
+        <div>
+          <div v-if="getRunnable >= 0" key="1" class="sk-circle">
+            <div class="sk-circle1 sk-child"></div>
+            <div class="sk-circle2 sk-child"></div>
+            <div class="sk-circle3 sk-child"></div>
+            <div class="sk-circle4 sk-child"></div>
+            <div class="sk-circle5 sk-child"></div>
+            <div class="sk-circle6 sk-child"></div>
+            <div class="sk-circle7 sk-child"></div>
+            <div class="sk-circle8 sk-child"></div>
+            <div class="sk-circle9 sk-child"></div>
+            <div class="sk-circle10 sk-child"></div>
+            <div class="sk-circle11 sk-child"></div>
+            <div class="sk-circle12 sk-child"></div>
+          </div>
+
+          <div v-else class="sk-circle">
+            <b-icon key="2" icon="cloud-check" size="is-medium"></b-icon>
+          </div>
+
+          <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
+        </div>
+
+        <br>
 
         <div class="columns">
           <div class="column is-second-quarter">
@@ -64,33 +86,11 @@ export default {
   components: {Multiselect},
   data() {
     return {
-      /*options: {
-        'Semester 5': [
-          {
-            name: 'Option bla s5',
-            uuid: 'odokqdopkkpdqsdopkqdopkqs'
-          },
-          {
-            name: 'Option bla blo bli 22 s5',
-            uuid: 'ssdlqldqsdmp'
-          }
-        ],
-        'Semester 6': [
-          {
-            name: 'Option dfposfsd s6',
-            uuid: 'odokqdopkkpdqsdopkqdopkqs'
-          },
-          {
-            name: 'Option 3333 S66666 bli 22',
-            uuid: 'ssdlqldqsdmp'
-          }
-        ]
-      },*/
       value: []
     }
   },
   computed: {
-    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses', 'getAllGroups']),
+    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses', 'getAllGroups', 'getRunnable']),
     darkMode: {
       get() {
         return this.isDarkMode
@@ -118,7 +118,7 @@ export default {
         return this.selectedTp == null ? [] : this.getSelectedCourses(this.selectedTp.semester.id)
       },
       set(value) {
-        if(this.selectedTp == null) return
+        if (this.selectedTp == null) return
         this.$store.commit('setSelectedCourses', {
           semester: this.selectedTp.semester.id,
           courses: value
@@ -129,9 +129,12 @@ export default {
       get() {
         return this.getSelectedTp
       },
-      // eslint-disable-next-line no-unused-vars
       set(value) {
-        //this.$store.
+        this.$store.dispatch('editSession', {
+          obj: value,
+          type: 1
+        })
+        this.$store.commit('setSelectedTp', value)
       }
     }
   },
@@ -147,16 +150,22 @@ export default {
     },
 
     selectOption(selectedOption) {
-      this.$store.dispatch('editCourseOption', {
-        course: selectedOption,
-        select: true
+      this.$store.dispatch('editSession', {
+        obj: {
+          course: selectedOption.id,
+          activated: true
+        },
+        type: 2
       })
     },
 
     removeOption(removedOption) {
-      this.$store.dispatch('editCourseOption', {
-        course: removedOption,
-        select: false
+      this.$store.dispatch('editSession', {
+        obj: {
+          course: removedOption.id,
+          activated: false
+        },
+        type: 2
       })
     }
   }

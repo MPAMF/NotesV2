@@ -100,7 +100,7 @@ const actions = {
 
 
             for (const selectedCourse of data.selected_courses) {
-                if(!selectedCourse.activated)
+                if (!selectedCourse.activated)
                     continue
                 commit('setSelectedCourse', {
                     course: selectedCourse,
@@ -122,7 +122,7 @@ const actions = {
     editSession({state, commit}, {type, obj}) {
         if (state.runnable >= 0) clearTimeout(state.runnable)
 
-        switch(type) {
+        switch (type) {
             case 0:
                 state.modifiedNotes[obj.id] = {
                     value: obj.value,
@@ -134,12 +134,11 @@ const actions = {
                 break
             case 2:
                 state.modifiedSelectedCourses[obj.id] = {
-                    value: obj.value
+                    activated: obj.activated
                 }
                 break
             default:
-                return
-
+                break
         }
 
         let notesArr = []
@@ -152,15 +151,31 @@ const actions = {
         }
 
         let coursesArr = []
+        for (const [key, value] of Object.entries(state.modifiedSelectedCourses)) {
+            coursesArr.push({
+                course: key,
+                activated: value.activated
+            })
+        }
 
         state.runnable = setTimeout(() => {
             commit('setCanEdit', false)
+            let data = {}
+
+            if (notesArr.length > 0)
+                data.notes = notesArr
+            if (coursesArr.length > 0)
+                data.selected_courses = coursesArr
+
+            data.selected_tp = state.selected_tp
 
             // save here
-            axios.put('sessions/' + state.sessionId + '/', {
-                notes: notesArr,
-                selected_courses: coursesArr,
-                selected_tp: this.selected_tp
+            axios.put('sessions/' + state.sessionId + '/', data).catch(() => {
+                this.$buefy.toast.open({
+                    duration: 5000,
+                    message: `Une erreur est survenue lors de la sauvegarde de vos modifications.\nVeuillez recharger la page et réessayer.`,
+                    type: 'is-danger'
+                })
             }).finally(() => {
                 state.modifiedNotes = {}
                 commit('setCanEdit', true)

@@ -133,16 +133,12 @@ export default {
 
       this.$store.dispatch('editSession', {
         obj: {
-          note: {
-            id: this.note.id,
-            value: this.localNote,
-            activated: this.activated
-          },
+          id: this.note.id,
+          value: this.localNote,
+          activated: this.activated,
           courseId: this.course.id
         },
-
         type: 0
-
       })
     },
 
