@@ -81,7 +81,7 @@ const actions = {
         }).finally(() => commit('stopFetching'))))
     },
 
-    loadSession({state, commit, rootGetters}) {
+    loadSession({state, commit, getters, rootGetters}) {
         commit('startFetching')
         return new Promise(((resolve, reject) => axios.get('sessions/' + state.sessionId + '/').then(({data}) => {
             for (const note of data.notes) {
@@ -98,7 +98,6 @@ const actions = {
                 commit('setNoteStatus', obj)
             }
 
-
             for (const selectedCourse of data.selected_courses) {
                 if (!selectedCourse.activated)
                     continue
@@ -107,7 +106,8 @@ const actions = {
                     semester: rootGetters['getSemesterByCourse'](selectedCourse.course)
                 })
             }
-
+            let group = getters.findTpGroup(data.tp_group)
+            commit('setSelectedTp', data.tp_group == null ? null : group)
             resolve()
         }).catch(error => {
             reject(error)
@@ -130,7 +130,7 @@ const actions = {
                 }
                 break
             case 1:
-                state.modifiedSelectedTp = obj
+                state.modifiedSelectedTp = obj.id
                 break
             case 2:
                 state.modifiedSelectedCourses[obj.id] = {
@@ -160,17 +160,13 @@ const actions = {
 
         state.runnable = setTimeout(() => {
             commit('setCanEdit', false)
-            let data = {}
-
-            if (notesArr.length > 0)
-                data.notes = notesArr
-            if (coursesArr.length > 0)
-                data.selected_courses = coursesArr
-
-            data.selected_tp = state.selected_tp
 
             // save here
-            axios.put('sessions/' + state.sessionId + '/', data).catch(() => {
+            axios.put('sessions/' + state.sessionId + '/', {
+                tp_group: state.modifiedSelectedTp,
+                notes: notesArr,
+                selected_courses: coursesArr
+            }).catch(() => {
                 this.$buefy.toast.open({
                     duration: 5000,
                     message: `Une erreur est survenue lors de la sauvegarde de vos modifications.\nVeuillez recharger la page et réessayer.`,
@@ -178,6 +174,8 @@ const actions = {
                 })
             }).finally(() => {
                 state.modifiedNotes = {}
+                state.modifiedSelectedCourses = {}
+                state.modifiedSelectedTp = null
                 commit('setCanEdit', true)
                 state.runnable = -1
             })
@@ -192,6 +190,17 @@ const getters = {
     getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
     getNoteStatus: state => (courseId, uuid) => courseId in state.noteStatus ? (uuid in state.noteStatus[courseId] ? state.noteStatus[courseId][uuid] : true) : true,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
+    getSelectedCourses: (state) => semester => state.selectedCourses.filter(obj => obj.semester === semester),
+    getSelectedCoursesConverted: (state, getters) => semester => {
+        let selectedCourses = getters.getSelectedCourses(semester)
+        let result = []
+        for (const selectedCourse of selectedCourses)
+            result.push(getters.getCourseById(selectedCourse.course))
+        return result
+    },
+    getCourseById: (state, rootGetters) => id => {
+        return rootGetters.getAllCourses.find(course => course.id === id)
+    },
     getCourseByNote: (state, rootGetters) => noteId => {
         let courses = rootGetters.getAllCourses
         for (let i = 0; i < courses.length; i++) {
@@ -214,6 +223,9 @@ const getters = {
             }
 
         }
+    },
+    findTpGroup: (state, rootGetters) => tpGroupId => {
+        return rootGetters.getAllGroups.find(group => group.id === tpGroupId)
     },
     getSessionId: state => state.sessionId,
     getCanEdit: state => state.canEdit,

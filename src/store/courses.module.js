@@ -5,6 +5,7 @@ const state = {
     semesters: [],
     fetching: false,
     //
+    currentSemester: 5
 }
 
 const mutations = {
@@ -26,7 +27,7 @@ const mutations = {
                 course.notes = course.notes.sort((a, b) => b.weight - a.weight)
             }
             semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
-            // semester.groups =
+
             let groups = []
             for (let tdGroup of semester.td_groups) {
                 for (let tpGroup of tdGroup.tp_groups) {
@@ -34,7 +35,7 @@ const mutations = {
                         name: 'L' + semester.number + ' TD' + tdGroup.number + ' TP' + tpGroup.number,
                         td: tdGroup.number,
                         tp: tpGroup.number,
-                        semester: {number: semester.number, id: semester.id},
+                        semester: {number: semester.number},
                         id: tpGroup.id
                     })
                 }
@@ -48,17 +49,7 @@ const mutations = {
         // sort semesters by number
         state.semesters = state.semesters.sort((a, b) => a.number - b.number)
     },
-    // eslint-disable-next-line no-unused-vars
-    setSelectedCourses(state, courses) {
 
-    },
-
-    removeCourseOption(state, course) {
-        let found = state.selectedCourses.findIndex(obj => obj.course === course.id)
-        if (found <= -1)
-            return
-        state.selectedCourses.splice(found, 1)
-    }
 }
 
 const actions = {
@@ -72,11 +63,6 @@ const actions = {
             reject(error)
         }).finally(() => commit('stopFetching'))))
     },
-
-    // eslint-disable-next-line no-unused-vars
-    editCourseOption({commit}, {course, select}) {
-        commit(select ? 'addCourseOption' : 'removeCourseOption', course)
-    }
 
 }
 
@@ -96,14 +82,12 @@ const getters = {
     },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching,
-    // eslint-disable-next-line no-unused-vars
-    getOptionalCourses: state => semester => state.courses || [],
-    // eslint-disable-next-line no-unused-vars
-    getSelectedCourses: state => semester => {
-        return state.selectedCourses.filter(obj => obj.semester === semester)
+    getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
+    getSelectedAndRequiredCourses: (state, getters, rootGetters) => semester => {
+        let courses = rootGetters.getSelectedCoursesConverted(semester)
+        Array.prototype.push.apply(courses, getters.getCourses(semester).filter(course => !course.optional))
+        return courses
     },
-    // eslint-disable-next-line no-unused-vars
-    getSelectedAndRequiredCourses: state => semester => [],
     getAllCourses: state => {
         let courses = []
         for (let semester of state.semesters)

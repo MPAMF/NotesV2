@@ -90,12 +90,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses', 'getAllGroups', 'getRunnable']),
+    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp']),
     darkMode: {
       get() {
         return this.isDarkMode
       },
-      // eslint-disable-next-line no-unused-vars
       set(value) {
         this.$store.commit('setDarkMode', value)
         localStorage.setItem('dark_mode', value.toString())
@@ -110,19 +109,16 @@ export default {
     },
     courseOptions: {
       get() {
-        return this.selectedTp == null ? [] : this.getOptionalCourses(this.selectedTp.semester.id)
+        return this.selectedTp == null ? [] : this.getOptionalCourses(this.selectedTp.semester.number)
       },
     },
     courseValues: {
       get() {
-        return this.selectedTp == null ? [] : this.getSelectedCourses(this.selectedTp.semester.id)
+        return this.selectedTp == null ? [] : this.getSelectedCourses(this.selectedTp.semester.number)
       },
       set(value) {
         if (this.selectedTp == null) return
-        this.$store.commit('setSelectedCourses', {
-          semester: this.selectedTp.semester.id,
-          courses: value
-        })
+        console.log(value)
       }
     },
     selectedTp: {
