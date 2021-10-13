@@ -9,7 +9,7 @@ const state = {
     // saving
     modifiedNotes: {},
     modifiedSelectedCourses: {},
-    modifiedSelectedTp: {},
+    modifiedSelectedTp: null,
     runnable: -1,
     canEdit: true,
 
@@ -158,15 +158,26 @@ const actions = {
             })
         }
 
+        let data = {}
+
+        if(notesArr.length > 0)
+            data['notes'] = notesArr
+
+        if(coursesArr.length > 0)
+            data['selected_courses'] = coursesArr
+
+        if(state.modifiedSelectedTp != null)
+            data['tp_group'] = state.modifiedSelectedTp
+
         state.runnable = setTimeout(() => {
+
+            if(Object.keys(data).length === 0)
+                return
+
             commit('setCanEdit', false)
 
             // save here
-            axios.put('sessions/' + state.sessionId + '/', {
-                tp_group: state.modifiedSelectedTp,
-                notes: notesArr,
-                selected_courses: coursesArr
-            }).catch(() => {
+            axios.put('sessions/' + state.sessionId + '/', data).catch(() => {
                 this.$buefy.toast.open({
                     duration: 5000,
                     message: `Une erreur est survenue lors de la sauvegarde de vos modifications.\nVeuillez recharger la page et réessayer.`,
@@ -197,6 +208,11 @@ const getters = {
         for (const selectedCourse of selectedCourses)
             result.push(getters.getCourseById(selectedCourse.course))
         return result
+    },
+    getSelectedAndRequiredCourses: (state, rootGetters) => semester => {
+        let courses = rootGetters.getSelectedCoursesConverted(semester)
+        Array.prototype.push.apply(courses, rootGetters.getCourses(semester).filter(course => !course.optional))
+        return courses
     },
     getCourseById: (state, rootGetters) => id => {
         return rootGetters.getAllCourses.find(course => course.id === id)

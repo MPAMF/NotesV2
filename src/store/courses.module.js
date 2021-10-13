@@ -83,11 +83,6 @@ const getters = {
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching,
     getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
-    getSelectedAndRequiredCourses: (state, getters, rootGetters) => semester => {
-        let courses = rootGetters.getSelectedCoursesConverted(semester)
-        Array.prototype.push.apply(courses, getters.getCourses(semester).filter(course => !course.optional))
-        return courses
-    },
     getAllCourses: state => {
         let courses = []
         for (let semester of state.semesters)

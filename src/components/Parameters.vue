@@ -148,7 +148,7 @@ export default {
     selectOption(selectedOption) {
       this.$store.dispatch('editSession', {
         obj: {
-          course: selectedOption.id,
+          id: selectedOption.id,
           activated: true
         },
         type: 2
@@ -158,7 +158,7 @@ export default {
     removeOption(removedOption) {
       this.$store.dispatch('editSession', {
         obj: {
-          course: removedOption.id,
+          id: removedOption.id,
           activated: false
         },
         type: 2
