@@ -81,6 +81,12 @@ hr {
   background-image: linear-gradient(to left, #232b32, #ccc, #232b32);
 }
 
+/* modals */
+
+.modal-card-body .button.is-fullwidth:hover:enabled, .main-button:hover:enabled {
+    opacity: 0.8 !important;
+}
+
 /* tabs */
 
 .dark-mode .tabs.is-boxed li.is-active a, .dark-mode .b-tabs .tabs.is-boxed li a:focus {
