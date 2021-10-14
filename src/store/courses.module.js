@@ -5,7 +5,7 @@ const state = {
     semesters: [],
     fetching: false,
     //
-    selectedNotes: [],
+    currentSemester: 5
 }
 
 const mutations = {
@@ -27,16 +27,29 @@ const mutations = {
                 course.notes = course.notes.sort((a, b) => b.weight - a.weight)
             }
             semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
+
+            let groups = []
+            for (let tdGroup of semester.td_groups) {
+                for (let tpGroup of tdGroup.tp_groups) {
+                    groups.push({
+                        name: 'L' + semester.number + ' TD' + tdGroup.number + ' TP' + tpGroup.number,
+                        td: tdGroup.number,
+                        tp: tpGroup.number,
+                        semester: {number: semester.number},
+                        id: tpGroup.id
+                    })
+                }
+            }
+
+            semester.groups = groups
+
             state.semesters.push(semester)
 
         }
         // sort semesters by number
         state.semesters = state.semesters.sort((a, b) => a.number - b.number)
     },
-    // eslint-disable-next-line no-unused-vars
-    setSelectedCourses(state, courses) {
 
-    }
 }
 
 const actions = {
@@ -51,35 +64,36 @@ const actions = {
         }).finally(() => commit('stopFetching'))))
     },
 
-    // eslint-disable-next-line no-unused-vars
-    editCourseOption({commit}, {course, select}) {
-
-    }
-
 }
 
 const getters = {
-    getCourses: (state, getters) => semester =>{
-        return  getters.getSemester(semester).courses
+    getCourses: (state, getters) => semester => {
+        return getters.getSemester(semester).courses
     },
     getSemester: state => nb => {
         return state.semesters.find(e => e.number === nb)
     },
+    getSemesterByCourse: state => course => {
+        for (const semester of state.semesters)
+            for (const courseElement of semester.courses)
+                if (courseElement.id === course)
+                    return semester
+        return null
+    },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching,
-    // eslint-disable-next-line no-unused-vars
-    getOptionalCourses: state => semester => state.courses || [],
-    // eslint-disable-next-line no-unused-vars
-    getSelectedCourses: state => semester => {
-        return [] //state.selectedNotes.filter(obj => obj.)
-    },
-    // eslint-disable-next-line no-unused-vars
-    getSelectedAndRequiredCourses: state => semester => [],
+    getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
     getAllCourses: state => {
         let courses = []
         for (let semester of state.semesters)
             Array.prototype.push.apply(courses, semester.courses)
         return courses
+    },
+    getAllGroups: state => {
+        let groups = []
+        for (let semester of state.semesters)
+            Array.prototype.push.apply(groups, semester.groups)
+        return groups
     }
 }
 

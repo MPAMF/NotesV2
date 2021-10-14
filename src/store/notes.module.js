@@ -8,8 +8,14 @@ const state = {
 
     // saving
     modifiedNotes: {},
+    modifiedSelectedCourses: {},
+    modifiedSelectedTp: null,
     runnable: -1,
-    canEdit: true
+    canEdit: true,
+
+    // courses
+    selectedCourses: [],
+    selectedTp: null
 }
 
 const mutations = {
@@ -42,6 +48,33 @@ const mutations = {
     setNotesLoaded(state, value) {
         state.notesLoaded = value
     },
+
+    // eslint-disable-next-line no-unused-vars
+    setSelectedCourse(state, {course, semester}) {
+        state.selectedCourses.push({
+            course: course.course,
+            semester: semester.number
+        })
+    },
+
+    setSelectedTp(state, tp) {
+        state.selectedTp = tp
+    },
+
+    addSelectedCourse(state, {selectedCourse, semester}) {
+        state.selectedCourses.push({
+            course: selectedCourse.id,
+            semester: semester
+        })
+    },
+
+    removeSelectedCourse(state, removedCourse) {
+        let found = state.selectedCourses.findIndex(obj => obj.course === removedCourse.id)
+        if (found <= -1)
+            return
+        state.selectedCourses.splice(found, 1)
+    }
+
 }
 
 const actions = {
@@ -62,7 +95,7 @@ const actions = {
         }).finally(() => commit('stopFetching'))))
     },
 
-    loadSession({state, commit, rootGetters}) {
+    loadSession({state, commit, getters, rootGetters}) {
         commit('startFetching')
         return new Promise(((resolve, reject) => axios.get('sessions/' + state.sessionId + '/').then(({data}) => {
             for (const note of data.notes) {
@@ -77,36 +110,98 @@ const actions = {
                 }
                 commit('setNote', obj)
                 commit('setNoteStatus', obj)
-
             }
+
+            for (const selectedCourse of data.selected_courses) {
+                if (!selectedCourse.activated) continue
+                let course = getters.getCourseById(selectedCourse.course)
+                if (!course.optional) continue
+                commit('setSelectedCourse', {
+                    course: selectedCourse,
+                    semester: rootGetters['getSemesterByCourse'](selectedCourse.course)
+                })
+            }
+            let group = getters.findTpGroup(data.tp_group)
+            commit('setSelectedTp', data.tp_group == null ? null : group)
             resolve()
         }).catch(error => {
             reject(error)
             console.log(error)
         }).finally(() => commit('stopFetching'))))
     },
-
-    editNote({state, commit}, {note}) {
+    /*
+        type = 0 : Notes
+        type = 1 : Set selected TP
+        type = 2 : Set selected courses
+     */
+    editSession({state, commit}, {type, obj}) {
         if (state.runnable >= 0) clearTimeout(state.runnable)
-        state.modifiedNotes[note.id] = note.value
 
-        let arr = []
+        switch (type) {
+            case 0:
+                state.modifiedNotes[obj.id] = {
+                    value: obj.value,
+                    activated: obj.activated
+                }
+                break
+            case 1:
+                state.modifiedSelectedTp = obj.id
+                break
+            case 2:
+                state.modifiedSelectedCourses[obj.id] = {
+                    activated: obj.activated
+                }
+                break
+            default:
+                break
+        }
+
+        let notesArr = []
         for (const [key, value] of Object.entries(state.modifiedNotes)) {
-            arr.push({
+            notesArr.push({
                 note: key,
-                value: value,
-                activated: note.activated
+                value: value.value,
+                activated: value.activated
             })
         }
 
+        let coursesArr = []
+        for (const [key, value] of Object.entries(state.modifiedSelectedCourses)) {
+            coursesArr.push({
+                course: key,
+                activated: value.activated
+            })
+        }
+
+        let data = {}
+
+        if (notesArr.length > 0)
+            data['notes'] = notesArr
+
+        if (coursesArr.length > 0)
+            data['selected_courses'] = coursesArr
+
+        if (state.modifiedSelectedTp != null)
+            data['tp_group'] = state.modifiedSelectedTp
+
         state.runnable = setTimeout(() => {
+
+            if (Object.keys(data).length === 0)
+                return
+
             commit('setCanEdit', false)
 
             // save here
-            axios.put('sessions/' + state.sessionId + '/', {
-                notes: arr
+            axios.put('sessions/' + state.sessionId + '/', data).catch(() => {
+                this.$buefy.toast.open({
+                    duration: 5000,
+                    message: `Une erreur est survenue lors de la sauvegarde de vos modifications.\nVeuillez recharger la page et réessayer.`,
+                    type: 'is-danger'
+                })
             }).finally(() => {
                 state.modifiedNotes = {}
+                state.modifiedSelectedCourses = {}
+                state.modifiedSelectedTp = null
                 commit('setCanEdit', true)
                 state.runnable = -1
             })
@@ -121,9 +216,26 @@ const getters = {
     getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
     getNoteStatus: state => (courseId, uuid) => courseId in state.noteStatus ? (uuid in state.noteStatus[courseId] ? state.noteStatus[courseId][uuid] : true) : true,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
+    getSelectedCourses: (state) => semester => state.selectedCourses.filter(obj => obj.semester === semester),
+    getSelectedCoursesConverted: (state, getters) => semester => {
+        let selectedCourses = getters.getSelectedCourses(semester)
+        let result = []
+        for (const selectedCourse of selectedCourses) {
+            result.push(getters.getCourseById(selectedCourse.course))
+        }
+        return result
+    },
+    getSelectedAndRequiredCourses: (state, rootGetters) => semester => {
+        let courses = rootGetters.getSelectedCoursesConverted(semester)
+        Array.prototype.push.apply(courses, rootGetters.getCourses(semester).filter(course => !course.optional))
+        courses.sort((a, b) => b.weight - a.weight)
+        return courses
+    },
+    getCourseById: (state, rootGetters) => id => {
+        return rootGetters.getAllCourses.find(course => course.id === id)
+    },
     getCourseByNote: (state, rootGetters) => noteId => {
         let courses = rootGetters.getAllCourses
-        console.log(courses)
         for (let i = 0; i < courses.length; i++) {
             let course = courses[i]
 
@@ -145,9 +257,13 @@ const getters = {
 
         }
     },
+    findTpGroup: (state, rootGetters) => tpGroupId => {
+        return rootGetters.getAllGroups.find(group => group.id === tpGroupId)
+    },
     getSessionId: state => state.sessionId,
     getCanEdit: state => state.canEdit,
-    getRunnable: state => state.runnable
+    getRunnable: state => state.runnable,
+    getSelectedTp: state => state.selectedTp
 }
 
 export default {

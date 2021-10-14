@@ -3,7 +3,30 @@
 
     <div class="box">
       <div class="container" style="width: 80%">
-        <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
+        <div>
+          <div v-if="getRunnable >= 0" key="1" class="sk-circle">
+            <div class="sk-circle1 sk-child"></div>
+            <div class="sk-circle2 sk-child"></div>
+            <div class="sk-circle3 sk-child"></div>
+            <div class="sk-circle4 sk-child"></div>
+            <div class="sk-circle5 sk-child"></div>
+            <div class="sk-circle6 sk-child"></div>
+            <div class="sk-circle7 sk-child"></div>
+            <div class="sk-circle8 sk-child"></div>
+            <div class="sk-circle9 sk-child"></div>
+            <div class="sk-circle10 sk-child"></div>
+            <div class="sk-circle11 sk-child"></div>
+            <div class="sk-circle12 sk-child"></div>
+          </div>
+
+          <div v-else class="sk-circle">
+            <b-icon key="2" icon="cloud-check" size="is-medium"></b-icon>
+          </div>
+
+          <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
+        </div>
+
+        <br>
 
         <div class="columns">
           <div class="column">
@@ -21,13 +44,13 @@
             <h1 class="subtitle">Groupe de TP</h1>
 
             <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
-                         :deselectLabel="''" :options="tpGroups" :searchable="false" :selectLabel="''" label="name"
+                         :deselectLabel="''" :options="getAllGroups" :searchable="false" :selectLabel="''" label="name"
                          track-by="name"></multiselect>
           </div>
           <div class="column">
             <h1 class="subtitle">Sélection des options</h1>
 
-            <multiselect v-model="value" :deselectLabel="''" :disabled="selectedTp === null" :multiple="true"
+            <multiselect v-model="courseValues" :deselectLabel="''" :disabled="selectedTp == null" :multiple="true"
                          :options="courseOptions" :selectLabel="''" label="name"
                          placeholder="Sélectionnez vos cours" track-by="name" @remove="removeOption"
                          @select="selectOption"><span
@@ -63,68 +86,15 @@ export default {
   name: "Parameters",
   components: {Multiselect},
   data() {
-    return {
-      selectedTp: null,
-      tpGroups: [
-        {
-          name: 'S5 TD1 TP1',
-        },
-        {
-          name: 'S5 TD1 TP2',
-        },
-        {
-          name: 'S5 TD1 TP3',
-        },
-        {
-          name: 'S5 TD1 TP4',
-        }
-      ],
-      semesters: [
-        {
-          name: 'Semestre 5',
-          nb: 5
-        },
-        {
-          name: 'Semestre 6',
-          nb: 6
-        }
-      ],
-      selectedSemester: {
-        name: 'Semestre 5',
-        nb: 5
-      },
-      /*options: {
-        'Semester 5': [
-          {
-            name: 'Option bla s5',
-            uuid: 'odokqdopkkpdqsdopkqdopkqs'
-          },
-          {
-            name: 'Option bla blo bli 22 s5',
-            uuid: 'ssdlqldqsdmp'
-          }
-        ],
-        'Semester 6': [
-          {
-            name: 'Option dfposfsd s6',
-            uuid: 'odokqdopkkpdqsdopkqdopkqs'
-          },
-          {
-            name: 'Option 3333 S66666 bli 22',
-            uuid: 'ssdlqldqsdmp'
-          }
-        ]
-      },*/
-      value: []
-    }
+    return {}
   },
   computed: {
-    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses']),
+    ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
+      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp']),
     darkMode: {
       get() {
         return this.isDarkMode
       },
-      // eslint-disable-next-line no-unused-vars
       set(value) {
         this.$store.commit('setDarkMode', value)
         localStorage.setItem('dark_mode', value.toString())
@@ -139,18 +109,27 @@ export default {
     },
     courseOptions: {
       get() {
-        return this.getOptionalCourses(this.selectedSemester.nb)
+        return this.selectedTp == null ? [] : this.getOptionalCourses(this.selectedTp.semester.number)
       },
     },
     courseValues: {
       get() {
-        return this.getSelectedCourses(this.selectedSemester.nb)
+        return this.selectedTp == null ? [] : this.getSelectedCoursesConverted(this.selectedTp.semester.number)
+      },
+      // eslint-disable-next-line no-unused-vars
+      set(value) {
+      }
+    },
+    selectedTp: {
+      get() {
+        return this.getSelectedTp
       },
       set(value) {
-        this.$store.commit('setSelectedCourses', {
-          semester: this.selectedSemester,
-          courses: value
+        this.$store.dispatch('editSession', {
+          obj: value,
+          type: 1
         })
+        this.$store.commit('setSelectedTp', value)
       }
     }
   },
@@ -166,17 +145,28 @@ export default {
     },
 
     selectOption(selectedOption) {
-      this.$store.dispatch('editCourseOption', {
-        course: selectedOption,
-        select: true
+      this.$store.dispatch('editSession', {
+        obj: {
+          id: selectedOption.id,
+          activated: true
+        },
+        type: 2
+      })
+      this.$store.commit('addSelectedCourse', {
+        selectedCourse: selectedOption,
+        semester: this.selectedTp.semester.number
       })
     },
 
     removeOption(removedOption) {
-      this.$store.dispatch('editCourseOption', {
-        course: removedOption,
-        select: false
+      this.$store.dispatch('editSession', {
+        obj: {
+          id: removedOption.id,
+          activated: false
+        },
+        type: 2
       })
+      this.$store.commit('removeSelectedCourse', removedOption)
     }
   }
 }

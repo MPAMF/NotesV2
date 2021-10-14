@@ -8,7 +8,7 @@
       <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" :size="size" v-if="getSemesters.length > 0">
 
         <b-tab-item v-for="(semester, index) in getSemesters" :key="index" :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number" :disabled="!semester.activated">
-          <course v-for="(course, index) in semester.activated ? semester.courses : []" :key="index" :course="course" style="margin-bottom: 5vh"
+          <course v-for="(course, index) in semester.activated ? getSelectedAndRequiredCourses(semester.number) : []" :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></course>
         </b-tab-item>
 
@@ -69,7 +69,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getRunnable', 'getSemesters'])
+    ...mapGetters(['getRunnable', 'getSemesters', 'getSelectedAndRequiredCourses'])
   },
 
   data() {
@@ -172,7 +172,6 @@ export default {
           message: `La session enregistrée localement n'existe pas.`,
           type: 'is-danger'
         })
-        localStorage.removeItem('session_id')
       })
     })
   }
