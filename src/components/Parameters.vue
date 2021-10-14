@@ -20,7 +20,7 @@
           </div>
 
           <div v-else class="sk-circle">
-            <b-icon key="2" icon="cloud-check" size="is-medium"></b-icon>
+            <b-icon key="2" icon="cloud-check" :size="size"></b-icon>
           </div>
 
           <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
@@ -86,7 +86,10 @@ export default {
   name: "Parameters",
   components: {Multiselect},
   data() {
-    return {}
+    return {
+      size: 'is-medium',
+      windowWidth: window.innerWidth,
+    }
   },
   computed: {
     ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
@@ -133,7 +136,28 @@ export default {
       }
     }
   },
+
+  
+  beforeMount() {
+    this.onResize();
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    })
+  },
+
+  beforeDestroy() { 
+    window.removeEventListener('resize', this.onResize); 
+  },
+
   methods: {
+    onResize() {
+      this.windowWidth = window.innerWidth
+      if(this.windowWidth <= 768) this.size='null'
+      else this.size='is-medium'
+    },
     loadSession() {
       this.$buefy.modal.open({
         parent: this,
@@ -206,7 +230,13 @@ b-button:last-of-type {
 </style>
 
 <style>
-  .multiselect__option--highlight {
+  .multiselect__option--highlight, .multiselect__tag {
     background: #7957d5 !important;
+  }
+  .multiselect__tag-icon:after {
+    color: white !important;
+  }
+  .multiselect__tag-icon:hover, .multiselect__tag-icon:focus {
+    background: #5E36C9 !important;
   }
 </style>

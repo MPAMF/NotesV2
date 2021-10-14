@@ -94,14 +94,14 @@ export default {
   },
 
   mounted() {
-      this.$nextTick(() => {
-        window.addEventListener('resize', this.onResize);
-      })
-    },
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    })
+  },
 
-    beforeDestroy() { 
-      window.removeEventListener('resize', this.onResize); 
-    },
+  beforeDestroy() { 
+    window.removeEventListener('resize', this.onResize); 
+  },
 
   methods: {
 
