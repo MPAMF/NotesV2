@@ -100,6 +100,10 @@ const actions = {
         return new Promise(((resolve, reject) => axios.get('sessions/' + state.sessionId + '/').then(({data}) => {
             for (const note of data.notes) {
                 let course = rootGetters['getCourseByNote'](note.note)
+
+                if(course == null)
+                    continue
+
                 let obj = {
                     courseId: course.id,
                     note: {
@@ -192,13 +196,7 @@ const actions = {
             commit('setCanEdit', false)
 
             // save here
-            axios.put('sessions/' + state.sessionId + '/', data).catch(() => {
-                this.$buefy.toast.open({
-                    duration: 5000,
-                    message: `Une erreur est survenue lors de la sauvegarde de vos modifications.\nVeuillez recharger la page et réessayer.`,
-                    type: 'is-danger'
-                })
-            }).finally(() => {
+            axios.put('sessions/' + state.sessionId + '/', data).finally(() => {
                 state.modifiedNotes = {}
                 state.modifiedSelectedCourses = {}
                 state.modifiedSelectedTp = null
@@ -256,6 +254,7 @@ const getters = {
             }
 
         }
+        return null
     },
     findTpGroup: (state, rootGetters) => tpGroupId => {
         return rootGetters.getAllGroups.find(group => group.id === tpGroupId)
