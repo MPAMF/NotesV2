@@ -1,9 +1,21 @@
 <template>
   <div class="column">
-    <h1 :style="{'color':course.color}" style="user-select: none; font-size: 24px">{{ note.name }} <b
+    <h1 :style="{'color':course.color}">
+        {{ note.name }} <b
         style="font-size: 20px">({{
         (note.coeff * 100).toFixed(0)
       }}%)</b>
+      <b-tooltip label="14/11/2021, 8h00 à GAM, 0h45">
+            <b-icon
+                icon="information-outline"
+                custom-size="mdi-18px"
+                type="is-primary">
+            </b-icon>
+        </b-tooltip>
+      <!-- <b-tooltip label="14/11/2021, 8h00 à GAM, 0h45"
+      type="is-primary">
+        <i class="mdi-information mdi-6px" style="color: #714dd2"></i>
+        </b-tooltip> -->
     </h1>
     <button v-if="note.multiple" class="input custom-button" @click="openDialog">
       <p class="custom-button">{{ localNote.toFixed(2) }}</p>
@@ -100,7 +112,8 @@ export default {
         component: MultipleNote,
         hasModalCard: true,
         trapFocus: true,
-        canCancel: false,
+        canCancel: true,
+        onCancel: () => this.updateLocalNote(),
         props: {
           note: this.note,
           course: this.course
@@ -176,5 +189,29 @@ input[type="tel"] {
   vertical-align: middle;
   margin: auto;
   cursor: pointer;
+}
+
+.content .columns h1 {
+  user-select: none;
+  font-size: 24px;
+}
+
+.control.has-icons-left input {
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .content h1 {
+    margin-bottom: 0.25em !important;
+  }
+  .content .columns .column {
+    padding-bottom: 0;
+  }
+  .content .columns h1 {
+    font-size: 20px;
+  }
+  .custom-button, input[type="tel"] {
+    font-size: 16px;
+  }
 }
 </style>

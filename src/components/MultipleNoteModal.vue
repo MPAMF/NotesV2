@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card" :class="{'dark-mode':isDarkMode}">
     <header class="modal-card-head">
-      <p class="modal-card-title"><b>Examen à notes multiples: {{ avg.toFixed(2) + '/20' }}</b></p>
+      <p class="modal-card-title"><b>{{note.name}} : {{ avg.toFixed(2) + '/20' }}</b></p>
       <button
           type="button"
           class="delete"

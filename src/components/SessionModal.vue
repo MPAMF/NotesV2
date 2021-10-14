@@ -1,5 +1,12 @@
 <template>
   <div class="modal-card" :class="{'dark-mode':isDarkMode}">
+    <header class="modal-card-head">
+      <p class="modal-card-title"><b>Charger une autre session</b></p>
+      <button
+          type="button"
+          class="delete"
+          @click="$emit('close')"/>
+    </header>
     <section class="modal-card-body">
 
       <div class="box">
@@ -15,29 +22,23 @@
 
             <b-input v-model="sessionId" maxlength="8" placeholder="Saisissez votre clé ici" v-else></b-input>
 
-            <b-checkbox style="margin-top: 10px" v-model="rememberSession">Se souvenir de cette session</b-checkbox>
+            <b-checkbox style="margin-top: -10px" v-model="rememberSession">Se souvenir de cette session</b-checkbox>
           </div>
+
+          <hr>
+
           <div class="column text-center"><p class="subtitle">Pas encore de clé ?</p>
-            <b-button
+            <b-button class="main-button"
                 label="Créer une nouvelle session"
-                type="is-info is-light" :disabled="created || sessionId.length > 5"
+                :disabled="created || sessionId.length > 5"
                 @click="createSession"/>
           </div>
+
         </div>
       </div>
       <div class="box">
-        <div class="columns is-centered" style="width: 100%">
-          <div class="column is-one-quarter" v-if="!created && canCancel">
-            <b-button type="is-danger is-light"
-                      label="Fermer"
-                      @click="$emit('close')"/>
-          </div>
-          <div class="column">
-            <b-button label="Continuer" :disabled="!created && sessionId.length <= 5"
-                      type="is-info is-light"
+            <b-button class="main-button" label="Continuer" :disabled="!created && sessionId.length <= 5"
                       @click="continueSession" expanded/>
-          </div>
-        </div>
       </div>
     </section>
   </div>
@@ -108,4 +109,9 @@ export default {
 .text-center {
   text-align: center;
 }
+
+.modal-card-body .box {
+  box-shadow: none;
+}
+
 </style>

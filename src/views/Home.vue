@@ -5,11 +5,15 @@
 
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - L3 Informatique</h1>
 
-      <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" size="is-medium" v-if="getSemesters.length > 0">
+      <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" :size="size" v-if="getSemesters.length > 0">
 
         <b-tab-item v-for="(semester, index) in getSemesters" :key="index" :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number" :disabled="!semester.activated">
           <course v-for="(course, index) in semester.activated ? getSelectedAndRequiredCourses(semester.number) : []" :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></course>
+        </b-tab-item>
+
+        <b-tab-item icon="calendar-month" label="Planning">
+          <exam-calendar></exam-calendar>
         </b-tab-item>
 
         <b-tab-item icon="cog-outline" label="Paramètres">
@@ -19,8 +23,7 @@
 
     </div>
 
-    <div v-if="activeTab === 0" class="box"
-         style="background: #232B32; position: sticky; bottom:0; border-radius: 8px 8px 0 0; border: solid 3px black; border-bottom: none; width: 100%;">
+    <div v-if="activeTab === 0" class="average box">
       <h1 class="title is-size-5-mobile" style="color: white;display:inline-block;">Moyenne générale : {{
           avg.toFixed(2)
         }} / 20</h1>
@@ -40,7 +43,7 @@
         </div>
 
         <div class="sk-circle" v-else>
-          <b-icon key="2" icon="cloud-check" size="is-medium"></b-icon>
+          <b-icon key="2" icon="cloud-check" :size="size"></b-icon>
         </div>
     </div>
 
@@ -55,12 +58,14 @@ import {mapGetters} from "vuex";
 import Parameters from "../components/Parameters";
 import SessionModal from "../components/SessionModal";
 import emitter from 'tiny-emitter/instance'
+import ExamCalendar from '../components/ExamCalendar.vue';
 
 export default {
   name: 'Home',
   components: {
     Parameters,
-    Course
+    Course,
+    ExamCalendar
   },
 
   computed: {
@@ -72,10 +77,40 @@ export default {
       avg: 0.0,
       notes: {},
       activeTab: 0,
+      size: 'is-medium',
+      windowWidth: window.innerWidth,
     }
   },
 
+  watch: {
+    activeTab: (newActiveTab) => {
+      if(newActiveTab != 2) return
+      emitter.emit('update-calendar')
+    }
+  },
+
+  beforeMount() {
+    this.onResize();
+  },
+
+  mounted() {
+      this.$nextTick(() => {
+        window.addEventListener('resize', this.onResize);
+      })
+    },
+
+    beforeDestroy() { 
+      window.removeEventListener('resize', this.onResize); 
+    },
+
   methods: {
+
+    onResize() {
+      this.windowWidth = window.innerWidth
+      if(this.windowWidth <= 768) this.size='null'
+      else this.size='is-medium'
+    },
+
     updateAvg({courseId, coeff, avg}) {
       this.notes[courseId] = {coeff: coeff, avg: avg}
       this.calculateAvg()
@@ -102,6 +137,10 @@ export default {
         trapFocus: true,
         canCancel: false
       })
+    },
+
+    displayTabs() {
+      console.log("bite");
     }
   },
 
@@ -135,14 +174,28 @@ export default {
         })
       })
     })
-
   }
 }
 </script>
 
+
+
 <style>
 
+.average.box {
+  border-radius: 8px 8px 0 0 !important;
+}
 
+.average {
+  background: #232B32 !important;
+  position: sticky;
+  bottom:0;
+  border-radius: 8px 8px 0 0;
+  border-top: solid 3px #141d26;
+  width: 100%;
+  padding-bottom: 0 !important;
+  z-index: 5;
+}
 
 .sk-circle {
   width: 40px;
@@ -150,6 +203,8 @@ export default {
   color: white;
   float: right;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .sk-circle .sk-child {
@@ -317,8 +372,20 @@ export default {
 
 @media screen and (max-width: 768px) {
   .sk-circle {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
   }
 }
+
+/* @media screen and (max-width: 768px) {
+  .tabs.is-medium a{
+    font-size: 1rem !important;
+  }
+  .tabs .icon.is-medium {
+  }
+  .mdi-36px {
+    font-size: 12px;
+  }
+  .mdi.mdi-36px { font-size: 48px;color: red !important; }
+} */
 </style>

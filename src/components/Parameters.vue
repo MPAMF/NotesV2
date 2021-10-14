@@ -1,9 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container"> 
 
     <div class="box">
       <div class="container" style="width: 80%">
-
         <div>
           <div v-if="getRunnable >= 0" key="1" class="sk-circle">
             <div class="sk-circle1 sk-child"></div>
@@ -30,35 +29,37 @@
         <br>
 
         <div class="columns">
-          <div class="column is-second-quarter">
-            <b-button icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
+          <div class="column">
+            <b-button class="main-button" icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
           </div>
-          <div class="column is-third-quarter">
+          <div class="column">
             <b-button disabled icon-left="download" size="is-medium">Télécharger vos données</b-button>
           </div>
         </div>
 
-        <hr class="rounded">
+        <hr>
 
         <div class="columns">
           <div class="column is-one-quarter">
-            <h1 class="subtitle">Choisir son groupe de TP</h1>
+            <h1 class="subtitle">Groupe de TP</h1>
 
             <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
                          :deselectLabel="''" :options="getAllGroups" :searchable="false" :selectLabel="''" label="name"
                          track-by="name"></multiselect>
           </div>
           <div class="column">
-            <h1 class="subtitle">Choisir ses options</h1>
+            <h1 class="subtitle">Sélection des options</h1>
 
             <multiselect v-model="courseValues" :deselectLabel="''" :disabled="selectedTp == null" :multiple="true"
                          :options="courseOptions" :selectLabel="''" label="name"
-                         placeholder="Choisissez un ou plusieurs cours" track-by="name" @remove="removeOption"
+                         placeholder="Sélectionnez vos cours" track-by="name" @remove="removeOption"
                          @select="selectOption"><span
-                slot="noResult">Aucune option trouvé avec cette recherche.</span>
+                slot="noResult">Aucune option trouvée lors de cette recherche.</span>
             </multiselect>
           </div>
         </div>
+
+        <hr>
 
         <h1 class="subtitle">Paramètres d'affichage :</h1>
 
@@ -172,7 +173,7 @@ export default {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
-<style scoped>
+<style scoped type="text/scss">
 b-button:first-of-type {
   margin-right: 1rem;
 }
@@ -181,10 +182,31 @@ b-button:last-of-type {
   margin-left: 1rem;
 }
 
-/* Rounded border */
-hr.rounded {
-  margin-top: 2.5rem;
-  border-top: 2px solid #bbb;
-  margin-bottom: 2.5rem;
+.columns button {
+  white-space: normal;
 }
+
+@media screen and (max-width: 850px) {
+  .columns button {
+    padding: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .columns button {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .columns button {
+    padding: 2rem;
+  }
+}
+</style>
+
+<style>
+  .multiselect__option--highlight {
+    background: #7957d5 !important;
+  }
 </style>
