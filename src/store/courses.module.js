@@ -19,11 +19,17 @@ const mutations = {
         for (let i = 0; i < data.length; i++) {
             let semester = data[i]
             for (let course of semester.courses) {
+                let coeffTotal = 0.0
                 for (let note of course.notes) {
                     note.multiple = note.notes.length > 0
+                    coeffTotal += note.coeff
                     if (!note.multiple) continue
                     note.notes = note.notes.sort((a, b) => b.weight - a.weight)
                 }
+
+                for (let note of course.notes)
+                    note.coeff /= coeffTotal
+
                 course.notes = course.notes.sort((a, b) => b.weight - a.weight)
             }
             semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
@@ -94,7 +100,16 @@ const getters = {
         for (let semester of state.semesters)
             Array.prototype.push.apply(groups, semester.groups)
         return groups
-    }
+    },
+    // eslint-disable-next-line no-unused-vars
+/*    getTpGroup: state => (semester, number) => {
+        for (const semesterElement of semester.groups) {
+
+        }
+    },
+    getExamDates: state => (semester, tpGroup) => {
+
+    }*/
 }
 
 export default {

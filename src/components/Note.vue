@@ -12,10 +12,6 @@
                 type="is-primary">
             </b-icon>
         </b-tooltip>
-      <!-- <b-tooltip label="14/11/2021, 8h00 à GAM, 0h45"
-      type="is-primary">
-        <i class="mdi-information mdi-6px" style="color: #714dd2"></i>
-        </b-tooltip> -->
     </h1>
     <button v-if="note.multiple" class="input custom-button" @click="openDialog">
       <p class="custom-button">{{ localNote.toFixed(2) }}</p>
