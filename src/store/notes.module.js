@@ -61,6 +61,20 @@ const mutations = {
         state.selectedTp = tp
     },
 
+    addSelectedCourse(state, {selectedCourse, semester}) {
+        state.selectedCourses.push({
+            course: selectedCourse.id,
+            semester: semester
+        })
+    },
+
+    removeSelectedCourse(state, removedCourse) {
+        let found = state.selectedCourses.findIndex(obj => obj.course === removedCourse.id)
+        if (found <= -1)
+            return
+        state.selectedCourses.splice(found, 1)
+    }
+
 }
 
 const actions = {
@@ -99,8 +113,9 @@ const actions = {
             }
 
             for (const selectedCourse of data.selected_courses) {
-                if (!selectedCourse.activated)
-                    continue
+                if (!selectedCourse.activated) continue
+                let course = getters.getCourseById(selectedCourse.course)
+                if (!course.optional) continue
                 commit('setSelectedCourse', {
                     course: selectedCourse,
                     semester: rootGetters['getSemesterByCourse'](selectedCourse.course)
@@ -160,18 +175,18 @@ const actions = {
 
         let data = {}
 
-        if(notesArr.length > 0)
+        if (notesArr.length > 0)
             data['notes'] = notesArr
 
-        if(coursesArr.length > 0)
+        if (coursesArr.length > 0)
             data['selected_courses'] = coursesArr
 
-        if(state.modifiedSelectedTp != null)
+        if (state.modifiedSelectedTp != null)
             data['tp_group'] = state.modifiedSelectedTp
 
         state.runnable = setTimeout(() => {
 
-            if(Object.keys(data).length === 0)
+            if (Object.keys(data).length === 0)
                 return
 
             commit('setCanEdit', false)
@@ -205,13 +220,15 @@ const getters = {
     getSelectedCoursesConverted: (state, getters) => semester => {
         let selectedCourses = getters.getSelectedCourses(semester)
         let result = []
-        for (const selectedCourse of selectedCourses)
+        for (const selectedCourse of selectedCourses) {
             result.push(getters.getCourseById(selectedCourse.course))
+        }
         return result
     },
     getSelectedAndRequiredCourses: (state, rootGetters) => semester => {
         let courses = rootGetters.getSelectedCoursesConverted(semester)
         Array.prototype.push.apply(courses, rootGetters.getCourses(semester).filter(course => !course.optional))
+        courses.sort((a, b) => b.weight - a.weight)
         return courses
     },
     getCourseById: (state, rootGetters) => id => {

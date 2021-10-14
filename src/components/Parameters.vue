@@ -51,7 +51,7 @@
           <div class="column">
             <h1 class="subtitle">Choisir ses options</h1>
 
-            <multiselect v-model="value" :deselectLabel="''" :disabled="selectedTp == null" :multiple="true"
+            <multiselect v-model="courseValues" :deselectLabel="''" :disabled="selectedTp == null" :multiple="true"
                          :options="courseOptions" :selectLabel="''" label="name"
                          placeholder="Choisissez un ou plusieurs cours" track-by="name" @remove="removeOption"
                          @select="selectOption"><span
@@ -85,12 +85,11 @@ export default {
   name: "Parameters",
   components: {Multiselect},
   data() {
-    return {
-      value: []
-    }
+    return {}
   },
   computed: {
-    ...mapGetters(['getSessionId', 'isDarkMode', 'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp']),
+    ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
+      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp']),
     darkMode: {
       get() {
         return this.isDarkMode
@@ -114,11 +113,10 @@ export default {
     },
     courseValues: {
       get() {
-        return this.selectedTp == null ? [] : this.getSelectedCourses(this.selectedTp.semester.number)
+        return this.selectedTp == null ? [] : this.getSelectedCoursesConverted(this.selectedTp.semester.number)
       },
+      // eslint-disable-next-line no-unused-vars
       set(value) {
-        if (this.selectedTp == null) return
-        console.log(value)
       }
     },
     selectedTp: {
@@ -153,6 +151,10 @@ export default {
         },
         type: 2
       })
+      this.$store.commit('addSelectedCourse', {
+        selectedCourse: selectedOption,
+        semester: this.selectedTp.semester.number
+      })
     },
 
     removeOption(removedOption) {
@@ -163,6 +165,7 @@ export default {
         },
         type: 2
       })
+      this.$store.commit('removeSelectedCourse', removedOption)
     }
   }
 }
