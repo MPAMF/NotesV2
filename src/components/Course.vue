@@ -10,7 +10,7 @@
                 {{ course.name }}
               </p>
               <p class="subtitle is-size-6-mobile" style="color: white">
-                {{ course.ects }} ECTS
+                {{ course.ects }} ECTS - {{ course.prof }}
               </p>
             </div>
             <div class="column is-3">
