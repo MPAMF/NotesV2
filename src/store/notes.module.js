@@ -101,7 +101,7 @@ const actions = {
             for (const note of data.notes) {
                 let course = rootGetters['getCourseByNote'](note.note)
 
-                if(course == null)
+                if (course == null)
                     continue
 
                 let obj = {
@@ -212,6 +212,13 @@ const actions = {
 
 const getters = {
     getNote: state => (courseId, uuid) => courseId in state.notes ? (uuid in state.notes[courseId] ? state.notes[courseId][uuid] : -1) : -1,
+    getNoteById: state => uuid => {
+        for (const notes of state.notes)
+            for (const note of notes)
+                if (note.id === uuid)
+                    return note
+        return null
+    },
     getNoteStatus: state => (courseId, uuid) => courseId in state.noteStatus ? (uuid in state.noteStatus[courseId] ? state.noteStatus[courseId][uuid] : true) : true,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
     getSelectedCourses: (state) => semester => state.selectedCourses.filter(obj => obj.semester === semester),

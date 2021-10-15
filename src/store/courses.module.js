@@ -3,6 +3,9 @@ import axios from "axios";
 
 const state = {
     semesters: [],
+    localisations: {},
+    localisationImages: {},
+    //
     fetching: false,
     //
     currentSemester: 5
@@ -15,9 +18,9 @@ const mutations = {
     stopFetching(state) {
         state.fetching = false
     },
-    fetchSuccess(state, data) {
-        for (let i = 0; i < data.length; i++) {
-            let semester = data[i]
+    fetchSuccess(state, {localisations, localisation_images, semesters}) {
+        for (let i = 0; i < semesters.length; i++) {
+            let semester = semesters[i]
             for (let course of semester.courses) {
                 let coeffTotal = 0.0
                 for (let note of course.notes) {
@@ -47,13 +50,23 @@ const mutations = {
                 }
             }
 
-            semester.groups = groups
-
-            state.semesters.push(semester)
+            state.semesters.push({
+                activated: semester.activated,
+                number: semester.number,
+                courses: semester.courses,
+                groups: groups,
+                examDates: semester.exam_dates
+            })
 
         }
         // sort semesters by number
         state.semesters = state.semesters.sort((a, b) => a.number - b.number)
+
+        for (const localisation of localisations)
+            state.localisations[localisation.id] = localisation
+
+        for (const localisationImage of localisation_images)
+            state.localisationImages[localisationImage.id] = localisationImage
     },
 
 }
@@ -102,14 +115,28 @@ const getters = {
         return groups
     },
     // eslint-disable-next-line no-unused-vars
-/*    getTpGroup: state => (semester, number) => {
-        for (const semesterElement of semester.groups) {
+    /*    getTpGroup: state => (semester, number) => {
+            for (const semesterElement of semester.groups) {
 
+            }
+        },
+        */
+
+    getExamDates: (state, getters) => (semester, tpGroup) => {
+        let foundSemester = getters.getSemester(semester)
+        if (!foundSemester) return []
+
+        let result = []
+        for (let examDate of foundSemester.examDates) {
+            if (examDate.tp_group != null && examDate.tp_group !== tpGroup)
+                continue
+            result.push(examDate)
         }
+        return result
     },
-    getExamDates: state => (semester, tpGroup) => {
 
-    }*/
+    getLocalisation: state => localisation => state.localisations.find(loc => loc.id === localisation)
+
 }
 
 export default {
