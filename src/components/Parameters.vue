@@ -67,7 +67,7 @@
           <b-field>
             <b-switch
                 v-model="darkMode"
-                passive-type='is-dark'>
+                passive-type='is-primary'>
               Thème sombre
             </b-switch>
           </b-field>
@@ -208,6 +208,12 @@ b-button:last-of-type {
 
 .columns button {
   white-space: normal;
+}
+
+@media screen and (max-width: 979px) {
+  .columns button {
+    padding: 2rem;
+  }
 }
 
 @media screen and (max-width: 850px) {

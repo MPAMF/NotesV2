@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div :style="{'background-color':course.color,'border':course.color+' 4px solid'}" class="card-content"
+    <div :style="{'background-color': (isDarkMode ? course.dark_color : course.color),'border': (isDarkMode ? course.dark_color : course.color) +' 4px solid'}" class="card-content"
          style="padding: 0; border-radius: 10px">
       <section class="hero" style="">
         <div class="hero-body">
@@ -67,7 +67,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getNote', 'getNoteStatus']),
+    ...mapGetters(['getNote', 'getNoteStatus', 'isDarkMode']),
   },
 
   methods: {

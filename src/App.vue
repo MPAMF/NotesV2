@@ -81,6 +81,16 @@ hr {
   background-image: linear-gradient(to left, #232b32, #ccc, #232b32);
 }
 
+/* cloud icon */
+
+.sk-circle span i {
+  color: #7957d5  !important;
+}
+
+.average .sk-circle span i, .dark-mode .sk-circle span i {
+  color: #BCA8EA  !important;
+}
+
 /* modals */
 
 .modal-card-body .button.is-fullwidth:hover:enabled, .main-button:hover:enabled {

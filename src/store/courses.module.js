@@ -1,4 +1,3 @@
-//import axios from "axios";
 import axios from "axios";
 
 const state = {
@@ -101,7 +100,6 @@ const getters = {
     },
     getRealNote: (state, getters) => (semester, noteId) => {
         let courses = getters.getCourses(semester)
-        console.log(courses)
         for (let course of courses) {
             for (let note of course.notes) {
                 if (note.multiple) continue
@@ -145,8 +143,6 @@ const getters = {
                 continue
             result.push(examDate)
         }
-        console.log("get exam dates")
-        console.log(result)
         return result
     },
 
