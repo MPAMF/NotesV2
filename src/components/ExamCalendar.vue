@@ -24,23 +24,25 @@ export default {
     FullCalendar
   },
   computed: {
-    ...mapGetters(['getExamDates', 'getSelectedTp', 'getNoteById', 'getLocalisation']),
+    ...mapGetters(['getExamDates', 'getSelectedTp', 'getRealNote', 'getLocalisation']),
 
     examDates: {
       get() {
+        console.log("get")
         if (this.getSelectedTp == null)
           return []
-        let exams = this.getExamDates(this.getSelectedTp.semester.number, this.getSelectedTp.id)
+        let semester = this.getSelectedTp.semester.number
+        let exams = this.getExamDates(semester, this.getSelectedTp.id)
         let result = []
-
+        console.log("for exam of exams")
         for (const exam of exams) {
-          let note = this.getNoteById(exam.note)
+          let note = this.getRealNote(semester, exam.note)
           let loc = this.getLocalisation(exam.localisation)
           if (note == null) continue
-          let name = note.name + '(' + (note.coeff * 100) + ')'
+          let coeff = Math.round(note.coeff * 100)
+          let name = note.name + ' (' + coeff + '%)'
           if (loc != null)
             name += ', ' + loc.name
-
           result.push({
             title: name,
             start: exam.start,
@@ -49,7 +51,7 @@ export default {
             backgroundColor: '#D57417',
             borderColor: '#D57417',
             extendedProps: {
-              coeff: note.coeff.toString(),
+              coeff: coeff.toString(),
               salle: loc.name,
               duree: '00:45:00',
               type: 'CC1',
@@ -278,7 +280,7 @@ export default {
     emitter.on('update-calendar', () => {
       this.test = this.test ? 0 : 1
 
-      console.log()
+      console.log(this.examDates)
     })
   },
   methods: {

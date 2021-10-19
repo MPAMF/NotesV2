@@ -99,6 +99,19 @@ const getters = {
                     return semester
         return null
     },
+    getRealNote: (state, getters) => (semester, noteId) => {
+        let courses = getters.getCourses(semester)
+        console.log(courses)
+        for (let course of courses) {
+            for (let note of course.notes) {
+                if (note.multiple) continue
+                if (note.id !== noteId)
+                    continue
+                return note
+            }
+        }
+        return null
+    },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching,
     getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
@@ -132,10 +145,12 @@ const getters = {
                 continue
             result.push(examDate)
         }
+        console.log("get exam dates")
+        console.log(result)
         return result
     },
 
-    getLocalisation: state => localisation => state.localisations.find(loc => loc.id === localisation)
+    getLocalisation: state => localisation => state.localisations[localisation]
 
 }
 
