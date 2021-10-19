@@ -86,11 +86,11 @@ export default {
           day: 'Jour',
           list: 'Liste'
         },
-        contentHeight: 800,
+        contentHeight: 'auto',
         fixedWeekCount: false,
         nowIndicator: true,
-        slotMinTime: "08:00:00",
-        slotMaxTime: "21:30:00",
+        // slotMinTime: "08:00:00",
+        // slotMaxTime: "21:30:00",
         allDaySlot: false,
         navLinks: true,
         // weekends: false,
@@ -172,9 +172,36 @@ export default {
 
 <style>
 
+.modal {
+  z-index: 10000 !important;
+}
+
+.fc-event-main-frame {
+  flex-direction: column;
+}
+/* 
+@media screen and (min-height: 1300px) {
+  table {
+    height: 1000px !important;
+  }
+}
+
+@media screen and (min-height: 1129px) {
+  table {
+    height: 875px !important;
+  }
+} */
+
+@media screen and (min-width: 768px) {
+  .fc-daygrid-event .fc-event {
+    height: 50% !important;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .fc .fc-toolbar {
     flex-direction: column;
+    font-size: 0.75em;
   }
 
   .fc .fc-toolbar-title {

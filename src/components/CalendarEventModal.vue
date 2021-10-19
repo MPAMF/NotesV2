@@ -1,7 +1,8 @@
 <template>
   <div class="modal-card" :class="{'dark-mode':isDarkMode}">
     <header class="modal-card-head" :style="{'background-color':eventData.backgroundColor+' !important'}">
-      <p class="modal-card-title"><b>{{eventData.extendedProps.matiere}}</b></p>
+      <!-- <p class="modal-card-title"><b>{{eventData.extendedProps.matiere}}</b></p> -->
+      <p class="modal-card-title"><b>ASE, TP noté</b></p>
       <button
           type="button"
           class="delete"
@@ -9,12 +10,11 @@
     </header>
     <section class="modal-card-body">
       <div class="box">
-            <p class="subtitle">Type : {{eventData.extendedProps.type}}</p>
-            <p class="subtitle">Coefficient : {{eventData.extendedProps.coeff}}%</p>
-            <p class="subtitle">Date : {{eventData.extendedProps.date}}</p>
-            <p class="subtitle">Heure : {{eventData.extendedProps.debut}} - {{eventData.extendedProps.fin}}</p>
-            <p class="subtitle">Durée : {{eventData.extendedProps.duree}}</p>
+            <p class="subtitle">{{eventData.extendedProps.matiere}}</p>
+            <p class="subtitle">Examen : {{eventData.extendedProps.type}} ({{eventData.extendedProps.coeff}}%)</p>
+            <p class="subtitle">Date : {{eventData.extendedProps.date}}, {{eventData.extendedProps.debut}}</p>
             <p class="subtitle">Salle : {{eventData.extendedProps.salle}}</p>
+            <p class="subtitle">Durée : {{eventData.extendedProps.duree}}</p>
       </div>
       <div class="box">
             <b-button label="OK" @click="$emit('close')" :style="{'background-color':eventData.backgroundColor+' !important'}" expanded/>
@@ -46,6 +46,12 @@ export default {
 </script>
 
 <style scoped>
+.box {
+  text-align: center
+}
+.modal-card {
+  width: auto;
+}
 .modal-card-title {
     color: white;
 }
@@ -57,5 +63,11 @@ export default {
 }
 .modal-card-body button {
     color: white !important;
+}
+
+@media screen and (min-width: 768px) {
+  .modal-card {
+    min-width: 400px;
+  }
 }
 </style>
