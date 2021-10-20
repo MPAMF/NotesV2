@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <FullCalendar :key="test" ref="fullCalendar" :options="calendarOptions"/>
-  </div>
-
+  <FullCalendar :key="test" ref="fullCalendar" :options="calendarOptions"/>
 </template>
 
 <script>
@@ -13,7 +10,6 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
-import emitter from 'tiny-emitter/instance'
 import CalendarEventModal from "./CalendarEventModal";
 import {mapGetters} from "vuex";
 
@@ -74,7 +70,6 @@ export default {
   },
   data() {
     return {
-      test: 0,
       calendarOptions: {
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
         locale: 'fr',
@@ -134,11 +129,6 @@ export default {
       }
     }
   },
-  mounted() {
-    emitter.on('update-calendar', () => {
-      this.test = this.test ? 0 : 1
-    })
-  },
   methods: {
     loadModal(eventData) {
       this.$buefy.modal.open({
@@ -156,10 +146,6 @@ export default {
       let date1 = new Date(d1)
       let date2 = new Date(d2)
       let difference = date2.getTime() - date1.getTime();
-      console.log("pouet")
-      console.log(date1.getTime())
-      console.log(date2.getTime())
-      console.log(difference)
 
       let hoursDifference = Math.floor(difference / 1000 / 60 / 60);
       difference -= hoursDifference * 1000 * 60 * 60
