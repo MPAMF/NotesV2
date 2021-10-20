@@ -90,6 +90,7 @@ export default {
         contentHeight: 'auto',
         fixedWeekCount: false,
         nowIndicator: true,
+        slotMinTime: "07:00:00",
         // slotMinTime: "08:00:00",
         // slotMaxTime: "21:30:00",
         allDaySlot: false,
