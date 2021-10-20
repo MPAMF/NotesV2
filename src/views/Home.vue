@@ -9,7 +9,8 @@
 
         <b-tab-item v-for="(semester, index) in getSemesters" :key="index"
                     :disabled="!semester.activated"
-                    :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number">
+                    :icon="'numeric-' + semester.number + '-box-multiple-outline'"
+                    :label="'Semestre ' + semester.number">
           <course v-for="(course, index) in semester.activated ? getSelectedAndRequiredCourses(semester.number) : []"
                   :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></course>
@@ -85,6 +86,13 @@ export default {
     }
   },
 
+  watch: {
+    activeTab: (newActiveTab) => {
+      if (newActiveTab !== 2) return
+      setTimeout(() => emitter.emit('update-calendar'), 100)
+    }
+  },
+
   beforeMount() {
     this.onResize();
   },
@@ -157,7 +165,8 @@ export default {
           message: `Votre session ${sessionId} a bien été chargée.`,
           type: 'is-success'
         })
-      }).catch(() => {
+      }).catch((e) => {
+        console.log(e)
         this.$buefy.toast.open({
           duration: 5000,
           message: `La session enregistrée localement n'existe pas.`,

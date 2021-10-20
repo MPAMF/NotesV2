@@ -1,17 +1,17 @@
 <template>
   <div class="column">
     <h1 :style="{'color':course.color}">
-        {{ note.name }} <b
+      {{ note.name }} <b
         style="font-size: 20px">({{
         (note.coeff * 100).toFixed(0)
       }}%)</b>
-      <b-tooltip label="14/11/2021, 8h00 à GAM, 0h45">
-            <b-icon
-                icon="information-outline"
-                custom-size="mdi-18px"
-                type="is-primary">
-            </b-icon>
-        </b-tooltip>
+      <b-tooltip v-if="examDate.length > 0" :label="examDate">
+        <b-icon
+            custom-size="mdi-18px"
+            icon="information-outline"
+            type="is-primary">
+        </b-icon>
+      </b-tooltip>
     </h1>
     <button v-if="note.multiple" class="input custom-button" @click="openDialog">
       <p class="custom-button">{{ localNote.toFixed(2) }}</p>
@@ -58,12 +58,13 @@ export default {
   data() {
     return {
       localNote: -1,
-      localActivated: true
+      localActivated: true,
+      examDate: ''
     }
   },
 
   computed: {
-    ...mapGetters(['getNote', 'getCanEdit', 'getNoteStatus']),
+    ...mapGetters(['getNote', 'getCanEdit', 'getNoteStatus', 'getExamDates', 'getSelectedTp', 'getLocalisation']),
     activated: {
       get() {
         return this.localActivated
@@ -153,19 +154,47 @@ export default {
 
     updateNoteStatus() {
       this.localActivated = this.getNoteStatus(this.course.id, this.note.id)
+    },
+
+    updateExamDate() {
+      if (this.getSelectedTp == null) {
+        this.examDate = ''
+        return
+      }
+
+      let examDates = this.getExamDates(this.getSelectedTp.semester.number, this.getSelectedTp.id)
+      let foundDate = examDates.find(date => date.note === this.note.id)
+
+      if (foundDate == null) {
+        this.examDate = ''
+        return
+      }
+
+      let location = this.getLocalisation(foundDate.localisation)
+      const options = {hour: '2-digit', minute: '2-digit'}
+      let startDate = new Date(foundDate.start)
+      let newDate = startDate.toLocaleDateString() + ', '
+      newDate += startDate.toLocaleTimeString('fr-FR', options).replace(':', 'h') + ' à '
+      newDate += new Date(foundDate.end).toLocaleTimeString('fr-FR', options).replace(':', 'h') + ', '
+      newDate += location == null ? 'Non défini' : location.name
+      this.examDate = newDate
     }
   },
 
   beforeMount() {
     this.updateNoteStatus()
     this.updateLocalNote()
+    this.updateExamDate()
   },
 
   mounted() {
+
     emitter.on('notes-loaded', () => {
       this.updateNoteStatus()
       this.updateLocalNote()
+      this.updateExamDate()
     })
+
   }
 
 }
@@ -200,12 +229,15 @@ input[type="tel"] {
   .content h1 {
     margin-bottom: 0.25em !important;
   }
+
   .content .columns .column {
     padding-bottom: 0;
   }
+
   .content .columns h1 {
     font-size: 20px;
   }
+
   .custom-button, input[type="tel"] {
     font-size: 16px;
   }

@@ -12,7 +12,7 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import CalendarEventModal from "./CalendarEventModal";
 import {mapGetters} from "vuex";
-
+import emitter from 'tiny-emitter/instance'
 
 export default {
   name: 'ExamCalendar',
@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+      test: 0,
       calendarOptions: {
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
         locale: 'fr',
@@ -128,6 +129,12 @@ export default {
         this.calendarOptions.events = val
       }
     }
+  },
+  mounted() {
+    emitter.on('update-calendar', () => {
+      if(this.test === 1) return
+      this.test = 1
+    })
   },
   methods: {
     loadModal(eventData) {
