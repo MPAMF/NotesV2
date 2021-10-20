@@ -61,6 +61,9 @@ export default {
 .modal-card-body .box {
   box-shadow: none;
 }
+.modal-card-body .box:first-of-type {
+    margin: 0;
+}
 .modal-card-body button {
     color: white !important;
 }
