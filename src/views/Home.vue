@@ -5,10 +5,13 @@
 
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - L3 Informatique</h1>
 
-      <b-tabs type="is-boxed" v-model="activeTab" position="is-centered" :size="size" v-if="getSemesters.length > 0">
+      <b-tabs v-if="getSemesters.length > 0" v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
 
-        <b-tab-item v-for="(semester, index) in getSemesters" :key="index" :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number" :disabled="!semester.activated">
-          <course v-for="(course, index) in semester.activated ? getSelectedAndRequiredCourses(semester.number) : []" :key="index" :course="course" style="margin-bottom: 5vh"
+        <b-tab-item v-for="(semester, index) in getSemesters" :key="index"
+                    :disabled="!semester.activated"
+                    :icon="'numeric-' + semester.number + '-box-multiple-outline'" :label="'Semestre ' + semester.number">
+          <course v-for="(course, index) in semester.activated ? getSelectedAndRequiredCourses(semester.number) : []"
+                  :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></course>
         </b-tab-item>
 
@@ -27,24 +30,24 @@
       <h1 class="title is-size-5-mobile" style="color: white;display:inline-block;">Moyenne générale : {{
           avg.toFixed(2)
         }} / 20</h1>
-        <div key="1" class="sk-circle" v-if="getRunnable >= 0">
-          <div class="sk-circle1 sk-child"></div>
-          <div class="sk-circle2 sk-child"></div>
-          <div class="sk-circle3 sk-child"></div>
-          <div class="sk-circle4 sk-child"></div>
-          <div class="sk-circle5 sk-child"></div>
-          <div class="sk-circle6 sk-child"></div>
-          <div class="sk-circle7 sk-child"></div>
-          <div class="sk-circle8 sk-child"></div>
-          <div class="sk-circle9 sk-child"></div>
-          <div class="sk-circle10 sk-child"></div>
-          <div class="sk-circle11 sk-child"></div>
-          <div class="sk-circle12 sk-child"></div>
-        </div>
+      <div v-if="getRunnable >= 0" key="1" class="sk-circle">
+        <div class="sk-circle1 sk-child"></div>
+        <div class="sk-circle2 sk-child"></div>
+        <div class="sk-circle3 sk-child"></div>
+        <div class="sk-circle4 sk-child"></div>
+        <div class="sk-circle5 sk-child"></div>
+        <div class="sk-circle6 sk-child"></div>
+        <div class="sk-circle7 sk-child"></div>
+        <div class="sk-circle8 sk-child"></div>
+        <div class="sk-circle9 sk-child"></div>
+        <div class="sk-circle10 sk-child"></div>
+        <div class="sk-circle11 sk-child"></div>
+        <div class="sk-circle12 sk-child"></div>
+      </div>
 
-        <div class="sk-circle" v-else>
-          <b-icon key="2" icon="cloud-check" :size="size"></b-icon>
-        </div>
+      <div v-else class="sk-circle">
+        <b-icon key="2" :size="size" icon="cloud-check"></b-icon>
+      </div>
     </div>
 
   </div>
@@ -84,7 +87,7 @@ export default {
 
   watch: {
     activeTab: (newActiveTab) => {
-      if(newActiveTab != 2) return
+      if (newActiveTab !== 2) return
       emitter.emit('update-calendar')
     }
   },
@@ -99,16 +102,16 @@ export default {
     })
   },
 
-  beforeDestroy() { 
-    window.removeEventListener('resize', this.onResize); 
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
   },
 
   methods: {
 
     onResize() {
       this.windowWidth = window.innerWidth
-      if(this.windowWidth <= 768) this.size='null'
-      else this.size='is-medium'
+      if (this.windowWidth <= 768) this.size = 'null'
+      else this.size = 'is-medium'
     },
 
     updateAvg({courseId, coeff, avg}) {
@@ -138,14 +141,9 @@ export default {
         canCancel: false
       })
     },
-
-    displayTabs() {
-      console.log("bite");
-    }
   },
 
   created() {
-
     let sessionId = localStorage.getItem('session_id')
     this.$store.commit('setSessionId', sessionId)
 
@@ -179,7 +177,6 @@ export default {
 </script>
 
 
-
 <style>
 
 .average.box {
@@ -189,7 +186,7 @@ export default {
 .average {
   background: #232B32 !important;
   position: sticky;
-  bottom:0;
+  bottom: 0;
   border-radius: 8px 8px 0 0;
   border-top: solid 3px #141d26;
   width: 100%;

@@ -46,6 +46,7 @@ export default {
           let matiere = course == null ? 'Non définie' : course.name
           name += ', ' + matiere
           let color = this.isDarkMode ? course.dark_color : course.color
+          let startDate = new Date(exam.start)
 
           result.push({
             title: name,
@@ -57,9 +58,11 @@ export default {
             extendedProps: {
               coeff: coeff.toString(),
               salle: loc.name,
-              duree: this.calulateDuration(exam.start, exam.end),
+              duree: this.calculateDuration(exam.start, exam.end),
               type: note.name,
-              matiere: matiere
+              matiere: matiere,
+              date: startDate.toLocaleDateString(),
+              debut: startDate.toLocaleTimeString()
             }
           })
         }
@@ -147,7 +150,7 @@ export default {
         }
       })
     },
-    calulateDuration(d1, d2) {
+    calculateDuration(d1, d2) {
       let date1 = new Date(d1)
       let date2 = new Date(d2)
       let difference = date1.getTime() - date2.getTime();

@@ -7,6 +7,7 @@ import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import VueNumeric from 'vue-numeric'
 import VueAxios from "vue-axios";
+import {VueReCaptcha} from 'vue-recaptcha-v3'
 import axios from 'axios'
 
 // params
@@ -18,6 +19,7 @@ Vue.config.productionTip = false
 Vue.use(Buefy)
 Vue.use(VueNumeric)
 Vue.use(VueAxios, axios)
+Vue.use(VueReCaptcha, {siteKey: process.env.VUE_APP_RECAPTCHA_SITE_KEY || ""})
 
 new Vue({
     router,

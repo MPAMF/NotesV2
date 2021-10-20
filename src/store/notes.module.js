@@ -1,4 +1,5 @@
 import axios from "axios";
+import Vue from "vue";
 
 const state = {
     notes: [],
@@ -196,13 +197,21 @@ const actions = {
             commit('setCanEdit', false)
 
             // save here
-            axios.put('sessions/' + state.sessionId + '/', data).finally(() => {
-                state.modifiedNotes = {}
-                state.modifiedSelectedCourses = {}
-                state.modifiedSelectedTp = null
-                commit('setCanEdit', true)
-                state.runnable = -1
+            Vue.prototype.$recaptchaLoaded().then(() => {
+                Vue.prototype.$recaptcha("sessions").then(
+                    (token) => {
+                        data['recaptcha'] = token
+
+                        axios.put('sessions/' + state.sessionId + '/', data).finally(() => {
+                            state.modifiedNotes = {}
+                            state.modifiedSelectedCourses = {}
+                            state.modifiedSelectedTp = null
+                            commit('setCanEdit', true)
+                            state.runnable = -1
+                        })
+                    })
             })
+
 
         }, 3000)
 
