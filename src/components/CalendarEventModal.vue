@@ -2,7 +2,7 @@
   <div class="modal-card" :class="{'dark-mode':isDarkMode}">
     <header class="modal-card-head" :style="{'background-color':eventData.backgroundColor+' !important'}">
       <!-- <p class="modal-card-title"><b>{{eventData.extendedProps.matiere}}</b></p> -->
-      <p class="modal-card-title"><b>ASE, TP noté</b></p>
+      <p class="modal-card-title"><b>{{eventData.extendedProps.acronym}}, {{eventData.extendedProps.type}}</b></p>
       <button
           type="button"
           class="delete"

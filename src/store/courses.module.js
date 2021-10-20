@@ -98,8 +98,8 @@ const getters = {
                     return semester
         return null
     },
-    getRealNote: (state, getters) => (semester, noteId) => {
-        let courses = getters.getCourses(semester)
+    getRealNote: (state, getters) => (semester, selected, noteId) => {
+        let courses = selected ? getters.getSelectedAndRequiredCourses(semester) : getters.getCourses(semester)
         for (let course of courses) {
             for (let note of course.notes) {
                 if (note.multiple) continue
@@ -125,14 +125,6 @@ const getters = {
             Array.prototype.push.apply(groups, semester.groups)
         return groups
     },
-    // eslint-disable-next-line no-unused-vars
-    /*    getTpGroup: state => (semester, number) => {
-            for (const semesterElement of semester.groups) {
-
-            }
-        },
-        */
-
     getExamDates: (state, getters) => (semester, tpGroup) => {
         let foundSemester = getters.getSemester(semester)
         if (!foundSemester) return []

@@ -35,7 +35,7 @@ export default {
         let result = []
 
         for (const exam of exams) {
-          let note = this.getRealNote(semester, exam.note)
+          let note = this.getRealNote(semester, true, exam.note)
           let loc = this.getLocalisation(exam.localisation)
           if (note == null) continue
           let course = this.getCourseByNote(note.id)
@@ -43,8 +43,9 @@ export default {
           let name = note.name + ' (' + coeff + '%)'
           if (loc != null)
             name += ', ' + loc.name
+          let acronyme = course == null ? 'Not Set' : course.acronym
           let matiere = course == null ? 'Non définie' : course.name
-          name += ', ' + matiere
+          name += ', ' + acronyme
           let color = this.isDarkMode ? course.dark_color : course.color
           let startDate = new Date(exam.start)
 
@@ -61,8 +62,9 @@ export default {
               duree: this.calculateDuration(exam.start, exam.end),
               type: note.name,
               matiere: matiere,
-              date: startDate.toLocaleDateString(),
-              debut: startDate.toLocaleTimeString()
+              acronym: acronyme,
+              date: startDate.toLocaleDateString('fr-FR'),
+              debut: startDate.toLocaleTimeString('fr-FR')
             }
           })
         }
@@ -153,7 +155,11 @@ export default {
     calculateDuration(d1, d2) {
       let date1 = new Date(d1)
       let date2 = new Date(d2)
-      let difference = date1.getTime() - date2.getTime();
+      let difference = date2.getTime() - date1.getTime();
+      console.log("pouet")
+      console.log(date1.getTime())
+      console.log(date2.getTime())
+      console.log(difference)
 
       let hoursDifference = Math.floor(difference / 1000 / 60 / 60);
       difference -= hoursDifference * 1000 * 60 * 60
@@ -182,7 +188,8 @@ export default {
 .fc-event-main-frame {
   flex-direction: column;
 }
-/* 
+
+/*
 @media screen and (min-height: 1300px) {
   table {
     height: 1000px !important;
