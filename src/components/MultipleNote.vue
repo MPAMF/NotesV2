@@ -2,21 +2,21 @@
   <div class="column is-one-quarter">
     <b-field :label="note.name">
       <p class="control has-icons-left has-icons-right">
-        <span class="icon is-left is-clickable" @click="activated = !activated" style="height: 100%">
-            <i class="mdi mdi-24px" :class="activated ? 'mdi-close' : 'mdi-check'"
+        <span class="icon is-left is-clickable" style="height: 100%" @click="activated = !activated">
+            <i :class="activated ? 'mdi-close' : 'mdi-check'" class="mdi mdi-24px"
                style="color: #714dd2"></i>
 
         </span>
-        <vue-numeric class="input" v-bind:precision="2"
-                     v-bind:min="0"
+        <vue-numeric v-model.lazy="userNote" :disabled="!getCanEdit || !activated"
+                     class="input"
                      v-bind:max="note.denominator"
-                     v-model.lazy="userNote"
-                     :disabled="!getCanEdit || !activated"
+                     v-bind:min="0"
+                     v-bind:precision="2"
                      @change="updateNote"
         ></vue-numeric>
-        <span class="icon is-small is-right" :style="{'color': (activated ? '#714dd2' : '#7a7a7a')}">
-                <b class="is-primary"
-                   :style="{'font-weight': (activated ? 'bold' : 'normal')}">{{ ' / ' + note.denominator }}</b>
+        <span :style="{'color': (activated ? '#714dd2' : '#7a7a7a')}" class="icon is-small is-right">
+                <b :style="{'font-weight': (activated ? 'bold' : 'normal')}"
+                   class="is-primary">{{ ' / ' + note.denominator }}</b>
         </span>
       </p>
     </b-field>

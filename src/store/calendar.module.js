@@ -2,7 +2,8 @@ import axios from "axios";
 import ICAL from "ical.js"
 
 const state = {
-    events: []
+    events: [],
+    displayFullPlanning: true
 }
 const mutations = {
     // eslint-disable-next-line no-unused-vars
@@ -13,10 +14,10 @@ const mutations = {
         if (idxLoc !== -1)
             location = location.substr(0, idxLoc - 1)
 
-        if(location === 'Grand Amphi de Maths-Frenkel')
+        if (location === 'Grand Amphi de Maths-Frenkel')
             location = 'GAM'
 
-        if(location === 'Petit Amphi de Maths')
+        if (location === 'Petit Amphi de Maths')
             location = 'PAM'
 
         let startDate = event.startDate.toJSDate()
@@ -49,11 +50,23 @@ const mutations = {
                 debut: startDate.toLocaleTimeString('fr-FR')
             }
         })
+    },
+
+    setDisplayingFullPlanning(state, status) {
+        state.displayFullPlanning = status
+        localStorage.setItem('displayFullPlanning', status)
+    },
+
+    clearCalendarEvents(state) {
+        state.events = []
     }
 }
 const actions = {
     fetchCalendar({commit, rootGetters}, url) {
         commit('startFetching', 'fetchCalendar')
+        let status = localStorage.getItem('displayFullPlanning')
+        if (status != null) commit('setDisplayingFullPlanning', status)
+
         return new Promise(((resolve, reject) => axios.get(url).then(({data}) => {
             let jcalData = ICAL.parse(data)
             let comp = new ICAL.Component(jcalData);
@@ -69,7 +82,10 @@ const actions = {
                 if (idxSummary !== -1)
                     eventSummary = eventSummary.substr(0, idxSummary)
 
-                let course = rootGetters['getCourseByName'](eventSummary)
+                let courses = rootGetters['getAllCourses']
+
+                // moche mais on s'adapte
+                let course = courses.find(course => course.name.toLowerCase().replace('Option - ', '') === name.toLowerCase())
 
                 commit('processEvent', {
                     event: event,
@@ -87,7 +103,8 @@ const actions = {
     },
 }
 const getters = {
-    getCalendarEvents: state => state.events
+    getCalendarEvents: state => state.events,
+    isDisplayingFullPlanning: state => state.displayFullPlanning
 }
 
 export default {

@@ -76,7 +76,8 @@
             <h1 class="subtitle">Affichage du planning</h1>
             <b-field>
               <b-switch
-                  v-model="darkMode"
+                  v-model="displayFullPlanning"
+                  :disabled="planningUrl == null || planningUrl.length === 0"
                   passive-type='is-primary'>
                 Complet
               </b-switch>
@@ -120,7 +121,8 @@ export default {
   },
   computed: {
     ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
-      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp', 'getPlanningUrl']),
+      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp', 'getPlanningUrl',
+      'isDisplayingFullPlanning']),
     darkMode: {
       get() {
         return this.isDarkMode
@@ -186,6 +188,19 @@ export default {
         })
         this.$store.commit('setPlanningUrl', value)
         this.$store.dispatch('fetchCalendar', value)
+      }
+    },
+    displayFullPlanning: {
+      get() {
+        return this.isDisplayingFullPlanning
+      },
+      set(value) {
+        this.$store.commit('setDisplayingFullPlanning', value)
+        if (value) {
+          this.$store.dispatch('fetchCalendar', this.planningUrl)
+          return
+        }
+        this.$store.commit('clearCalendarEvents')
       }
     }
   },

@@ -1,22 +1,22 @@
 <template>
-  <div class="modal-card" :class="{'dark-mode':isDarkMode}">
+  <div :class="{'dark-mode':isDarkMode}" class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title"><b>{{note.name}} : {{ avg.toFixed(2) + '/20' }}</b></p>
+      <p class="modal-card-title"><b>{{ note.name }} : {{ avg.toFixed(2) + '/20' }}</b></p>
       <button
-          type="button"
           class="delete"
+          type="button"
           @click="$emit('close')"/>
     </header>
     <section class="modal-card-body">
       <div class="columns is-multiline is-centered">
-        <multiple-note @update-avg="updateAvg" v-for="(note, index) in note.notes" :key="index" :note="note"
-                       :course="course"></multiple-note>
+        <multiple-note v-for="(note, index) in note.notes" :key="index" :course="course" :note="note"
+                       @update-avg="updateAvg"></multiple-note>
       </div>
     </section>
     <footer class="modal-card-foot">
-      <b-button type="is-primary"
+      <b-button expanded
                 label="OK"
-                @click="$emit('close')" expanded/>
+                type="is-primary" @click="$emit('close')"/>
     </footer>
   </div>
 </template>

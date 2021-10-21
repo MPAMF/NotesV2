@@ -65,7 +65,7 @@ const mutations = {
     },
 
     setPlanningUrl(state, url) {
-      state.planningUrl = url
+        state.planningUrl = url
     },
 
     addSelectedCourse(state, {selectedCourse, semester}) {
@@ -200,7 +200,7 @@ const actions = {
         if (state.modifiedSelectedTp != null)
             data['tp_group'] = state.modifiedSelectedTp
 
-        if(state.modifiedPlanningUrl)
+        if (state.modifiedPlanningUrl)
             data['planning_url'] = state.modifiedPlanningUrl
 
         state.runnable = setTimeout(() => {

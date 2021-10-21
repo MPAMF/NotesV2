@@ -1,10 +1,10 @@
 <template>
-  <div class="modal-card" :class="{'dark-mode':isDarkMode}">
+  <div :class="{'dark-mode':isDarkMode}" class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title"><b>Charger une autre session</b></p>
       <button
-          type="button"
           class="delete"
+          type="button"
           @click="$emit('close')"/>
     </header>
     <section class="modal-card-body">
@@ -15,30 +15,30 @@
           <div class="column text-center"><p class="subtitle">Déjà une session ?</p>
 
 
-            <b-field type="is-success" message="Copiez votre clé de session crée ci-dessus" v-if="created">
-              <b-input v-model="sessionId" maxlength="8" placeholder="Entrez votre clé de session"
-                       :disabled="created"></b-input>
+            <b-field v-if="created" message="Copiez votre clé de session crée ci-dessus" type="is-success">
+              <b-input v-model="sessionId" :disabled="created" maxlength="8"
+                       placeholder="Entrez votre clé de session"></b-input>
             </b-field>
 
-            <b-input v-model="sessionId" maxlength="8" placeholder="Saisissez votre clé ici" v-else></b-input>
+            <b-input v-else v-model="sessionId" maxlength="8" placeholder="Saisissez votre clé ici"></b-input>
 
-            <b-checkbox style="margin-top: -10px" v-model="rememberSession">Se souvenir de cette session</b-checkbox>
+            <b-checkbox v-model="rememberSession" style="margin-top: -10px">Se souvenir de cette session</b-checkbox>
           </div>
 
           <hr>
 
           <div class="column text-center"><p class="subtitle">Pas encore de clé ?</p>
-            <b-button class="main-button"
-                label="Créer une nouvelle session"
-                :disabled="created || sessionId.length > 5"
-                @click="createSession"/>
+            <b-button :disabled="created || sessionId.length > 5"
+                      class="main-button"
+                      label="Créer une nouvelle session"
+                      @click="createSession"/>
           </div>
 
         </div>
       </div>
       <div class="box">
-            <b-button class="main-button" label="Continuer" :disabled="!created && sessionId.length <= 5"
-                      @click="continueSession" expanded/>
+        <b-button :disabled="!created && sessionId.length <= 5" class="main-button" expanded
+                  label="Continuer" @click="continueSession"/>
       </div>
     </section>
   </div>

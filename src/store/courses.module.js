@@ -125,6 +125,7 @@ const getters = {
         let groups = []
         for (let semester of state.semesters)
             Array.prototype.push.apply(groups, semester.groups)
+        groups.sort((a, b) => a.name.localeCompare(b.name))
         return groups
     },
     getExamDates: (state, getters) => (semester, tpGroup) => {

@@ -44,6 +44,7 @@ export default {
 .box button.main-button span {
   color: white !important;
 }
+
 .box button.main-button {
   border-color: #7957d5 !important;
   background: #7957d5;
@@ -52,6 +53,7 @@ export default {
 .box button.scd-button span {
   color: white !important;
 }
+
 .box button.scd-button {
   border: solid 1px #7957d5;
   background-color: #DBD0FB;
@@ -68,7 +70,7 @@ export default {
   height: 100%;
 }
 
-.dark-mode .title, .dark-mode .subtitle{
+.dark-mode .title, .dark-mode .subtitle {
   color: white !important;
 }
 
@@ -84,17 +86,17 @@ hr {
 /* cloud icon */
 
 .sk-circle span i {
-  color: #7957d5  !important;
+  color: #7957d5 !important;
 }
 
 .average .sk-circle span i, .dark-mode .sk-circle span i {
-  color: #BCA8EA  !important;
+  color: #BCA8EA !important;
 }
 
 /* modals */
 
 .modal-card-body .button.is-fullwidth:hover:enabled, .main-button:hover:enabled {
-    opacity: 0.8 !important;
+  opacity: 0.8 !important;
 }
 
 /* tabs */
@@ -104,7 +106,7 @@ hr {
 }
 
 .dark-mode .tabs.is-boxed li.is-active span {
-  color:#CCBDF6;
+  color: #CCBDF6;
 }
 
 .dark-mode .tabs.is-boxed a:hover {
@@ -140,6 +142,7 @@ hr {
   text-transform: uppercase !important;
   color: #7957d5;
 }
+
 .dark-mode .box small.counter {
   color: white;
 }
@@ -207,6 +210,7 @@ hr {
 .dark-mode .card .collapse-content button {
   background-color: white;
 }
+
 /* notes multiple*/
 
 .dark-mode .modal-card-head, .dark-mode .modal-card-foot {
@@ -232,6 +236,7 @@ hr {
   color: #2C3E50;
   text-transform: capitalize;
 }
+
 .fc-col-header-cell-cushion:hover {
   text-decoration: underline;
 }
@@ -240,7 +245,7 @@ hr {
   color: black !important;
 }
 
-.fc-day-today, .fc-day-disabled{
+.fc-day-today, .fc-day-disabled {
   background-color: #D8EAFD !important;
 }
 
@@ -256,10 +261,12 @@ a.fc-daygrid-more-link:hover {
 .fc-list-table .fc-list-day-cushion {
   background-color: #EBEBEB !important;
 }
-.fc-list-table .fc-list-day-cushion a{
+
+.fc-list-table .fc-list-day-cushion a {
   color: #2C3E50;
 }
-.fc-list-table .fc-list-day-cushion a:first-of-type{
+
+.fc-list-table .fc-list-day-cushion a:first-of-type {
   text-transform: capitalize;
 }
 
@@ -268,6 +275,7 @@ a.fc-daygrid-more-link:hover {
 .dark-mode .fc-toolbar-title, .dark-mode .fc-col-header-cell-cushion {
   color: white;
 }
+
 .dark-mode .fc-col-header-cell-cushion {
   color: #BCE8F1;
 }
@@ -276,7 +284,7 @@ a.fc-daygrid-more-link:hover {
   color: white !important;
 }
 
-.dark-mode table, .dark-mode td, .dark-mode th{
+.dark-mode table, .dark-mode td, .dark-mode th {
   border-color: #232b32 !important;
 }
 
@@ -293,6 +301,7 @@ a.fc-daygrid-more-link:hover {
   background-color: #232b32 !important;
   color: white !important;
 }
+
 .dark-mode .fc-popover-body {
   background-color: #2C3E50 !important;
 }
@@ -305,7 +314,8 @@ a.fc-daygrid-more-link:hover {
   background-color: #141d26 !important;
   border-bottom: solid 1px #141d26;
 }
-.dark-mode .fc-list-table .fc-list-day-cushion a{
+
+.dark-mode .fc-list-table .fc-list-day-cushion a {
   color: white;
 }
 
@@ -313,10 +323,11 @@ a.fc-daygrid-more-link:hover {
   background-color: #232b32 !important;
 }
 
-.dark-mode .fc-list-event .fc-list-event-time, .dark-mode .fc-list-event a{
+.dark-mode .fc-list-event .fc-list-event-time, .dark-mode .fc-list-event a {
   color: white !important;
 }
-.dark-mode .fc-list-event:hover .fc-list-event-time, .dark-mode .fc-list-event:hover .fc-list-event-title, .dark-mode .fc-list-event:hover .fc-list-event-graphic{
+
+.dark-mode .fc-list-event:hover .fc-list-event-time, .dark-mode .fc-list-event:hover .fc-list-event-title, .dark-mode .fc-list-event:hover .fc-list-event-graphic {
   background-color: #2C3E50 !important;
 }
 
