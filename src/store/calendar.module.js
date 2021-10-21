@@ -70,6 +70,7 @@ const actions = {
         return new Promise(((resolve, reject) => axios.get(url).then(({data}) => {
             let jcalData = ICAL.parse(data)
             let comp = new ICAL.Component(jcalData);
+            let courses = rootGetters['getAllCourses']
 
             for (const component of comp.getAllSubcomponents()) {
                 let event = new ICAL.Event(component);
@@ -82,10 +83,8 @@ const actions = {
                 if (idxSummary !== -1)
                     eventSummary = eventSummary.substr(0, idxSummary)
 
-                let courses = rootGetters['getAllCourses']
-
                 // moche mais on s'adapte
-                let course = courses.find(course => course.name.toLowerCase().replace('Option - ', '') === name.toLowerCase())
+                let course = courses.find(course => course.name.replace('Option - ', '').replace('Langue - ', '').toLowerCase() === eventSummary.toLowerCase())
 
                 commit('processEvent', {
                     event: event,
