@@ -78,7 +78,7 @@ const actions = {
                 if (eventSummary.includes('CONTROLE'))
                     continue
 
-                let type = eventSummary.includes('TD') ? 'TD' : (eventSummary.includes('TP') ? 'TP' : 'CM')
+                let type = eventSummary.includes('CM') ? 'CM' : (eventSummary.includes('TP') ? 'TP' : eventSummary.includes('TD') ? 'TD' : 'CI')
                 let idxSummary = eventSummary.indexOf(' ' + type)
                 if (idxSummary !== -1)
                     eventSummary = eventSummary.substr(0, idxSummary)
