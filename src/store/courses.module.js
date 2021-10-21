@@ -5,17 +5,19 @@ const state = {
     localisations: {},
     localisationImages: {},
     //
-    fetching: false,
+    fetching: [],
     //
     currentSemester: 5
 }
 
 const mutations = {
-    startFetching(state) {
-        state.fetching = true
+    startFetching(state, action) {
+        state.fetching.push(action)
     },
-    stopFetching(state) {
-        state.fetching = false
+    stopFetching(state, action) {
+        let index = state.fetching.indexOf(action)
+        if (index === -1) return
+        state.fetching.splice(state.fetching.indexOf(action), 1);
     },
     fetchSuccess(state, {localisations, localisation_images, semesters}) {
         for (let i = 0; i < semesters.length; i++) {
@@ -40,7 +42,7 @@ const mutations = {
             for (let tdGroup of semester.td_groups) {
                 for (let tpGroup of tdGroup.tp_groups) {
                     groups.push({
-                        name: 'L' + semester.number + ' TD' + tdGroup.number + ' TP' + tpGroup.number,
+                        name: 'S' + semester.number + ' TD' + tdGroup.number + ' TP' + tpGroup.number,
                         td: tdGroup.number,
                         tp: tpGroup.number,
                         semester: {number: semester.number},
@@ -73,13 +75,13 @@ const mutations = {
 const actions = {
     // eslint-disable-next-line no-unused-vars
     fetchData({commit}) {
-        commit('startFetching')
+        commit('startFetching', 'fetchData')
         return new Promise(((resolve, reject) => axios.get('courses/').then(({data}) => {
             commit('fetchSuccess', data)
             resolve()
         }).catch(error => {
             reject(error)
-        }).finally(() => commit('stopFetching'))))
+        }).finally(() => commit('stopFetching', 'fetchData'))))
     },
 
 }
@@ -111,7 +113,7 @@ const getters = {
         return null
     },
     getSemesters: state => state.semesters,
-    isFetching: state => state.fetching,
+    isFetching: state => state.fetching.length > 0,
     getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
     getAllCourses: state => {
         let courses = []

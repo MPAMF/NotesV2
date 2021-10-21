@@ -73,7 +73,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getRunnable', 'getSemesters', 'getSelectedAndRequiredCourses'])
+    ...mapGetters(['getRunnable', 'getSemesters', 'getSelectedAndRequiredCourses', 'getPlanningUrl'])
   },
 
   data() {
@@ -142,29 +142,49 @@ export default {
         canCancel: false
       })
     },
+
+    sessionSuccessfullyLoaded(sessionId) {
+      emitter.emit('notes-loaded')
+      this.$buefy.toast.open({
+        duration: 2000,
+        message: `Votre session ${sessionId} a bien été chargée.`,
+        type: 'is-success'
+      })
+    }
   },
 
   created() {
     let sessionId = localStorage.getItem('session_id')
     this.$store.commit('setSessionId', sessionId)
 
-    this.$store.commit('startFetching')
+    this.$store.commit('startFetching', 'homeCreated')
 
     this.$store.dispatch('fetchData').then(() => {
 
       if (sessionId === null) {
-        this.$store.commit('stopFetching')
+        this.$store.commit('stopFetching', 'homeCreated')
         this.displayDialog()
         return
       }
 
       this.$store.dispatch('loadSession').then(() => {
-        emitter.emit('notes-loaded')
-        this.$buefy.toast.open({
-          duration: 2000,
-          message: `Votre session ${sessionId} a bien été chargée.`,
-          type: 'is-success'
-        })
+
+        let url = this.getPlanningUrl
+
+        if (url == null || url.length === 0) {
+          this.sessionSuccessfullyLoaded(sessionId)
+          return
+        }
+
+        this.$store.dispatch('fetchCalendar', url).catch((e) => {
+          this.$buefy.toast.open({
+            duration: 2000,
+            message: `Impossible de charger le calendrier`,
+            type: 'is-danger'
+          })
+          console.log(e)
+        }).finally(() => this.sessionSuccessfullyLoaded(sessionId))
+
       }).catch((e) => {
         console.log(e)
         this.$buefy.toast.open({
@@ -173,7 +193,7 @@ export default {
           type: 'is-danger'
         })
       })
-    })
+    }).finally(() => this.$store.commit('stopFetching', 'homeCreated'))
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container"> 
+  <div class="container">
 
     <div class="box">
       <div class="container" style="width: 80%">
@@ -20,7 +20,7 @@
           </div>
 
           <div v-else class="sk-circle">
-            <b-icon key="2" icon="cloud-check" :size="size"></b-icon>
+            <b-icon key="2" :size="size" icon="cloud-check"></b-icon>
           </div>
 
           <h1 class="subtitle">Votre session actuelle est : <b>{{ getSessionId }}</b></h1>
@@ -30,7 +30,9 @@
 
         <div class="columns">
           <div class="column">
-            <b-button class="main-button" icon-left="reload" size="is-medium" @click="loadSession">Charger une autre session</b-button>
+            <b-button class="main-button" icon-left="reload" size="is-medium" @click="loadSession">Charger une autre
+              session
+            </b-button>
           </div>
           <div class="column">
             <b-button disabled icon-left="download" size="is-medium">Télécharger vos données</b-button>
@@ -56,6 +58,29 @@
                          @select="selectOption"><span
                 slot="noResult">Aucune option trouvée lors de cette recherche.</span>
             </multiselect>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="columns">
+          <div class="column">
+            <h1 class="subtitle">URL du planning</h1>
+            <b-field :message="urlErrorMessage" :type="urlErrorMessage.length > 0 ? 'is-danger' : ''">
+              <b-input v-model="planningUrl" maxlength="128" placeholder="Insérez votre URL d'emploi du temps"
+                       type="url">
+              </b-input>
+            </b-field>
+          </div>
+          <div class="column is-one-quarter">
+            <h1 class="subtitle">Affichage du planning</h1>
+            <b-field>
+              <b-switch
+                  v-model="darkMode"
+                  passive-type='is-primary'>
+                Complet
+              </b-switch>
+            </b-field>
           </div>
         </div>
 
@@ -89,11 +114,13 @@ export default {
     return {
       size: 'is-medium',
       windowWidth: window.innerWidth,
+      regexUrl: '^https:\\/\\/monemploidutemps.unistra.fr\\/api\\/calendar\\/[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}\\/export$',
+      urlErrorMessage: ''
     }
   },
   computed: {
     ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
-      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp']),
+      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp', 'getPlanningUrl']),
     darkMode: {
       get() {
         return this.isDarkMode
@@ -134,10 +161,36 @@ export default {
         })
         this.$store.commit('setSelectedTp', value)
       }
+    },
+    planningUrl: {
+      get() {
+        return this.getPlanningUrl
+      },
+      set(value) {
+
+        if (value.length === 0) {
+          this.urlErrorMessage = ''
+          return
+        }
+
+        if (!value.match(this.regexUrl)) {
+          this.urlErrorMessage = 'L\'url doit être du format: https://monemploidutemps.unistra.fr/api/calendar/[uuid]/export'
+          return
+        }
+
+        this.urlErrorMessage = ''
+
+        this.$store.dispatch('editSession', {
+          obj: value,
+          type: 3
+        })
+        this.$store.commit('setPlanningUrl', value)
+        this.$store.dispatch('fetchCalendar', value)
+      }
     }
   },
 
-  
+
   beforeMount() {
     this.onResize();
   },
@@ -148,15 +201,15 @@ export default {
     })
   },
 
-  beforeDestroy() { 
-    window.removeEventListener('resize', this.onResize); 
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
   },
 
   methods: {
     onResize() {
       this.windowWidth = window.innerWidth
-      if(this.windowWidth <= 768) this.size='null'
-      else this.size='is-medium'
+      if (this.windowWidth <= 768) this.size = 'null'
+      else this.size = 'is-medium'
     },
     loadSession() {
       this.$buefy.modal.open({
@@ -236,13 +289,15 @@ b-button:last-of-type {
 </style>
 
 <style>
-  .multiselect__option--highlight, .multiselect__tag {
-    background: #7957d5 !important;
-  }
-  .multiselect__tag-icon:after {
-    color: white !important;
-  }
-  .multiselect__tag-icon:hover, .multiselect__tag-icon:focus {
-    background: #5E36C9 !important;
-  }
+.multiselect__option--highlight, .multiselect__tag {
+  background: #7957d5 !important;
+}
+
+.multiselect__tag-icon:after {
+  color: white !important;
+}
+
+.multiselect__tag-icon:hover, .multiselect__tag-icon:focus {
+  background: #5E36C9 !important;
+}
 </style>

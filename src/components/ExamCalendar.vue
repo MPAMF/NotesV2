@@ -20,7 +20,7 @@ export default {
     FullCalendar
   },
   computed: {
-    ...mapGetters(['getExamDates', 'getSelectedTp', 'getRealNote', 'getLocalisation', 'getCourseByNote', 'isDarkMode']),
+    ...mapGetters(['getExamDates', 'getSelectedTp', 'getRealNote', 'getLocalisation', 'getCourseByNote', 'isDarkMode', 'getCalendarEvents']),
 
     examDates: {
       get() {
@@ -53,6 +53,7 @@ export default {
             backgroundColor: color,
             borderColor: color,
             extendedProps: {
+              calendarType: 'exams',
               coeff: coeff.toString(),
               salle: loc.name,
               duree: this.calculateDuration(exam.start, exam.end),
@@ -65,6 +66,11 @@ export default {
           })
         }
         return result
+      }
+    },
+    calendarEvents: {
+      get() {
+        return this.getCalendarEvents
       }
     }
   },
@@ -116,7 +122,14 @@ export default {
         progressiveEventRendering: false,
         forceEventDuration: true,
         dayMaxEventRows: 2,
-        events: [],
+        eventSources: [
+          { // Exam dates
+            events: []
+          },
+          { // Calendar
+            events: []
+          },
+        ],
         eventClick: (info) => {
           this.loadModal(info.event);
         }
@@ -127,14 +140,19 @@ export default {
     examDates: {
       // eslint-disable-next-line no-unused-vars
       handler(val, oldVal) {
-        this.calendarOptions.events = val
+        this.calendarOptions.eventSources[0].events = val
+      }
+    },
+    calendarEvents: {
+      // eslint-disable-next-line no-unused-vars
+      handler(val, oldVal) {
+        this.calendarOptions.eventSources[1].events = val
       }
     }
   },
   mounted() {
     emitter.on('update-calendar', () => {
-      if(this.test === 1) return
-      this.test = 1
+      this.test = this.test === 0 ? 1 : 0
     })
   },
   methods: {
