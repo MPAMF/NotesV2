@@ -136,7 +136,7 @@ hr {
 
 /* popup parameters */
 
-.box input:not(:placeholder-shown) {
+.modal-card-body .box input:not(:placeholder-shown) {
   text-transform: uppercase !important;
   color: #7957d5;
 }

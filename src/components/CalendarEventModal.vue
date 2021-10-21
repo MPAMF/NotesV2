@@ -11,10 +11,10 @@
     <section class="modal-card-body">
       <div class="box">
             <p class="subtitle">{{eventData.extendedProps.matiere}}</p>
-            <p class="subtitle">Examen : {{eventData.extendedProps.type}} ({{eventData.extendedProps.coeff}}%)</p>
+            <p class="subtitle" v-if="eventData.extendedProps.calendarType === 'exams'">Examen : {{eventData.extendedProps.type}} ({{eventData.extendedProps.coeff}}%)</p>
             <p class="subtitle">Date : {{eventData.extendedProps.date}}, {{eventData.extendedProps.debut}}</p>
             <p class="subtitle">Salle : {{eventData.extendedProps.salle}}</p>
-            <p class="subtitle">Durée : {{eventData.extendedProps.duree}}</p>
+            <p class="subtitle" v-if="eventData.extendedProps.calendarType === 'exams'">Durée : {{eventData.extendedProps.duree}}</p>
       </div>
       <div class="box">
             <b-button label="OK" @click="$emit('close')" :style="{'background-color':eventData.backgroundColor+' !important'}" expanded/>

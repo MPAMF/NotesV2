@@ -19,6 +19,7 @@
     "bootstrap": "^5.1.2",
     "buefy": "^0.9.10",
     "core-js": "^3.18.2",
+    "ical.js": "^1.4.0",
     "tiny-emitter": "^2.1.0",
     "v-calendar": "^2.3.4",
     "vue": "^2.6.11",

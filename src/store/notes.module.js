@@ -5,12 +5,14 @@ const state = {
     notes: [],
     noteStatus: [],
     sessionId: '',
+    planningUrl: null,
     notesLoaded: false,
 
     // saving
     modifiedNotes: {},
     modifiedSelectedCourses: {},
     modifiedSelectedTp: null,
+    modifiedPlanningUrl: null,
     runnable: -1,
     canEdit: true,
 
@@ -62,6 +64,10 @@ const mutations = {
         state.selectedTp = tp
     },
 
+    setPlanningUrl(state, url) {
+      state.planningUrl = url
+    },
+
     addSelectedCourse(state, {selectedCourse, semester}) {
         state.selectedCourses.push({
             course: selectedCourse.id,
@@ -86,18 +92,18 @@ const actions = {
     },
 
     createSession({commit}) {
-        commit('startFetching')
+        commit('startFetching', 'createSession')
         return new Promise(((resolve, reject) => axios.post('sessions/', {notes: [], tp_group: null}).then(({data}) => {
             commit('setSessionId', data['session_key'])
             commit('setNotesLoaded', true)
             resolve()
         }).catch(error => {
             reject(error)
-        }).finally(() => commit('stopFetching'))))
+        }).finally(() => commit('stopFetching', 'createSession'))))
     },
 
     loadSession({state, commit, getters, rootGetters}) {
-        commit('startFetching')
+        commit('startFetching', 'loadSession')
         return new Promise(((resolve, reject) => axios.get('sessions/' + state.sessionId + '/').then(({data}) => {
             for (const note of data.notes) {
                 let course = rootGetters['getCourseByNote'](note.note)
@@ -128,16 +134,18 @@ const actions = {
             }
             let group = getters.findTpGroup(data.tp_group)
             commit('setSelectedTp', data.tp_group == null ? null : group)
+            commit('setPlanningUrl', data.planning_url)
             resolve()
         }).catch(error => {
             reject(error)
             console.log(error)
-        }).finally(() => commit('stopFetching'))))
+        }).finally(() => commit('stopFetching', 'loadSession'))))
     },
     /*
         type = 0 : Notes
         type = 1 : Set selected TP
         type = 2 : Set selected courses
+        type = 3 : Set selected planning url
      */
     editSession({state, commit}, {type, obj}) {
         if (state.runnable >= 0) clearTimeout(state.runnable)
@@ -156,6 +164,9 @@ const actions = {
                 state.modifiedSelectedCourses[obj.id] = {
                     activated: obj.activated
                 }
+                break
+            case 3:
+                state.modifiedPlanningUrl = obj
                 break
             default:
                 break
@@ -189,6 +200,9 @@ const actions = {
         if (state.modifiedSelectedTp != null)
             data['tp_group'] = state.modifiedSelectedTp
 
+        if(state.modifiedPlanningUrl)
+            data['planning_url'] = state.modifiedPlanningUrl
+
         state.runnable = setTimeout(() => {
 
             if (Object.keys(data).length === 0)
@@ -206,6 +220,7 @@ const actions = {
                             state.modifiedNotes = {}
                             state.modifiedSelectedCourses = {}
                             state.modifiedSelectedTp = null
+                            state.modifiedPlanningUrl = null
                             commit('setCanEdit', true)
                             state.runnable = -1
                         })
@@ -248,6 +263,9 @@ const getters = {
     getCourseById: (state, rootGetters) => id => {
         return rootGetters.getAllCourses.find(course => course.id === id)
     },
+    getCourseByName: (state, rootGetters) => name => {
+        return rootGetters.getAllCourses.find(course => course.name.toLowerCase() === name.toLowerCase())
+    },
     getCourseByNote: (state, rootGetters) => noteId => {
         let courses = rootGetters.getAllCourses
         for (let i = 0; i < courses.length; i++) {
@@ -278,7 +296,8 @@ const getters = {
     getSessionId: state => state.sessionId,
     getCanEdit: state => state.canEdit,
     getRunnable: state => state.runnable,
-    getSelectedTp: state => state.selectedTp
+    getSelectedTp: state => state.selectedTp,
+    getPlanningUrl: state => state.planningUrl,
 }
 
 export default {
