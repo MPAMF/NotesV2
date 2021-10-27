@@ -78,7 +78,7 @@
               <b-switch
                   v-model="displayFullPlanning"
                   :disabled="planningUrl == null || planningUrl.length === 0"
-                  passive-type='is-primary'>
+                  passive-type='is-dark'>
                 Complet
               </b-switch>
             </b-field>
@@ -93,7 +93,7 @@
           <b-field>
             <b-switch
                 v-model="darkMode"
-                passive-type='is-primary'>
+                passive-type='is-dark'>
               Thème sombre
             </b-switch>
           </b-field>
