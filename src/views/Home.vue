@@ -170,8 +170,9 @@ export default {
       this.$store.dispatch('loadSession').then(() => {
 
         let url = this.getPlanningUrl
+        let status = localStorage.getItem('displayFullPlanning')
 
-        if (url == null || url.length === 0) {
+        if (url == null || url.length === 0 || (status != null && status === false)) {
           this.sessionSuccessfullyLoaded(sessionId)
           return
         }
