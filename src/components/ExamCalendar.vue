@@ -80,7 +80,7 @@ export default {
       calendarOptions: {
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
         locale: 'fr',
-        initialView: 'dayGridMonth',
+        initialView: 'timeGridWeek',
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',

@@ -170,12 +170,15 @@ export default {
       this.$store.dispatch('loadSession').then(() => {
 
         let url = this.getPlanningUrl
-        let status = localStorage.getItem('displayFullPlanning')
+        let displayFullPlanning = localStorage.getItem('displayFullPlanning')
+        let status = displayFullPlanning != null && displayFullPlanning === 'false'
 
-        if (url == null || url.length === 0 || (status != null && status === false)) {
+        if (url == null || url.length === 0 || status) {
+          this.$store.commit('setDisplayingFullPlanning', false)
           this.sessionSuccessfullyLoaded(sessionId)
           return
         }
+
 
         this.$store.dispatch('fetchCalendar', url).catch((e) => {
           this.$buefy.toast.open({

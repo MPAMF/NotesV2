@@ -64,8 +64,7 @@ const mutations = {
 const actions = {
     fetchCalendar({commit, rootGetters}, url) {
         commit('startFetching', 'fetchCalendar')
-        let status = localStorage.getItem('displayFullPlanning')
-        if (status != null) commit('setDisplayingFullPlanning', status)
+        commit('setDisplayingFullPlanning', true)
 
         return new Promise(((resolve, reject) => axios.get(url).then(({data}) => {
             let jcalData = ICAL.parse(data)
