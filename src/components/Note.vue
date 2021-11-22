@@ -59,7 +59,8 @@ export default {
     return {
       localNote: -1,
       localActivated: true,
-      examDate: ''
+      examDate: '',
+      testFirst: true,
     }
   },
 
@@ -86,16 +87,26 @@ export default {
     },
     userNote: {
       get() {
+        console.log(this.course.name + ' ' + this.note.name + ': ' + this.localNote)
         return this.localNote
       },
       set(value) {
         this.localNote = value
+        console.log("===== > Set userNote")
+
+        if(this.testFirst)
+        {
+          this.testFirst = false
+          return
+        }
+
         this.$store.commit('setNote', {
           note: {
             id: this.note.id,
             value: value
           },
-          courseId: this.course.id
+          courseId: this.course.id,
+          type: 1
         })
         this.$emit("update-avg")
       }
@@ -131,11 +142,12 @@ export default {
           avg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
           count++
         })
-        this.userNote = count === 0 ? 0 : avg / count
+        this.localNote = count === 0 ? 0 : avg / count
         return
       }
       let note = this.getNote(this.course.id, this.note.id)
-      this.userNote = note < 0 ? 10 : note
+      console.log("update local note for : " + this.course.name + " -> " + this.note.name + " (" + this.localNote + " to " + note + ")")
+      this.localNote = note < 0 ? 10 : note
     },
 
     updateNote() {
@@ -190,6 +202,7 @@ export default {
   mounted() {
 
     emitter.on('notes-loaded', () => {
+      console.log("[Event] notes-loaded note for : " + this.course.name + " -> " + this.note.name)
       this.updateNoteStatus()
       this.updateLocalNote()
       this.updateExamDate()

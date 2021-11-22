@@ -78,7 +78,8 @@ export default {
             id: this.note.id,
             value: value
           },
-          courseId: this.course.id
+          courseId: this.course.id,
+          type: 1
         })
         this.$emit('update-avg')
       }

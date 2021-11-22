@@ -22,12 +22,21 @@ const state = {
 }
 
 const mutations = {
-    setNote(state, {courseId, note}) {
+    setNote(state, {courseId, note, type}) {
+        if(!state.notesLoaded && type !== 0) {
+            console.log("[SetNote] Not loaded.")
+            return
+        }
         if (!(courseId in state.notes)) state.notes[courseId] = []
         state.notes[courseId][note.id] = note.value
+        console.log("[SetNote " + type + "] " + courseId + " : " + note.id + " : " + note.value)
     },
 
-    setNoteStatus(state, {courseId, note}) {
+    setNoteStatus(state, {courseId, note, type}) {
+        if(!state.notesLoaded && type !== 0) {
+            console.log("[SetNoteStatus] Not loaded.")
+            return
+        }
         if (!(courseId in state.noteStatus)) state.noteStatus[courseId] = []
         state.noteStatus[courseId][note.id] = note.activated
     },
@@ -85,12 +94,6 @@ const mutations = {
 }
 
 const actions = {
-
-    setNote({commit}, value) {
-        // update to DB
-        commit('setNote', value)
-    },
-
     createSession({commit}) {
         commit('startFetching', 'createSession')
         return new Promise(((resolve, reject) => axios.post('sessions/', {notes: [], tp_group: null}).then(({data}) => {
@@ -117,7 +120,8 @@ const actions = {
                         id: note.note,
                         value: note.value,
                         activated: note.activated
-                    }
+                    },
+                    type: 0
                 }
                 commit('setNote', obj)
                 commit('setNoteStatus', obj)
@@ -135,6 +139,8 @@ const actions = {
             let group = getters.findTpGroup(data.tp_group)
             commit('setSelectedTp', data.tp_group == null ? null : group)
             commit('setPlanningUrl', data.planning_url)
+            commit('setNotesLoaded', true)
+            console.log("--> loadSession finished")
             resolve()
         }).catch(error => {
             reject(error)

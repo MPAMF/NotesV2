@@ -161,6 +161,8 @@ export default {
 
     this.$store.dispatch('fetchData').then(() => {
 
+      console.log("start dispatch fetchData")
+
       if (sessionId === null) {
         this.$store.commit('stopFetching', 'homeCreated')
         this.displayDialog()
@@ -178,7 +180,6 @@ export default {
           this.sessionSuccessfullyLoaded(sessionId)
           return
         }
-
 
         this.$store.dispatch('fetchCalendar', url).catch((e) => {
           this.$buefy.toast.open({
