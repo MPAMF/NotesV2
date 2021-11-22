@@ -69,7 +69,6 @@ const mutations = {
         for (const localisationImage of localisation_images)
             state.localisationImages[localisationImage.id] = localisationImage
 
-        console.log("finished fetchSuccess (courses)")
     },
 
 }

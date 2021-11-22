@@ -87,12 +87,10 @@ export default {
     },
     userNote: {
       get() {
-        console.log(this.course.name + ' ' + this.note.name + ': ' + this.localNote)
         return this.localNote
       },
       set(value) {
         this.localNote = value
-        console.log("===== > Set userNote")
 
         if(this.testFirst)
         {
@@ -146,7 +144,6 @@ export default {
         return
       }
       let note = this.getNote(this.course.id, this.note.id)
-      console.log("update local note for : " + this.course.name + " -> " + this.note.name + " (" + this.localNote + " to " + note + ")")
       this.localNote = note < 0 ? 10 : note
     },
 
@@ -202,7 +199,6 @@ export default {
   mounted() {
 
     emitter.on('notes-loaded', () => {
-      console.log("[Event] notes-loaded note for : " + this.course.name + " -> " + this.note.name)
       this.updateNoteStatus()
       this.updateLocalNote()
       this.updateExamDate()
