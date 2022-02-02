@@ -27,7 +27,7 @@
 
     </div>
 
-    <div v-if="activeTab === 0" class="average box">
+    <div v-if="activeTab === 1" class="average box">
       <h1 class="title is-size-5-mobile" style="color: white;display:inline-block;">Moyenne générale : {{
           avg.toFixed(2)
         }} / 20</h1>
@@ -80,7 +80,7 @@ export default {
     return {
       avg: 0.0,
       notes: {},
-      activeTab: 0,
+      activeTab: 1,
       size: 'is-medium',
       windowWidth: window.innerWidth,
     }
