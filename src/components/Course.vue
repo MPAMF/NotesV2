@@ -34,7 +34,7 @@
       </section>
       <b-collapse :open="open" animation="slide">
         <div class="content box">
-          <div class="columns is-multiline">
+          <div class="columns is-multiline" v-if="getNoteLoadingStatus">
             <note v-for="(note, index) in course.notes" :key="index" :course="course" :note="note"
                   @update-avg="calculateAvg"></note>
           </div>
@@ -69,7 +69,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getNote', 'getNoteStatus', 'isDarkMode']),
+    ...mapGetters(['getNote', 'getNoteStatus', 'isDarkMode', 'getNoteLoadingStatus']),
   },
 
   methods: {

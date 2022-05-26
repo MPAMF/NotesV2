@@ -300,6 +300,7 @@ const getters = {
     getRunnable: state => state.runnable,
     getSelectedTp: state => state.selectedTp,
     getPlanningUrl: state => state.planningUrl,
+    getNoteLoadingStatus: state => state.notesLoaded,
 }
 
 export default {
