@@ -1,13 +1,11 @@
 import axios from "axios";
 
 const state = {
-    semesters: [],
+    degrees: [],
     localisations: {},
     localisationImages: {},
     //
     fetching: [],
-    //
-    currentSemester: 5
 }
 
 const mutations = {
@@ -19,56 +17,40 @@ const mutations = {
         if (index === -1) return
         state.fetching.splice(state.fetching.indexOf(action), 1);
     },
-    fetchSuccess(state, {localisations, localisation_images, semesters}) {
-        for (let i = 0; i < semesters.length; i++) {
-            let semester = semesters[i]
-            for (let course of semester.courses) {
-                let coeffTotal = 0.0
-                for (let note of course.notes) {
-                    note.multiple = note.notes.length > 0
-                    coeffTotal += note.coeff
-                    if (!note.multiple) continue
-                    note.notes = note.notes.sort((a, b) => b.weight - a.weight)
+    fetchSuccess(state, {localisations, localisation_images, degrees}) {
+        for(let j = 0; j < degrees.length; j++) {
+            let semesters = degrees[j].semesters
+            for (let i = 0; i < semesters.length; i++) {
+                let semester = semesters[i]
+                for (let course of semester.courses) {
+                    let coeffTotal = 0.0
+                    for (let note of course.notes) {
+                        note.multiple = note.notes.length > 0
+                        coeffTotal += note.coeff
+                        if (!note.multiple) continue
+                        note.notes = note.notes.sort((a, b) => b.weight - a.weight)
+                    }
+
+                    for (let note of course.notes)
+                        note.coeff /= coeffTotal
+
+                    course.notes = course.notes.sort((a, b) => b.weight - a.weight)
                 }
-
-                for (let note of course.notes)
-                    note.coeff /= coeffTotal
-
-                course.notes = course.notes.sort((a, b) => b.weight - a.weight)
-            }
-            semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
-
-            let groups = []
-            for (let tdGroup of semester.td_groups) {
-                for (let tpGroup of tdGroup.tp_groups) {
-                    groups.push({
-                        name: 'S' + semester.number + ' TD' + tdGroup.number + ' TP' + tpGroup.number,
-                        td: tdGroup.number,
-                        tp: tpGroup.number,
-                        semester: {number: semester.number},
-                        id: tpGroup.id
-                    })
-                }
+                semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
             }
 
-            state.semesters.push({
-                activated: semester.activated,
-                number: semester.number,
-                courses: semester.courses,
-                groups: groups,
-                examDates: semester.exam_dates
+            state.degrees.push({
+                name: degrees[j].name,
+                acronym: degrees[j].acronym,
+                semesters: semesters.sort((a, b) => a.number - b.number)
             })
-
         }
-        // sort semesters by number
-        state.semesters = state.semesters.sort((a, b) => a.number - b.number)
 
         for (const localisation of localisations)
             state.localisations[localisation.id] = localisation
 
         for (const localisationImage of localisation_images)
             state.localisationImages[localisationImage.id] = localisationImage
-
     },
 
 }
@@ -88,21 +70,33 @@ const actions = {
 }
 
 const getters = {
-    getCourses: (state, getters) => semester => {
-        return getters.getSemester(semester).courses
+    getDegrees: (state) => {
+        return state.degrees
     },
-    getSemester: state => nb => {
-        return state.semesters.find(e => e.number === nb)
-    },
-    getSemesterByCourse: state => course => {
-        for (const semester of state.semesters)
-            for (const courseElement of semester.courses)
-                if (courseElement.id === course)
-                    return semester
+    getDegree: (state) => name => {
+        for(const degree of state.degrees)
+            if(name === degree.name)
+                return degree
         return null
     },
-    getRealNote: (state, getters) => (semester, selected, noteId) => {
-        let courses = selected ? getters.getSelectedAndRequiredCourses(semester) : getters.getCourses(semester)
+    getCourses: (state, getters) => (degree, semester) => {
+        return getters.getSemester(degree, semester).courses
+    },
+    getSemester: (state, getters) => (degree, nb) => {
+        let deg = getters.getDegree(degree)
+        if(deg === null) return null
+        return deg.semesters.find(e => e.number === nb)
+    },
+    getSemesterByCourse: state => course => {
+        for(const degree of state.degrees)
+            for (const semester of degree.semesters)
+                for (const courseElement of semester.courses)
+                    if (courseElement.id === course)
+                        return semester
+        return null
+    },
+    getRealNote: (state, getters) => (degree, semester, selected, noteId) => {
+        let courses = selected ? getters.getSelectedAndRequiredCourses(degree, semester) : getters.getCourses(degree, semester)
         for (let course of courses) {
             for (let note of course.notes) {
                 if (note.multiple) continue
@@ -115,31 +109,18 @@ const getters = {
     },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching.length > 0,
-    getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
+    getOptionalCourses: (state, getters) => (degree, semester) => getters.getCourses(degree, semester).filter(course => course.optional),
     getAllCourses: state => {
         let courses = []
-        for (let semester of state.semesters)
-            Array.prototype.push.apply(courses, semester.courses)
+        for(let degree of state.degrees)
+            for (let semester of degree.semesters)
+                Array.prototype.push.apply(courses, semester.courses)
         return courses
     },
-    getAllGroups: state => {
-        let groups = []
-        for (let semester of state.semesters)
-            Array.prototype.push.apply(groups, semester.groups)
-        groups.sort((a, b) => a.name.localeCompare(b.name))
-        return groups
-    },
-    getExamDates: (state, getters) => (semester, tpGroup) => {
-        let foundSemester = getters.getSemester(semester)
+    getExamDates: (state, getters) => (degree, semester) => {
+        let foundSemester = getters.getSemester(degree, semester)
         if (!foundSemester) return []
-
-        let result = []
-        for (let examDate of foundSemester.examDates) {
-            if (examDate.tp_group != null && examDate.tp_group !== tpGroup)
-                continue
-            result.push(examDate)
-        }
-        return result
+        return foundSemester.examDates
     },
 
     getLocalisation: state => localisation => state.localisations[localisation]

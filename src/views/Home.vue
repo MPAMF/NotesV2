@@ -5,15 +5,18 @@
 
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - L3 Informatique</h1>
 
-      <b-tabs v-if="getSemesters.length > 0" v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
+      <b-tabs v-if="getDegrees.length > 0" v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
 
-        <b-tab-item v-for="(semester, index) in getSemesters" :key="index"
-                    :disabled="!semester.activated"
-                    :icon="'numeric-' + semester.number + '-box-multiple-outline'"
-                    :label="'Semestre ' + semester.number">
-          <course v-for="(course, index) in semester.activated ? getSelectedAndRequiredCourses(semester.number) : []"
+        <b-tab-item icon="numeric-1-box-multiple-outline" label="Notes" v-if="hasSelectedSemester">
+          <course v-for="(course, index) in findSelectedSemester().activated ? getSelectedAndRequiredCourses(findSelectedSemester().number) : []"
                   :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></course>
+        </b-tab-item>
+
+        <b-tab-item icon="numeric-1-box-multiple-outline" label="Notes" v-else>
+          <div class="container">
+            <h1 class="subtitle">Veuillez selectionner une formation et un semestre.</h1>
+          </div>
         </b-tab-item>
 
         <b-tab-item icon="calendar-month" label="Planning">
@@ -57,7 +60,6 @@
 <script>
 // @ is an alias to /src
 
-import Course from "../components/Course";
 import {mapGetters} from "vuex";
 import Parameters from "../components/Parameters";
 import SessionModal from "../components/SessionModal";
@@ -68,19 +70,19 @@ export default {
   name: 'Home',
   components: {
     Parameters,
-    Course,
     ExamCalendar
   },
 
   computed: {
-    ...mapGetters(['getRunnable', 'getSemesters', 'getSelectedAndRequiredCourses', 'getPlanningUrl'])
+    ...mapGetters(['getRunnable', 'getDegrees', 'getSelectedAndRequiredCourses',
+      'getPlanningUrl', 'hasSelectedSemester', 'findSelectedSemester'])
   },
 
   data() {
     return {
       avg: 0.0,
       notes: {},
-      activeTab: 1,
+      activeTab: 0,
       size: 'is-medium',
       windowWidth: window.innerWidth,
     }
@@ -88,7 +90,7 @@ export default {
 
   watch: {
     activeTab: (newActiveTab) => {
-      if (newActiveTab !== 2) return
+      if (newActiveTab !== 1) return
       setTimeout(() => emitter.emit('update-calendar'), 100)
     }
   },
