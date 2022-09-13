@@ -45,9 +45,6 @@
           <div class="column is-one-quarter">
             <h1 class="subtitle">Groupe de TP</h1>
 
-            <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
-                         :deselectLabel="''" :options="getAllGroups" :searchable="false" :selectLabel="''" label="name"
-                         track-by="name"></multiselect>
           </div>
           <div class="column">
             <h1 class="subtitle">Sélection des options</h1>
@@ -121,7 +118,7 @@ export default {
   },
   computed: {
     ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
-      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp', 'getPlanningUrl',
+      'getOptionalCourses', 'getRunnable', 'getPlanningUrl',
       'isDisplayingFullPlanning']),
     darkMode: {
       get() {

@@ -20,18 +20,17 @@ export default {
     FullCalendar
   },
   computed: {
-    ...mapGetters(['getExamDates', 'getSelectedTp', 'getRealNote', 'getLocalisation', 'getCourseByNote', 'isDarkMode', 'getCalendarEvents']),
+    ...mapGetters(['getSelectedDegree', 'getSelectedSemester', 'getExamDates', 'getRealNote', 'getLocalisation', 'getCourseByNote', 'isDarkMode', 'getCalendarEvents']),
 
     examDates: {
       get() {
-        if (this.getSelectedTp == null)
-          return []
-        let semester = this.getSelectedTp.semester.number
-        let exams = this.getExamDates(semester, this.getSelectedTp.id)
+        let degree = this.getSelectedDegree
+        let semester = this.getSelectedSemester
+        let exams = this.getExamDates(degree, semester)
         let result = []
 
         for (const exam of exams) {
-          let note = this.getRealNote(semester, true, exam.note)
+          let note = this.getRealNote(degree, semester, true, exam.note)
           let loc = this.getLocalisation(exam.localisation)
           if (note == null) continue
           let course = this.getCourseByNote(note.id)
