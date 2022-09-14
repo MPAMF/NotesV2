@@ -18,7 +18,7 @@ const state = {
 
     // courses
     selectedCourses: [],
-    selectedTp: null
+    selectedSemester: null
 }
 
 const mutations = {

@@ -43,9 +43,9 @@
 
         <div class="columns">
           <div class="column is-one-quarter">
-            <h1 class="subtitle">Groupe de TP</h1>
+            <h1 class="subtitle">Semestre</h1>
 
-            <multiselect v-model="selectedTp" :allow-empty="true" :close-on-select="true"
+            <multiselect v-model="selectedSemester" :allow-empty="true" :close-on-select="true"
                          :deselectLabel="''" :options="getAllGroups" :searchable="false" :selectLabel="''" label="name"
                          track-by="name"></multiselect>
           </div>
