@@ -11,7 +11,8 @@ const state = {
     // saving
     modifiedNotes: {},
     modifiedSelectedCourses: {},
-    modifiedSelectedTp: null,
+    modifiedSelectedDegree: null,
+    modifiedSelectedSemester: null,
     modifiedPlanningUrl: null,
     runnable: -1,
     canEdit: true,
@@ -133,8 +134,6 @@ const actions = {
                     semester: rootGetters['getSemesterByCourse'](selectedCourse.course)
                 })
             }
-            let group = getters.findTpGroup(data.tp_group)
-            commit('setSelectedTp', data.tp_group == null ? null : group)
             commit('setPlanningUrl', data.planning_url)
             commit('setNotesLoaded', true)
             resolve()
@@ -292,13 +291,13 @@ const getters = {
         }
         return null
     },
-    findTpGroup: (state, rootGetters) => tpGroupId => {
-        return rootGetters.getAllGroups.find(group => group.id === tpGroupId)
-    },
     getSessionId: state => state.sessionId,
     getCanEdit: state => state.canEdit,
     getRunnable: state => state.runnable,
-    getSelectedTp: state => state.selectedTp,
+    getSelectedSemester: state => state.selectedSemester,
+    getSelectedDegree: state => state.selectedDegree,
+    hasSelectedSemester: state => state.selectedDegree !== null && state.selectedSemester !== null,
+    findSelectedSemester: (state, rootGetters) => rootGetters.getSemester(state.selectedDegree, state.selectedSemester),
     getPlanningUrl: state => state.planningUrl,
     getNoteLoadingStatus: state => state.notesLoaded,
 }

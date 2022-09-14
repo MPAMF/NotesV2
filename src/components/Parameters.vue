@@ -121,7 +121,7 @@ export default {
   },
   computed: {
     ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
-      'getOptionalCourses', 'getAllGroups', 'getRunnable', 'getSelectedTp', 'getPlanningUrl',
+      'getOptionalCourses', 'getRunnable', 'getPlanningUrl',
       'isDisplayingFullPlanning']),
     darkMode: {
       get() {
