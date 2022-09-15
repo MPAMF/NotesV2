@@ -46,13 +46,14 @@
             <h1 class="subtitle">Semestre</h1>
 
             <multiselect v-model="selectedSemester" :allow-empty="true" :close-on-select="true"
-                         :deselectLabel="''" :options="getAllGroups" :searchable="false" :selectLabel="''" label="name"
-                         track-by="name"></multiselect>
+                         :deselectLabel="''" :options="getSemesters" :searchable="false" :selectLabel="''"
+                         placeholder="Sélectionnez votre semestre"
+            label="optionName" track-by="optionName"></multiselect>
           </div>
           <div class="column">
             <h1 class="subtitle">Sélection des options</h1>
 
-            <multiselect v-model="courseValues" :deselectLabel="''" :disabled="selectedTp == null" :multiple="true"
+            <multiselect v-model="courseValues" :deselectLabel="''" :disabled="selectedSemester == null" :multiple="true"
                          :options="courseOptions" :selectLabel="''" label="name"
                          placeholder="Sélectionnez vos cours" track-by="name" @remove="removeOption"
                          @select="selectOption"><span
@@ -119,10 +120,21 @@ export default {
       urlErrorMessage: ''
     }
   },
+  watch: {
+    // Note: only simple paths. Expressions are not supported.
+    selectedSemester(newValue) {
+      if(!newValue) return
+      console.log("edit session")
+      this.$store.dispatch('editSession', {
+        obj: newValue.id,
+        type: 1
+      })
+    }
+  },
   computed: {
     ...mapGetters(['getSessionId', 'isDarkMode', 'getSelectedCoursesConverted',
       'getOptionalCourses', 'getRunnable', 'getPlanningUrl',
-      'isDisplayingFullPlanning']),
+      'isDisplayingFullPlanning', 'getSelectedSemester', 'getSemesters']),
     darkMode: {
       get() {
         return this.isDarkMode
@@ -152,16 +164,12 @@ export default {
       set(value) {
       }
     },
-    selectedTp: {
+    selectedSemester: {
       get() {
-        return this.getSelectedTp
+        return this.getSelectedSemester
       },
       set(value) {
-        this.$store.dispatch('editSession', {
-          obj: value,
-          type: 1
-        })
-        this.$store.commit('setSelectedTp', value)
+        this.$store.commit('setSelectedSemester', value)
       }
     },
     planningUrl: {

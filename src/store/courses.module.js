@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const state = {
-    degrees: [],
+    semesters: [],
     localisations: {},
     localisationImages: {},
     //
@@ -18,10 +18,14 @@ const mutations = {
         state.fetching.splice(state.fetching.indexOf(action), 1);
     },
     fetchSuccess(state, {localisations, localisation_images, degrees}) {
-        for(let j = 0; j < degrees.length; j++) {
-            let semesters = degrees[j].semesters
-            for (let i = 0; i < semesters.length; i++) {
-                let semester = semesters[i]
+        for (let j = 0; j < degrees.length; j++) {
+            let dSemesters = degrees[j].semesters
+            for (let i = 0; i < dSemesters.length; i++) {
+                let semester = dSemesters[i]
+                semester.degree = {
+                    acronym: degrees[j].acronym,
+                    name: degrees[j].name
+                }
                 for (let course of semester.courses) {
                     let coeffTotal = 0.0
                     for (let note of course.notes) {
@@ -37,13 +41,10 @@ const mutations = {
                     course.notes = course.notes.sort((a, b) => b.weight - a.weight)
                 }
                 semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
-            }
+                semester.optionName = semester.degree.name + " Semestre " + semester.number
 
-            state.degrees.push({
-                name: degrees[j].name,
-                acronym: degrees[j].acronym,
-                semesters: semesters.sort((a, b) => a.number - b.number)
-            })
+                state.semesters.push(semester)
+            }
         }
 
         for (const localisation of localisations)
@@ -70,33 +71,21 @@ const actions = {
 }
 
 const getters = {
-    getDegrees: (state) => {
-        return state.degrees
+    getCourses: (state, getters) => semester => {
+        return getters.getSemester(semester).courses
     },
-    getDegree: (state) => name => {
-        for(const degree of state.degrees)
-            if(name === degree.name)
-                return degree
-        return null
-    },
-    getCourses: (state, getters) => (degree, semester) => {
-        return getters.getSemester(degree, semester).courses
-    },
-    getSemester: (state, getters) => (degree, nb) => {
-        let deg = getters.getDegree(degree)
-        if(deg === null) return null
-        return deg.semesters.find(e => e.number === nb)
+    getSemester: (state) => id => {
+        return state.semesters.find(e => e.id === id)
     },
     getSemesterByCourse: state => course => {
-        for(const degree of state.degrees)
-            for (const semester of degree.semesters)
+            for (const semester of state.semesters)
                 for (const courseElement of semester.courses)
                     if (courseElement.id === course)
                         return semester
         return null
     },
-    getRealNote: (state, getters) => (degree, semester, selected, noteId) => {
-        let courses = selected ? getters.getSelectedAndRequiredCourses(degree, semester) : getters.getCourses(degree, semester)
+    getRealNote: (state, getters) => (semester, selected, noteId) => {
+        let courses = selected ? getters.getSelectedAndRequiredCourses(semester) : getters.getCourses(semester)
         for (let course of courses) {
             for (let note of course.notes) {
                 if (note.multiple) continue
@@ -109,16 +98,15 @@ const getters = {
     },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching.length > 0,
-    getOptionalCourses: (state, getters) => (degree, semester) => getters.getCourses(degree, semester).filter(course => course.optional),
+    getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
     getAllCourses: state => {
         let courses = []
-        for(let degree of state.degrees)
-            for (let semester of degree.semesters)
-                Array.prototype.push.apply(courses, semester.courses)
+        for (let semester of state.semesters)
+            Array.prototype.push.apply(courses, semester.courses)
         return courses
     },
-    getExamDates: (state, getters) => (degree, semester) => {
-        let foundSemester = getters.getSemester(degree, semester)
+    getExamDates: (state, getters) => id => {
+        let foundSemester = getters.getSemester(id)
         if (!foundSemester) return []
         return foundSemester.examDates
     },

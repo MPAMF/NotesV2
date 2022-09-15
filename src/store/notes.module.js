@@ -11,7 +11,6 @@ const state = {
     // saving
     modifiedNotes: {},
     modifiedSelectedCourses: {},
-    modifiedSelectedDegree: null,
     modifiedSelectedSemester: null,
     modifiedPlanningUrl: null,
     runnable: -1,
@@ -67,8 +66,8 @@ const mutations = {
         })
     },
 
-    setSelectedTp(state, tp) {
-        state.selectedTp = tp
+    setSelectedSemester(state, semester) {
+        state.selectedSemester = semester;
     },
 
     setPlanningUrl(state, url) {
@@ -94,7 +93,7 @@ const mutations = {
 const actions = {
     createSession({commit}) {
         commit('startFetching', 'createSession')
-        return new Promise(((resolve, reject) => axios.post('sessions/', {notes: [], tp_group: null}).then(({data}) => {
+        return new Promise(((resolve, reject) => axios.post('sessions/', {notes: []}).then(({data}) => {
             commit('setSessionId', data['session_key'])
             commit('setNotesLoaded', true)
             resolve()
@@ -134,6 +133,7 @@ const actions = {
                     semester: rootGetters['getSemesterByCourse'](selectedCourse.course)
                 })
             }
+            commit('setSelectedSemester', getters.getSemester(data.semester))
             commit('setPlanningUrl', data.planning_url)
             commit('setNotesLoaded', true)
             resolve()
@@ -144,7 +144,7 @@ const actions = {
     },
     /*
         type = 0 : Notes
-        type = 1 : Set selected TP
+        type = 1 : Set selected degree and semester
         type = 2 : Set selected courses
         type = 3 : Set selected planning url
      */
@@ -159,7 +159,7 @@ const actions = {
                 }
                 break
             case 1:
-                state.modifiedSelectedTp = obj.id
+                state.modifiedSelectedSemester = obj
                 break
             case 2:
                 state.modifiedSelectedCourses[obj.id] = {
@@ -198,8 +198,8 @@ const actions = {
         if (coursesArr.length > 0)
             data['selected_courses'] = coursesArr
 
-        if (state.modifiedSelectedTp != null)
-            data['tp_group'] = state.modifiedSelectedTp
+        if (state.modifiedSelectedSemester != null)
+            data['semester'] = state.modifiedSelectedSemester
 
         if (state.modifiedPlanningUrl)
             data['planning_url'] = state.modifiedPlanningUrl
@@ -220,7 +220,7 @@ const actions = {
                         axios.put('sessions/' + state.sessionId + '/', data).finally(() => {
                             state.modifiedNotes = {}
                             state.modifiedSelectedCourses = {}
-                            state.modifiedSelectedTp = null
+                            state.modifiedSelectedSemester = null
                             state.modifiedPlanningUrl = null
                             commit('setCanEdit', true)
                             state.runnable = -1
@@ -295,9 +295,7 @@ const getters = {
     getCanEdit: state => state.canEdit,
     getRunnable: state => state.runnable,
     getSelectedSemester: state => state.selectedSemester,
-    getSelectedDegree: state => state.selectedDegree,
-    hasSelectedSemester: state => state.selectedDegree !== null && state.selectedSemester !== null,
-    findSelectedSemester: (state, rootGetters) => rootGetters.getSemester(state.selectedDegree, state.selectedSemester),
+    hasSelectedSemester: state => state.selectedSemester !== null,
     getPlanningUrl: state => state.planningUrl,
     getNoteLoadingStatus: state => state.notesLoaded,
 }

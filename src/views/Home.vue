@@ -5,17 +5,15 @@
 
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - UFR Maths Info</h1>
 
-      <b-tabs v-if="getDegrees.length > 0" v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
+      <b-tabs v-if="getSemesters.length > 0" v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
 
         <b-tab-item icon="numeric-1-box-multiple-outline" label="Notes" v-if="hasSelectedSemester">
-          <course v-for="(course, index) in findSelectedSemester().activated ? getSelectedAndRequiredCourses(findSelectedSemester().number) : []"
-                  :key="index" :course="course" style="margin-bottom: 5vh"
-                  @update-main-avg="updateAvg"></course>
+
         </b-tab-item>
 
-        <b-tab-item icon="numeric-1-box-multiple-outline" label="Notes" v-else>
+        <b-tab-item icon="school" label="Notes" v-else>
           <div class="container">
-            <h1 class="subtitle">Veuillez selectionner une formation et un semestre.</h1>
+            <h1 class="subtitle">Veuillez selectionner un <a @click="redirectToParameters()">semestre</a>.</h1>
           </div>
         </b-tab-item>
 
@@ -74,8 +72,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getRunnable', 'getDegrees', 'getSelectedAndRequiredCourses',
-      'getPlanningUrl', 'hasSelectedSemester', 'findSelectedSemester'])
+    ...mapGetters(['getRunnable', 'getSemesters', 'getSelectedAndRequiredCourses',
+      'getPlanningUrl', 'hasSelectedSemester'])
   },
 
   data() {
@@ -110,6 +108,10 @@ export default {
   },
 
   methods: {
+
+    redirectToParameters() {
+      this.$data.activeTab = 3
+    },
 
     onResize() {
       this.windowWidth = window.innerWidth
