@@ -124,7 +124,6 @@ export default {
     // Note: only simple paths. Expressions are not supported.
     selectedSemester(newValue) {
       if(!newValue) return
-      console.log("edit session")
       this.$store.dispatch('editSession', {
         obj: newValue.id,
         type: 1

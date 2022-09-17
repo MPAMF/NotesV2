@@ -7,7 +7,7 @@
 
       <b-tabs v-if="getSemesters.length > 0" v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
 
-        <b-tab-item icon="numeric-1-box-multiple-outline" label="Notes" v-if="hasSelectedSemester">
+        <b-tab-item icon="school" label="Notes" v-if="hasSelectedSemester">
 
         </b-tab-item>
 
@@ -21,7 +21,7 @@
           <exam-calendar></exam-calendar>
         </b-tab-item>
 
-        <b-tab-item icon="cog-outline" label="Paramètres">
+        <b-tab-item icon="cog" label="Paramètres">
           <parameters></parameters>
         </b-tab-item>
       </b-tabs>

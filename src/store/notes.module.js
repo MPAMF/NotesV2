@@ -295,7 +295,7 @@ const getters = {
     getCanEdit: state => state.canEdit,
     getRunnable: state => state.runnable,
     getSelectedSemester: state => state.selectedSemester,
-    hasSelectedSemester: state => state.selectedSemester !== null,
+    hasSelectedSemester: state => state.selectedSemester !== null && state.selectedSemester !== undefined,
     getPlanningUrl: state => state.planningUrl,
     getNoteLoadingStatus: state => state.notesLoaded,
 }
