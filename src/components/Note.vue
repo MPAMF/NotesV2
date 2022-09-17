@@ -13,7 +13,7 @@
         </b-icon>
       </b-tooltip>
     </h1>
-    <button v-if="note.multiple" class="input custom-button" @click="openDialog">
+    <button v-if="note.multiple" v-bind:class="{ noteDisabled: isDisabled }" class="input custom-button" @click="openDialog">
       <p class="custom-button">{{ localNote.toFixed(2) }}</p>
     </button>
 
@@ -61,6 +61,7 @@ export default {
       localActivated: true,
       examDate: '',
       testFirst: true,
+      isDisabled: false,
     }
   },
 
@@ -130,6 +131,21 @@ export default {
       })
     },
 
+    checkDisableNote()
+    {
+      if(this.note.multiple) {
+        let check = true
+        this.note.notes.forEach(val => {
+          if (this.getNoteStatus(this.course.id, val.id) == true)
+            check = false
+        })
+        if (check)
+          this.isDisabled = true
+        else
+          this.isDisabled = false
+      }
+    },
+
     updateLocalNote() {
       if (this.note.multiple) {
         let avg = 0.0
@@ -141,6 +157,7 @@ export default {
           count++
         })
         this.localNote = count === 0 ? 0 : avg / count
+        this.checkDisableNote()
         return
       }
       let note = this.getNote(this.course.id, this.note.id)
@@ -234,6 +251,12 @@ input[type="tel"] {
 
 .control.has-icons-left input {
   padding: 0;
+}
+
+.noteDisabled {
+  background:#c4c4c4 !important;
+  color: rgba(16, 16, 16, 0.3) !important;
+  border: solid 1px black !important;
 }
 
 @media screen and (max-width: 768px) {
