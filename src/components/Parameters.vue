@@ -152,12 +152,12 @@ export default {
     },
     courseOptions: {
       get() {
-        return this.selectedTp == null ? [] : this.getOptionalCourses(this.selectedTp.semester.number)
+        return this.selectedSemester == null ? [] : this.getOptionalCourses(this.selectedSemester.id)
       },
     },
     courseValues: {
       get() {
-        return this.selectedTp == null ? [] : this.getSelectedCoursesConverted(this.selectedTp.semester.number)
+        return this.selectedSemester == null ? [] : this.getSelectedCoursesConverted(this.selectedSemester.id)
       },
       // eslint-disable-next-line no-unused-vars
       set(value) {
@@ -253,7 +253,7 @@ export default {
       })
       this.$store.commit('addSelectedCourse', {
         selectedCourse: selectedOption,
-        semester: this.selectedTp.semester.number
+        semester: this.selectedSemester.id
       })
     },
 

@@ -246,19 +246,19 @@ const getters = {
     },
     getNoteStatus: state => (courseId, uuid) => courseId in state.noteStatus ? (uuid in state.noteStatus[courseId] ? state.noteStatus[courseId][uuid] : true) : true,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
-    getSelectedCourses: (state) => semester => state.selectedCourses.filter(obj => obj.semester === semester),
-    getSelectedCoursesConverted: (state, getters) => semester => {
-        let selectedCourses = getters.getSelectedCourses(semester)
+    getSelectedCourses: (state) => semester_id => state.selectedCourses.filter(obj => obj.semester.id === semester_id),
+    getSelectedCoursesConverted: (state, getters) => semester_id => {
+        let selectedCourses = getters.getSelectedCourses(semester_id)
         let result = []
         for (const selectedCourse of selectedCourses) {
             result.push(getters.getCourseById(selectedCourse.course))
         }
         return result
     },
-    getSelectedAndRequiredCourses: (state, rootGetters) => semester => {
-        let courses = rootGetters.getSelectedCoursesConverted(semester)
-        Array.prototype.push.apply(courses, rootGetters.getCourses(semester).filter(course => !course.optional))
-        courses.sort((a, b) => b.weight - a.weight)
+    getSelectedAndRequiredCourses: (state, rootGetters) => semester_id => {
+        let courses = rootGetters.getSelectedCoursesConverted(semester_id)
+        Array.prototype.push.apply(courses, rootGetters.getCourses(semester_id).filter(course => !course.optional))
+        courses.sort((a, b) => a.weight - b.weight)
         return courses
     },
     getCourseById: (state, rootGetters) => id => {

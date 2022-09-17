@@ -32,15 +32,15 @@ const mutations = {
                         note.multiple = note.notes.length > 0
                         coeffTotal += note.coeff
                         if (!note.multiple) continue
-                        note.notes = note.notes.sort((a, b) => b.weight - a.weight)
+                        note.notes = note.notes.sort((a, b) => a.weight - b.weight)
                     }
 
                     for (let note of course.notes)
                         note.coeff /= coeffTotal
 
-                    course.notes = course.notes.sort((a, b) => b.weight - a.weight)
+                    course.notes = course.notes.sort((a, b) => a.weight - b.weight)
                 }
-                semester.courses = semester.courses.sort((a, b) => b.weight - a.weight)
+                semester.courses = semester.courses.sort((a, b) => a.weight - b.weight)
                 semester.optionName = semester.degree.name + " Semestre " + semester.number
 
                 state.semesters.push(semester)
@@ -98,7 +98,7 @@ const getters = {
     },
     getSemesters: state => state.semesters,
     isFetching: state => state.fetching.length > 0,
-    getOptionalCourses: (state, getters) => semester => getters.getCourses(semester).filter(course => course.optional),
+    getOptionalCourses: (state, getters) => semester_id => getters.getCourses(semester_id).filter(course => course.optional),
     getAllCourses: state => {
         let courses = []
         for (let semester of state.semesters)

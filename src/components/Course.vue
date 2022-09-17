@@ -89,8 +89,15 @@ export default {
             multipleAvg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
             count++
           })
-          avg += count === 0 ? 0 : ((multipleAvg / count) * value.coeff)
-          coeffTotal += value.coeff
+          if(count != 0)
+          {
+            avg += ((multipleAvg / count) * value.coeff)
+            coeffTotal += value.coeff
+          }
+          else
+          {
+            console.log("DISABLE" + value.id)
+          }
         } else {
           if (!this.getNoteStatus(this.course.id, value.id)) return
           let note = this.getNote(this.course.id, value.id)

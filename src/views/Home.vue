@@ -5,10 +5,12 @@
 
       <h1 class="title is-size-5-mobile" style="padding-top: 20px">Gestion Notes - UFR Maths Info</h1>
 
-      <b-tabs v-if="getSemesters.length > 0" v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
+      <b-tabs v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
 
         <b-tab-item icon="school" label="Notes" v-if="hasSelectedSemester">
-
+          <Course v-for="(course, index) in getSelectedAndRequiredCourses(getSelectedSemester.id)"
+                  :key="index" :course="course" style="margin-bottom: 5vh"
+                  @update-main-avg="updateAvg"></Course>
         </b-tab-item>
 
         <b-tab-item icon="school" label="Notes" v-else>
@@ -28,7 +30,7 @@
 
     </div>
 
-    <div v-if="activeTab === 1" class="average box">
+    <div v-if="hasSelectedSemester && activeTab === 0" class="average box">
       <h1 class="title is-size-5-mobile" style="color: white;display:inline-block;">Moyenne générale : {{
           avg.toFixed(2)
         }} / 20</h1>
@@ -63,17 +65,19 @@ import Parameters from "../components/Parameters";
 import SessionModal from "../components/SessionModal";
 import emitter from 'tiny-emitter/instance'
 import ExamCalendar from '../components/ExamCalendar.vue';
+import Course from "@/components/Course";
 
 export default {
   name: 'Home',
   components: {
+    Course,
     Parameters,
     ExamCalendar
   },
 
   computed: {
-    ...mapGetters(['getRunnable', 'getSemesters', 'getSelectedAndRequiredCourses',
-      'getPlanningUrl', 'hasSelectedSemester'])
+    ...mapGetters(['getRunnable', 'getSelectedAndRequiredCourses',
+      'getPlanningUrl', 'hasSelectedSemester', 'getSelectedSemester'])
   },
 
   data() {

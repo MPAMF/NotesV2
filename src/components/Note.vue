@@ -65,7 +65,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getNote', 'getCanEdit', 'getNoteStatus', 'getExamDates', 'getSelectedTp', 'getLocalisation']),
+    ...mapGetters(['getNote', 'getCanEdit', 'getNoteStatus', 'getExamDates', 'getSelectedSemester', 'getLocalisation']),
     activated: {
       get() {
         return this.localActivated
@@ -166,12 +166,14 @@ export default {
     },
 
     updateExamDate() {
-      if (this.getSelectedTp == null) {
+      if (this.getSelectedSemester == null) {
         this.examDate = ''
         return
       }
 
-      let examDates = this.getExamDates(this.getSelectedTp.semester.number, this.getSelectedTp.id)
+      // TODO : getSelectedTp unused
+      // let examDates = this.getExamDates(this.getSelectedTp.semester.number, this.getSelectedTp.id)
+      let examDates = this.getExamDates(null, null)
       let foundDate = examDates.find(date => date.note === this.note.id)
 
       if (foundDate == null) {
