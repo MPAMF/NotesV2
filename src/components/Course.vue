@@ -94,10 +94,6 @@ export default {
             avg += ((multipleAvg / count) * value.coeff)
             coeffTotal += value.coeff
           }
-          else
-          {
-            console.log("DISABLE" + value.id)
-          }
         } else {
           if (!this.getNoteStatus(this.course.id, value.id)) return
           let note = this.getNote(this.course.id, value.id)

@@ -144,7 +144,7 @@ const actions = {
     },
     /*
         type = 0 : Notes
-        type = 1 : Set selected degree and semester
+        type = 1 : Set selected semester
         type = 2 : Set selected courses
         type = 3 : Set selected planning url
      */
@@ -246,7 +246,7 @@ const getters = {
     },
     getNoteStatus: state => (courseId, uuid) => courseId in state.noteStatus ? (uuid in state.noteStatus[courseId] ? state.noteStatus[courseId][uuid] : true) : true,
     getNotesByCourse: state => courseId => courseId in state.notes ? state.notes[courseId] : [],
-    getSelectedCourses: (state) => semester_id => state.selectedCourses.filter(obj => obj.semester.id === semester_id),
+    getSelectedCourses: (state) => semester_id => state.selectedCourses.filter(obj => obj.semester === semester_id),
     getSelectedCoursesConverted: (state, getters) => semester_id => {
         let selectedCourses = getters.getSelectedCourses(semester_id)
         let result = []
