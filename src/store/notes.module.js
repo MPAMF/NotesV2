@@ -62,7 +62,7 @@ const mutations = {
     setSelectedCourse(state, {course, semester}) {
         state.selectedCourses.push({
             course: course.course,
-            semester: semester.number
+            semester: semester.id
         })
     },
 
