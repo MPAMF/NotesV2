@@ -7,7 +7,7 @@
 
       <b-tabs v-model="activeTab" :size="size" position="is-centered" type="is-boxed">
 
-        <b-tab-item icon="school" label="Notes" v-if="hasSelectedSemester">
+        <b-tab-item icon="school" label="Notes" class="grade-container" v-if="hasSelectedSemester">
           <Course v-for="(course, index) in getSelectedAndRequiredCourses(getSelectedSemester.id)"
                   :key="index" :course="course" style="margin-bottom: 5vh"
                   @update-main-avg="updateAvg"></Course>
@@ -212,13 +212,17 @@ export default {
 
 <style>
 
+.grade-container {
+  margin-bottom: 7vh;
+}
+
 .average.box {
   border-radius: 8px 8px 0 0 !important;
 }
 
 .average {
   background: #232B32 !important;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   border-radius: 8px 8px 0 0;
   border-top: solid 3px #141d26;
