@@ -218,7 +218,7 @@ export default {
 
 .average {
   background: #232B32 !important;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   border-radius: 8px 8px 0 0;
   border-top: solid 3px #141d26;
