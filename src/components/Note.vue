@@ -136,13 +136,10 @@ export default {
       if(this.note.multiple) {
         let check = true
         this.note.notes.forEach(val => {
-          if (this.getNoteStatus(this.course.id, val.id) == true)
+          if (this.getNoteStatus(this.course.id, val.id) === true)
             check = false
         })
-        if (check)
-          this.isDisabled = true
-        else
-          this.isDisabled = false
+        this.isDisabled = check;
       }
     },
 
@@ -158,6 +155,7 @@ export default {
         })
         this.localNote = count === 0 ? 0 : avg / count
         this.checkDisableNote()
+        this.$emit("update-avg")
         return
       }
       let note = this.getNote(this.course.id, this.note.id)

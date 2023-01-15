@@ -89,7 +89,7 @@ export default {
             multipleAvg += ((foundNote < 0 ? val.denominator / 2 : foundNote) * 20.0) / val.denominator
             count++
           })
-          if(count != 0)
+          if(count !== 0)
           {
             avg += ((multipleAvg / count) * value.coeff)
             coeffTotal += value.coeff
